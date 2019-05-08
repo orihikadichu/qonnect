@@ -1,0 +1,14 @@
+.container {
+  max-width: 800px;
+}
+
+div.question_view {
+  border: 1px solid #E1E1E1;
+  border-radius: 4px;
+  padding: 2rem 3rem;
+  margin-bottom: 5px;
+}
+
+ul.none_style {
+  list-style: none;
+}
