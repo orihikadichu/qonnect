@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "babel-node .",
+    "start": "babel-node ./bin/www",
     "dev": "nodemon --exec babel-node server.js",
     "test": "NODE_ENV=test jest",
     "pretest": "NODE_ENV=test sequelize db:migrate",
