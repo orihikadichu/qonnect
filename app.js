@@ -17,6 +17,13 @@ import jimp from 'jimp';
 const app = express();
 const secretKey = 'hogehogehogehogehogehoge';
 
+console.log({
+  host            : process.env.MYSQL_HOST,
+  user            : process.env.MYSQL_USER,
+  password        : process.env.MYSQL_SECRET,
+  database        : process.env.MYSQL_DB
+});
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
