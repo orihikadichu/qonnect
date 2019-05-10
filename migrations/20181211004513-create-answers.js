@@ -11,7 +11,7 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER
       },
-      questions_id: {
+      question_id: {
         type: Sequelize.INTEGER
       },
       translate_language_id: {
