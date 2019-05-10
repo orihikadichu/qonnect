@@ -39,13 +39,6 @@ module.exports = {
           type: Sequelize.DATE
         }
       }),
-      queryInterface.addIndex(
-        'users',
-        ['mail'],
-        {
-          indexName: 'mail_index'
-        }
-      )
     ]);
   },
   down: (queryInterface, Sequelize) => {
