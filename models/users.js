@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     mail: {
       type: DataTypes.STRING,
-      field: 'mail'
+      field: 'mail',
+      unieque: 'mail_unique'
     },
     password: {
       type: DataTypes.STRING,

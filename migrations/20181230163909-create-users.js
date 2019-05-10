@@ -13,7 +13,7 @@ module.exports = {
           type: Sequelize.STRING
         },
         mail: {
-          type: Sequelize.STRING
+          type: Sequelize.STRING,
         },
         password: {
           type: Sequelize.STRING
@@ -43,10 +43,9 @@ module.exports = {
         'users',
         ['mail'],
         {
-          indexName: 'mail_unique',
-          indicesType: 'UNIQUE'
+          indexName: 'mail_index'
         }
-      ),
+      )
     ]);
   },
   down: (queryInterface, Sequelize) => {
