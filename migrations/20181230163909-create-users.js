@@ -47,13 +47,6 @@ module.exports = {
           indicesType: 'UNIQUE'
         }
       ),
-      queryInterface.addIndex(
-        'users',
-        ['mail'],
-        {
-          indexName: 'mail_index'
-        }
-      )
     ]);
   },
   down: (queryInterface, Sequelize) => {
