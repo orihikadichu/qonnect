@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return [
+    return Promise.all([
       queryInterface.createTable('users', {
         id: {
           allowNull: false,
@@ -54,7 +54,7 @@ module.exports = {
           indexName: 'mail_index'
         }
       )
-    ];
+    ]);
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('users');
