@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   comments.associate = function(models) {
     comments.belongsTo(models.users, {foreignKey: 'user_id'});
     comments.belongsTo(models.answers, {foreignKey: 'answer_id'});
+    comments.hasMany(models.comment_translations, {foreignKey: 'comment_id'});
   };
   return comments;
 };

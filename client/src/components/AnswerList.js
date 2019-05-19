@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
+import Linkify from 'react-linkify';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import dayjs from 'dayjs';
@@ -66,6 +67,7 @@ class AnswerList extends Component {
 
     const filteredAnswers = this.getFilteredAnswers(answerArray, translateLanguageId);
     const translatedAnswers = this.getTranslatedAnswers(filteredAnswers, translateLanguageId);
+    console.log('answerArray', answerArray);
 
     return translatedAnswers.map(answer => {
       const editLink = answer.user.id === loginUser.id
@@ -77,7 +79,7 @@ class AnswerList extends Component {
           <article className="uk-comment">
             <div className="uk-comment-header uk-comment-body">
               <p style={{"whiteSpace": "pre-wrap"}} >
-                {answer.dispText}
+                <Linkify properties={{ target: '_blank'}} >{answer.dispText}</Linkify>
                 <Link to={`/answer_translations/${answer.id}`}><span uk-icon="world"></span></Link>
                 { editLink }
               </p>
@@ -95,7 +97,7 @@ class AnswerList extends Component {
           </article>
           <hr className="uk-divider-small" />
           <div className="uk-margin-bottom" >
-            <CommentList list={answer.comments} loginUser={loginUser} />
+            <CommentList list={answer.comments} loginUser={loginUser} translateLanguageId={translateLanguageId} />
           </div>
           <div className="uk-margin-bottom" style={{"paddingLeft": "30px"}} >
             <CommentForm form={`commentForm_${answer.id}`} onSubmit={this.onClickCommentForm.bind(this)} initialValues={{answer_id: answer.id}} />

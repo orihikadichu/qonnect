@@ -31,7 +31,7 @@ class QuestionList extends Component {
     });
     return filteredQuestions;
   }
-
+  
   getTranslatedQuestions(questions, translateLanguageId) {
     const translatedQuestions = questions.map((v) => {
       if (v.translate_language_id === translateLanguageId) {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
+import Linkify from 'react-linkify';
 import AnswerForm from './AnswerForm';
 import AnswerList from '../containers/AnswerList';
 import dayjs from 'dayjs';
@@ -53,7 +54,6 @@ class QuestionView extends Component {
       );
     }
 
-    console.log('translateLanguageId', translateLanguageId);
     const loginUser = this.props.state.auth.user;
     const question = this.getTranslatedQuestion(currentQuestion, translateLanguageId);
     const { user } = currentQuestion;
@@ -66,7 +66,7 @@ class QuestionView extends Component {
       <main className="uk-container uk-container-small">
         <div className="uk-card uk-card-default uk-card-body uk-box-shadow-small">
           <p>
-            {question.dispText}
+            <Linkify properties={{ target: '_blank'}} >{question.dispText}</Linkify>
             <Link to={`/question_translations/${this.qId}`}><span uk-icon="world"></span></Link>
           </p>
           <p className="uk-text-meta">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>

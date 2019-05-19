@@ -46,6 +46,7 @@
     "babel-core": "^6.26.3",
     "dayjs": "^1.8.12",
     "formik": "^1.5.2",
+    "react-linkify": "^0.2.2",
     "reapop": "^2.0.1",
     "reapop-theme-wybo": "^1.0.2"
   }

@@ -98,13 +98,21 @@ app.get('/api/questions/:id', (req, res) => {
       {
         model: db.answers,
         required: false,
-        include: [db.users, db.comments]
+        include: [
+          {
+            model: db.users
+          },
+          {
+            model: db.comments,
+            include: [db.comment_translations]
+          }
+        ]
       },
       {
         model: db.question_translations,
         required: false
       },
-    ]
+    ],
   })
     .then((instanse) => {
       res.status(200).send(instanse);
@@ -286,7 +294,10 @@ app.get('/api/answers', (req, res) => {
       {
         model: db.comments,
         required: false,
-        include: [db.users]
+        include: [
+          db.users,
+          db.comment_translations
+        ]
       },
       {
         model: db.answer_translations,
@@ -310,7 +321,7 @@ app.get('/api/answers/:id', (req, res) => {
       },
       {
         model: db.comments,
-        required: false
+        required: false,
       },
     ]
   })
