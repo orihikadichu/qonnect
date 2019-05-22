@@ -191,6 +191,24 @@ app.get('/api/question_translations', (req, res) => {
     });
 });
 
+app.get('/api/question_translations/:id', (req, res) => {
+  const { id } = req.params;
+  db.question_translations.findOne({
+    where: {
+      id
+    },
+    include: [
+      {
+        model: db.users,
+        required: false
+      },
+    ],
+  })
+    .then((instanse) => {
+      res.status(200).send(instanse);
+    });
+});
+
 app.post('/api/question_translations', (req, res) => {
   const {
     content,
@@ -210,6 +228,41 @@ app.post('/api/question_translations', (req, res) => {
   ;
 });
 
+app.put('/api/question_translations/:id', (req, res) => {
+  const { id } = req.params;
+  const params = req.body;
+  const filter = {
+    where: { id }
+  };
+  db.question_translations.update(params, filter)
+    .then((updatedData) => {
+      db.question_translations.findOne({
+        where: { id },
+        include: [db.users]
+      })
+        .then((instance) => {
+          const question = instance.get();
+          res.status(200).send(question);
+        });
+    })
+  ;
+});
+
+app.delete('/api/question_translations/:id', (req, res) => {
+  const { id } = req.params;
+  const { user_id } = req.query;
+  const filter = {
+    where: { id, user_id }
+  };
+  db.question_translations.destroy(filter)
+    .then((result) => {
+      if (result === 0) {
+        return res.status(500).send('翻訳の削除に失敗しました');
+      }
+      return res.status(200).send('翻訳を削除しました');
+    })
+  ;
+});
 
 /**
  * answer_translations
@@ -228,6 +281,24 @@ app.get('/api/answer_translations', (req, res) => {
     });
 });
 
+app.get('/api/answer_translations/:id', (req, res) => {
+  const { id } = req.params;
+  db.answer_translations.findOne({
+    where: {
+      id
+    },
+    include: [
+      {
+        model: db.users,
+        required: false
+      },
+    ],
+  })
+    .then((instanse) => {
+      res.status(200).send(instanse);
+    });
+});
+
 app.post('/api/answer_translations', (req, res) => {
   const params = req.body;
   db.answer_translations.create({
@@ -241,6 +312,43 @@ app.post('/api/answer_translations', (req, res) => {
     })
   ;
 });
+
+app.put('/api/answer_translations/:id', (req, res) => {
+  const { id } = req.params;
+  const params = req.body;
+  const filter = {
+    where: { id }
+  };
+  db.answer_translations.update(params, filter)
+    .then((updatedData) => {
+      db.answer_translations.findOne({
+        where: { id },
+        include: [db.users]
+      })
+        .then((instance) => {
+          const question = instance.get();
+          res.status(200).send(question);
+        });
+    })
+  ;
+});
+
+app.delete('/api/answer_translations/:id', (req, res) => {
+  const { id } = req.params;
+  const { user_id } = req.query;
+  const filter = {
+    where: { id, user_id }
+  };
+  db.answer_translations.destroy(filter)
+    .then((result) => {
+      if (result === 0) {
+        return res.status(500).send('翻訳の削除に失敗しました');
+      }
+      return res.status(200).send('翻訳を削除しました');
+    })
+  ;
+});
+
 
 /**
  * CommentTranslations
@@ -278,6 +386,41 @@ app.post('/api/comment_translations', (req, res) => {
   ;
 });
 
+app.put('/api/comment_translations/:id', (req, res) => {
+  const { id } = req.params;
+  const params = req.body;
+  const filter = {
+    where: { id }
+  };
+  db.comment_translations.update(params, filter)
+    .then((updatedData) => {
+      db.comment_translations.findOne({
+        where: { id },
+        include: [db.users]
+      })
+        .then((instance) => {
+          const question = instance.get();
+          res.status(200).send(question);
+        });
+    })
+  ;
+});
+
+app.delete('/api/comment_translations/:id', (req, res) => {
+  const { id } = req.params;
+  const { user_id } = req.query;
+  const filter = {
+    where: { id, user_id }
+  };
+  db.comment_translations.destroy(filter)
+    .then((result) => {
+      if (result === 0) {
+        return res.status(500).send('翻訳の削除に失敗しました');
+      }
+      return res.status(200).send('翻訳を削除しました');
+    })
+  ;
+});
 
 /**
  * Answers

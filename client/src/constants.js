@@ -34,6 +34,7 @@ export const initialState = {
   answerTranslations: {
     isFetching: false,
     currentTranslationList: [],
+    currentTranslation: {},
   },
   questionForm: {
     isFetching: false,
@@ -54,6 +55,7 @@ export const initialState = {
   questionTranslations: {
     isFetching: false,
     currentTranslationList: [],
+    currentTranslation: {},
   },
   comments: {
     isFetching: false,
@@ -63,5 +65,6 @@ export const initialState = {
   commentTranslations: {
     isFetching: false,
     currentTranslationList: [],
+    currentTranslation: {},
   },
 };

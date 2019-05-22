@@ -45,7 +45,6 @@ export const list = (state = initialState.questions, action) => {
       isFetching: false
     };
   case UPDATE_CURRENT_TRANSLATE_LANGUAGE:
-    console.log('action', action);
     return {
       ...state,
       translateLanguageId: parseInt(action.payload)

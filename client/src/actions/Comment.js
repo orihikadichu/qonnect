@@ -11,6 +11,7 @@ export const UPDATED_SINGLE_COMMENT_DATA = Symbol('UPDATED_SINGLE_COMMENT_DATA')
 export const SAVE_COMMENT_DATA = Symbol('SAVE_COMMENT_DATA');
 export const DELETE_COMMENT = Symbol('DELETE_COMMENT');
 
+
 export const requestData = createAction(REQUEST_DATA);
 export const receiveDataFailed = createAction(RECEIVE_DATA_FAILED);
 export const postComment = createAction(POST_COMMENT);
@@ -20,3 +21,4 @@ export const updatedCommentData = createAction(UPDATED_COMMENT_DATA);
 export const updatedSingleCommentData = createAction(UPDATED_SINGLE_COMMENT_DATA);
 export const deleteComment = createAction(DELETE_COMMENT);
 export const saveCommentData = createAction(SAVE_COMMENT_DATA);
+

@@ -67,7 +67,6 @@ class AnswerList extends Component {
 
     const filteredAnswers = this.getFilteredAnswers(answerArray, translateLanguageId);
     const translatedAnswers = this.getTranslatedAnswers(filteredAnswers, translateLanguageId);
-    console.log('answerArray', answerArray);
 
     return translatedAnswers.map(answer => {
       const editLink = answer.user.id === loginUser.id

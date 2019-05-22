@@ -7,8 +7,11 @@ import QuestionEdit from './containers/QuestionEdit';
 import AnswerEdit from './containers/AnswerEdit';
 import CommentEdit from './containers/CommentEdit';
 import QuestionTranslationView from './containers/QuestionTranslationView';
+import QuestionTranslationEdit from './containers/QuestionTranslationEdit';
 import AnswerTranslationView from './containers/AnswerTranslationView';
+import AnswerTranslationEdit from './containers/AnswerTranslationEdit';
 import CommentTranslationView from './containers/CommentTranslationView';
+/* import CommentTranslationEdit from './containers/CommentTranslationEdit';*/
 import App from './containers/App';
 import ScrollToTop from './components/layouts/ScrollToTop';
 import SignUp from './containers/users/SignUp';
@@ -41,18 +44,20 @@ const render = () => {
             <Switch>
               <Route exact path='/' component={Home} />
               <Route exact path='/questions/:id' component={QuestionView}  onEnter={() => window.scrollTo(0, 0)}/>
-              <Route path='/question_translations/:question_id' component={QuestionTranslationView} />
-              <Route path='/answer_translations/:answer_id' component={AnswerTranslationView} />
+              <Route exact path='/question_translations/:question_id' component={QuestionTranslationView} />
+              <Route exact path='/answer_translations/:answer_id' component={AnswerTranslationView} />
               <Route path='/comment_translations/:comment_id' component={CommentTranslationView} />
               <Route path='/users/profile/:id' component={Profile} />
               <Route path='/users/login' component={Login} />
               <Route path='/users/signup' component={SignUp} />
               <UserOnly>
                 <Switch>
-                  <Route path='/questions/edit/:id' component={QuestionEdit} />
-                  <Route path='/answers/edit/:id' component={AnswerEdit} />
+                  <Route exact path='/questions/edit/:id' component={QuestionEdit} />
+                  <Route exact path='/answers/edit/:id' component={AnswerEdit} />
                   <Route path='/comments/edit/:id' component={CommentEdit} />
                   <Route path='/users/profile_edit' component={ProfileEdit} />
+                  <Route exact path='/question_translations/edit/:id' component={QuestionTranslationEdit} />
+                  <Route exact path='/answer_translations/edit/:id' component={AnswerTranslationEdit} />
                 </Switch>
               </UserOnly>
               <GuestOnly>
