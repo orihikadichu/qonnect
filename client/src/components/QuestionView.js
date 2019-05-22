@@ -9,9 +9,15 @@ import dayjs from 'dayjs';
 class QuestionView extends Component {
   constructor(props) {
     super(props);
+    //props.matchはURLクエリーで:idが
+    //props.matchの中にあるparamsというkeyのvalueを取得している。
     const {params} = props.match;
+    //idを１０進法の数値に変換する
     this.qId = parseInt(params.id, 10);
+
   }
+
+  //this.state.buttonState[answer.id];
 
   componentWillMount() {
     this.props.getQuestionById(this.qId);
@@ -19,7 +25,9 @@ class QuestionView extends Component {
 
   handleSubmit(formData) {
     try {
+      //authの中にあるuserキーに対応するvalueを取り出す。という意味
       const { user } = this.props.state.auth;
+      //formDataの中のcontent,translate_langugase_idを取り出す
       const { content, translate_language_id } = formData;
       const question_id = this.qId;
       const user_id = user.id;
@@ -37,15 +45,19 @@ class QuestionView extends Component {
       return question;
     }
     const questionTranslation = question.question_translations.filter(question => {
+      //「DBに保存されている言語id」と「画面に表示されている言語」が一致している要素だけを取得する。[0]とすることで最初にフィルタリングされたものを取り出す。
       return (question.translate_language_id === translateLanguageId);
     })[0];
 
+    //questionの中に新たなdispTextというプロパティを生成する
     question.dispText = questionTranslation.content;
     return question;
   }
 
   render() {
     const { currentQuestion, translateLanguageId } = this.props.state.questions;
+    console.log('this.props',this.props);
+    console.log('this.props.state',this.props.state);
     if (Object.keys(currentQuestion).length === 0) {
       return (
         <div className="uk-position-center uk-overlay uk-overlay-default">
@@ -61,6 +73,8 @@ class QuestionView extends Component {
     const editLink = user.id === loginUser.id
                    ? <p><Link to={`/questions/edit/${this.qId}`}>編集</Link></p>
                    : '';
+
+    // const dispcomment = this.state.buttonState === true ?
 
     return (
       <main className="uk-container uk-container-small">
@@ -78,16 +92,17 @@ class QuestionView extends Component {
               <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${user.id}`}>{ user.name }</Link></h4>
             </div>
           </div>
-
           { editLink }
         </div>
 
         <h3 className="uk-heading-line"><span>回答一覧</span></h3>
+
         <div className="uk-margin-bottom">
-          <AnswerForm qId={this.qId} initialValues={answerFormInitVals} onSubmit={this.handleSubmit.bind(this)} />
+          <AnswerForm qId={this.qId} initialValues={answerFormInitVals} onSubmit={this.handleSubmit.bind(this)}/>
         </div>
-        <AnswerList qId={this.qId} translateLanguageId={translateLanguageId} />
+          <AnswerList qId={this.qId} translateLanguageId={translateLanguageId} />
         <hr className="uk-divider-icon" />
+
         <Link to="/">Top</Link>
       </main>
     );

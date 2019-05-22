@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Field, Formik } from 'formik';
 import LanguageFormSelect from './LanguageFormSelect';
 
+//<AnswerForm qId={this.qId} initialValues={answerFormInitVals} onSubmit={this.handleSubmit.bind(this)} />
+//この中のqId={this.qId} initialValues={answerFormInitVals} onSubmit={this.handleSubmit.bind(this)は
+//props（プロパティーの中に)入る。props.qIdという形式で値を取り出すことができる。
 
 class AnswerForm extends Component {
 
