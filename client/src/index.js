@@ -4,6 +4,10 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from './containers/Home';
 import QuestionView from './containers/QuestionView';
 import QuestionEdit from './containers/QuestionEdit';
+
+//未翻訳の質問一覧を表示するコンポーネント
+import NotTranslatedAnswerList from './components/NotTranslatedAnswerList';
+
 import AnswerEdit from './containers/AnswerEdit';
 import CommentEdit from './containers/CommentEdit';
 import QuestionTranslationView from './containers/QuestionTranslationView';
@@ -49,6 +53,8 @@ const render = () => {
               <Route path='/users/signup' component={SignUp} />
               <UserOnly>
                 <Switch>
+                  {/*未翻訳の質問を抽出するルートパス*/}
+                  <Route exact path='/nottranslated' component={NotTranslatedAnswerList} />
                   <Route path='/questions/edit/:id' component={QuestionEdit} />
                   <Route path='/answers/edit/:id' component={AnswerEdit} />
                   <Route path='/comments/edit/:id' component={CommentEdit} />

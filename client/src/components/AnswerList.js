@@ -10,6 +10,10 @@ class AnswerList extends Component {
   constructor(props) {
     super(props);
     this.qId = this.props.qId;
+        //ここからはコメント機能を実装するところ
+    this.state = {
+        buttonState:{},//空のオブジェクト
+    };
   }
 
   componentWillMount() {
@@ -62,6 +66,39 @@ class AnswerList extends Component {
     return translatedAnswers;
   }
 
+  getComment(answerId){
+
+    const { buttonState } = this.state;
+
+    if( buttonState[answerId]==="open"){
+      return (
+        <div className="uk-margin-bottom" style={{"paddingLeft": "30px"}} >
+            {/*commentFormはコメントを投稿する場所*/}
+            <CommentForm form={`commentForm_${answerId}`} onSubmit={this.onClickCommentForm.bind(this)} initialValues={{answer_id: answerId}} />
+        </div>
+      );
+    }
+
+    return "" ;
+
+  }
+
+  onClickReply(answerId) {
+    //値がtrueかfalseか値を取得
+    let { buttonState } = this.state;
+
+    if ( buttonState[answerId] && buttonState[answerId]=="open") {
+      // this.state.buttonState= "close";
+      buttonState[answerId] = "close";
+      this.setState({buttonState});
+      return
+    } else {
+      buttonState[answerId] = "open";
+      this.setState({buttonState});
+      return
+    }
+  }
+
   getAnswerList(answerArray, translateLanguageId) {
     const loginUser = this.props.state.auth.user;
 
@@ -73,6 +110,8 @@ class AnswerList extends Component {
       const editLink = answer.user.id === loginUser.id
                      ? <Link to={`/answers/edit/${answer.id}`}>編集</Link>
                      : '';
+
+      const commentForm = this.getComment(answer.id);
 
       return (
         <li key={answer.id} >
@@ -97,16 +136,20 @@ class AnswerList extends Component {
           </article>
           <hr className="uk-divider-small" />
           <div className="uk-margin-bottom" >
+            {/*CommentListはすでに投稿されたコメントの一覧を表示する*/}
             <CommentList list={answer.comments} loginUser={loginUser} translateLanguageId={translateLanguageId} />
+            <button className="uk-button uk-button-default" onClick={this.onClickReply.bind(this,answer.id)}>
+                返信する
+            </button>
           </div>
-          <div className="uk-margin-bottom" style={{"paddingLeft": "30px"}} >
-            <CommentForm form={`commentForm_${answer.id}`} onSubmit={this.onClickCommentForm.bind(this)} initialValues={{answer_id: answer.id}} />
-          </div>
+
+          {commentForm}
+
         </li>
       );
     });
   }
-  
+
   render() {
     const { isFetching, answerArray } = this.props.state.answers;
 
@@ -116,6 +159,7 @@ class AnswerList extends Component {
 
     const { translateLanguageId } = this.props;
     const answerList = this.getAnswerList(answerArray, translateLanguageId);
+    console.log("render");
 
     return (
       <div>
