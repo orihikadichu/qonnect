@@ -7,6 +7,7 @@ class QuestionList extends Component {
 
   componentDidMount() {
     const { questionArray, translateLanguageId } = this.props.state.questions;
+
     const { country_id } = this.props.state.auth.user;
     if (questionArray.length !== 0) {
       return;
@@ -17,6 +18,7 @@ class QuestionList extends Component {
       params.country_id = country_id;
     }
     this.props.handleFetchData(params);
+
   }
 
   getFilteredQuestions(questionArray, translateLanguageId) {
@@ -31,7 +33,7 @@ class QuestionList extends Component {
     });
     return filteredQuestions;
   }
-  
+
   getTranslatedQuestions(questions, translateLanguageId) {
     const translatedQuestions = questions.map((v) => {
       if (v.translate_language_id === translateLanguageId) {
@@ -49,6 +51,7 @@ class QuestionList extends Component {
   }
 
   getQuestionList(questionArray, translateLanguageId) {
+
     const filteredQuestions = this.getFilteredQuestions(questionArray, translateLanguageId);
     const translatedQuestions = this.getTranslatedQuestions(filteredQuestions, translateLanguageId);
 
@@ -74,8 +77,8 @@ class QuestionList extends Component {
     });
   }
 
-
   getQuestionListView(state) {
+    console.log("getQuestionListのあとの",state)
     const { isFetching, questionArray, translateLanguageId } = state.questions;
     if (isFetching) {
       return (<ClipLoader />);
@@ -93,6 +96,7 @@ class QuestionList extends Component {
   }
 
   render() {
+    console.log("render直後のthis.props.state",this.props.state);
     const content = this.getQuestionListView(this.props.state);
 
     return (

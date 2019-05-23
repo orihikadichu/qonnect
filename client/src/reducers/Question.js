@@ -24,13 +24,16 @@ export const list = (state = initialState.questions, action) => {
   switch (action.type) {
   case REQUEST_DATA:
     return {
+      //...stateは他の状態は維持してisFetchingだけを変更するというコード
       ...state,
       isFetching: true,
     };
   case RECEIVE_DATA_SUCCESS:
     return {
       ...state,
+      //isFetchingは終了したのでfalseにしている。
       isFetching: false,
+      //ここでquestionArrayに値を入れている。
       questionArray: action.payload.data
     };
   case RECEIVE_SINGLE_DATA_SUCCESS:

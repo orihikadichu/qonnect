@@ -59,14 +59,19 @@ const getProfileImagePath = (userId) => {
   return '/image/' + getProfileImageName(userId);
 };
 
-
 // Questions
 app.get('/api/questions', (req, res) => {
-  // console.log('req.query', req.query);
+  //apiサーバーなのでターミナルで見る
+  console.log('req.query', req.query);
+  //resはquery
+  console.log('res', res);
+  //渡されたparamsはreq.queryに入っている。
   const params = req.query;
   console.log('params', params);
   db.questions.findAll({
     where: params,
+    //includeをするとquestionsだけではなく、それに関連したuserデータや
+    //質問データも引き出してくる。
     include: [
       {
         model: db.users,
@@ -81,7 +86,9 @@ app.get('/api/questions', (req, res) => {
       ['created_at', 'DESC']
     ]
   })
+    //findAllで取得したデータを撮り終えてからthenを走らせる。
     .then((instanses) => {
+      //ここでクライアント側にデータを渡している。
       res.status(200).send(instanses);
     });
 });

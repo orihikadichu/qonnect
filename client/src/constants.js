@@ -67,4 +67,12 @@ export const initialState = {
     currentTranslationList: [],
     currentTranslation: {},
   },
+  //未翻訳コメントリスト一覧表示のための
+  not_translate: {
+    //api接続中である場合（非同期処理をしている途中）はtrueになる
+    isFetching: false,
+    questions: [],
+    answers: [],
+    comments: [],
+  },
 };

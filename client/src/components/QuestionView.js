@@ -56,8 +56,7 @@ class QuestionView extends Component {
 
   render() {
     const { currentQuestion, translateLanguageId } = this.props.state.questions;
-    console.log('this.props',this.props);
-    console.log('this.props.state',this.props.state);
+
     if (Object.keys(currentQuestion).length === 0) {
       return (
         <div className="uk-position-center uk-overlay uk-overlay-default">
@@ -67,7 +66,11 @@ class QuestionView extends Component {
     }
 
     const loginUser = this.props.state.auth.user;
+
     const question = this.getTranslatedQuestion(currentQuestion, translateLanguageId);
+
+    console.log("question",question);
+
     const { user } = currentQuestion;
     const answerFormInitVals = { content: '', translate_language_id: '' };
     const editLink = user.id === loginUser.id

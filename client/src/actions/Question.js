@@ -18,6 +18,7 @@ export const DELETE_QUESTION = Symbol('DELETE_QUESTION');
 
 export const changeContent = createAction(CHANGE_CONTENT);
 export const changeQuestionListLanguage = createAction(CHANGE_QUESTION_LIST_LANGUAGE);
+//createAction(FETCH_QUESTION_LIST)はFETCH_QUESTION_LISTという名前でアクションを発火させる。
 export const fetchQuestionList = createAction(FETCH_QUESTION_LIST);
 export const fetchQuestion = createAction(FETCH_QUESTION);
 export const postQuestionData = createAction(POST_QUESTION_DATA);
