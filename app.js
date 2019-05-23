@@ -367,6 +367,24 @@ app.get('/api/comment_translations', (req, res) => {
     });
 });
 
+app.get('/api/comment_translations/:id', (req, res) => {
+  const { id } = req.params;
+  db.comment_translations.findOne({
+    where: {
+      id
+    },
+    include: [
+      {
+        model: db.users,
+        required: false
+      },
+    ],
+  })
+    .then((instanse) => {
+      res.status(200).send(instanse);
+    });
+});
+
 app.post('/api/comment_translations', (req, res) => {
   const {
     content,

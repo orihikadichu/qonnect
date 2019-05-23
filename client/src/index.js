@@ -15,7 +15,7 @@ import QuestionTranslationEdit from './containers/QuestionTranslationEdit';
 import AnswerTranslationView from './containers/AnswerTranslationView';
 import AnswerTranslationEdit from './containers/AnswerTranslationEdit';
 import CommentTranslationView from './containers/CommentTranslationView';
-/* import CommentTranslationEdit from './containers/CommentTranslationEdit';*/
+import CommentTranslationEdit from './containers/CommentTranslationEdit';
 import App from './containers/App';
 import ScrollToTop from './components/layouts/ScrollToTop';
 import SignUp from './containers/users/SignUp';
@@ -50,7 +50,7 @@ const render = () => {
               <Route exact path='/questions/:id' component={QuestionView}  onEnter={() => window.scrollTo(0, 0)}/>
               <Route exact path='/question_translations/:question_id' component={QuestionTranslationView} />
               <Route exact path='/answer_translations/:answer_id' component={AnswerTranslationView} />
-              <Route path='/comment_translations/:comment_id' component={CommentTranslationView} />
+              <Route exact path='/comment_translations/:comment_id' component={CommentTranslationView} />
               <Route path='/users/profile/:id' component={Profile} />
               <Route path='/users/login' component={Login} />
               <Route path='/users/signup' component={SignUp} />
@@ -58,10 +58,11 @@ const render = () => {
                 <Switch>
                   <Route exact path='/questions/edit/:id' component={QuestionEdit} />
                   <Route exact path='/answers/edit/:id' component={AnswerEdit} />
-                  <Route path='/comments/edit/:id' component={CommentEdit} />
-                  <Route path='/users/profile_edit' component={ProfileEdit} />
+                  <Route exact path='/comments/edit/:id' component={CommentEdit} />
+                  <Route exact path='/users/profile_edit' component={ProfileEdit} />
                   <Route exact path='/question_translations/edit/:id' component={QuestionTranslationEdit} />
                   <Route exact path='/answer_translations/edit/:id' component={AnswerTranslationEdit} />
+                  <Route exact path='/comment_translations/edit/:id' component={CommentTranslationEdit} />
                   {/*未翻訳の質問を抽出するルートパス*/}
                   <Route exact path='/nottranslated' component={NotTranslatedAnswerList} />
                 </Switch>
