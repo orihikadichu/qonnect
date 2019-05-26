@@ -28,9 +28,9 @@ class Home extends React.Component {
     return (
       <main className="uk-container uk-container-small">
         <QuestionForm initialValues={questionFormInitVals} onSubmit={this.submitQuestionForm.bind(this)} />
-        <h3 className="uk-heading-line"><span>質問一覧</span></h3>
         {/*未編集の質問一覧表示するサイト*/}
-        <p><Link to={`/nottranslated`}>一覧を見る</Link></p>
+        <p><Link to={`/nottranslated`}>未翻訳の一覧を見る</Link></p>
+        <h3 className="uk-heading-line"><span>質問一覧</span></h3>
         <div className="uk-margin">
           <select className="uk-select" onChange={e => this.props.changeLanguage(e.target.value)} >
             <option value="1" >日本語</option>

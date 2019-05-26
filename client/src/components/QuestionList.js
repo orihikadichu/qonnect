@@ -78,7 +78,7 @@ class QuestionList extends Component {
   }
 
   getQuestionListView(state) {
-    console.log("getQuestionListのあとの",state)
+    
     const { isFetching, questionArray, translateLanguageId } = state.questions;
     if (isFetching) {
       return (<ClipLoader />);

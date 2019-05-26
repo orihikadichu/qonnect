@@ -6,7 +6,9 @@ import QuestionView from './containers/QuestionView';
 import QuestionEdit from './containers/QuestionEdit';
 
 //未翻訳の質問一覧を表示するコンポーネント
-import NotTranslatedAnswerList from './components/NotTranslatedAnswerList';
+//containerを介していないと、connectの処理をしていないのでエラーになる。
+//containerを介してcomponentsの作業を行う。
+import NotTranslated from './containers/NotTranslated';
 
 import AnswerEdit from './containers/AnswerEdit';
 import CommentEdit from './containers/CommentEdit';
@@ -63,7 +65,7 @@ const render = () => {
                   <Route exact path='/question_translations/edit/:id' component={QuestionTranslationEdit} />
                   <Route exact path='/answer_translations/edit/:id' component={AnswerTranslationEdit} />
                   {/*未翻訳の質問を抽出するルートパス*/}
-                  <Route exact path='/nottranslated' component={NotTranslatedAnswerList} />
+                  <Route exact path='/nottranslated' component={NotTranslated} />
                 </Switch>
               </UserOnly>
               <GuestOnly>
