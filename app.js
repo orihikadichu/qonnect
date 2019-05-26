@@ -93,10 +93,9 @@ app.get('/api/questions', (req, res) => {
     });
 });
 
-// 未翻訳の質問、コメント、回答一覧を取得するAPI
-app.get('/api/nottranslated', (req, res) => {
+// 未翻訳の質問を取得する
+app.get('/api/nottranslatedquestions', (req, res) => {
   const params = req.query;
-  console.log('params', params);
   db.questions.findAll({
     //ここでquestion_translationsテーブルのidカラムがnullのものだけを抽出している
     where: {'$question_translations.id$' : null},
@@ -116,12 +115,71 @@ app.get('/api/nottranslated', (req, res) => {
       ['created_at', 'DESC']
     ]
   })
-    //findAllで取得したデータを撮り終えてからthenを走らせる。
-    .then((instanses) => {
-      //ここでクライアント側にデータを渡している。
-      res.status(200).send(instanses);
-    });
+  //findAllで取得したデータを撮り終えてからthenを走らせる。
+  .then((instanses) => {
+    //ここでクライアント側にデータを渡している。
+    res.status(200).send(instanses);
+  });
 });
+
+// 未翻訳の回答を取得する
+app.get('/api/nottranslatedanswers', (req, res) => {
+  const params = req.query;
+  db.answers.findAll({
+    //ここでquestion_translationsテーブルのidカラムがnullのものだけを抽出している
+    where: {'$answer_translations.id$' : null},
+    //includeをするとquestionsだけではなく、それに関連したuserデータや
+    //質問データも引き出してくる。
+    include: [
+      {
+        model: db.users,
+        required: false
+      },
+      {
+        model: db.answer_translations,
+        required: false
+      },
+    ],
+    order: [
+      ['created_at', 'DESC']
+    ]
+  })
+  //findAllで取得したデータを撮り終えてからthenを走らせる。
+  .then((instanses) => {
+    //ここでクライアント側にデータを渡している。
+    res.status(200).send(instanses);
+  });
+});
+
+// 未翻訳のコメントを取得する
+app.get('/api/nottranslatedcomments', (req, res) => {
+  const params = req.query;
+  db.comments.findAll({
+    //ここでquestion_translationsテーブルのidカラムがnullのものだけを抽出している
+    where: {'$comment_translations.id$' : null},
+    //includeをするとquestionsだけではなく、それに関連したuserデータや
+    //質問データも引き出してくる。
+    include: [
+      {
+        model: db.users,
+        required: false
+      },
+      {
+        model: db.comment_translations,
+        required: false
+      },
+    ],
+    order: [
+      ['created_at', 'DESC']
+    ]
+  })
+  //findAllで取得したデータを撮り終えてからthenを走らせる。
+  .then((instanses) => {
+    //ここでクライアント側にデータを渡している。
+    res.status(200).send(instanses);
+  });
+});
+
 
 app.get('/api/questions/:id', (req, res) => {
   const qId = req.params.id;
