@@ -8,6 +8,7 @@ class QuestionList extends Component {
 
   componentDidMount() {
     const { questionArray, translateLanguageId } = this.props.state.questions;
+
     const { country_id } = this.props.state.auth.user;
     if (questionArray.length !== 0) {
       return;
@@ -18,6 +19,7 @@ class QuestionList extends Component {
       params.country_id = country_id;
     }
     this.props.handleFetchData(params);
+
   }
 
   render() {

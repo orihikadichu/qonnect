@@ -59,13 +59,18 @@ const getProfileImagePath = (userId) => {
   return '/image/' + getProfileImageName(userId);
 };
 
-
 // Questions
 app.get('/api/questions', (req, res) => {
-  // console.log('req.query', req.query);
+  //apiサーバーなのでターミナルで見る
+  console.log('req.query', req.query);
+  //resはquery
+  console.log('res', res);
+  //渡されたparamsはreq.queryに入っている。
   const params = req.query;
   db.questions.findAll({
     where: params,
+    //includeをするとquestionsだけではなく、それに関連したuserデータや
+    //質問データも引き出してくる。
     include: [
       {
         model: db.users,
@@ -80,7 +85,39 @@ app.get('/api/questions', (req, res) => {
       ['created_at', 'DESC']
     ]
   })
+    //findAllで取得したデータを撮り終えてからthenを走らせる。
     .then((instanses) => {
+      //ここでクライアント側にデータを渡している。
+      res.status(200).send(instanses);
+    });
+});
+
+// 未翻訳の質問、コメント、回答一覧を取得するAPI
+app.get('/api/nottranslated', (req, res) => {
+  const params = req.query;
+  console.log('params', params);
+  db.questions.findAll({
+    //ここでquestion_translationsテーブルのidカラムがnullのものだけを抽出している
+    where: {'$question_translations.id$' : null},
+    //includeをするとquestionsだけではなく、それに関連したuserデータや
+    //質問データも引き出してくる。
+    include: [
+      {
+        model: db.users,
+        required: false
+      },
+      {
+        model: db.question_translations,
+        required: false
+      },
+    ],
+    order: [
+      ['created_at', 'DESC']
+    ]
+  })
+    //findAllで取得したデータを撮り終えてからthenを走らせる。
+    .then((instanses) => {
+      //ここでクライアント側にデータを渡している。
       res.status(200).send(instanses);
     });
 });

@@ -8,6 +8,7 @@ import * as comments from './reducers/Comment';
 import * as questionTranslations from './reducers/QuestionTranslation';
 import * as answerTranslations from './reducers/AnswerTranslation';
 import * as commentTranslations from './reducers/CommentTranslation';
+import * as notTranslated from './reducers/NotTranslated';
 
 const reducer = combineReducers({
   answerForm: answers.form,
@@ -21,6 +22,7 @@ const reducer = combineReducers({
   profile: users.profile,
   comments: comments.list,
   commentTranslations: commentTranslations.list,
+  not_translate: notTranslated.list,
   form: reduxFormReducer,
   notifications: notificationsReducer()
 });
