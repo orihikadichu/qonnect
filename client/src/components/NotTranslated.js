@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 
 class NotTranslated extends Component {
 
-  componentDidMount() {
+　componentDidMount() {
     const { questions } = this.props.state.not_translate;
     // const { country_id } = this.props.state.auth.user;
     if (questions.length !== 0) {
@@ -28,6 +28,7 @@ class NotTranslated extends Component {
       return (<ClipLoader />);
     }
 
+
     return (
       <div>
         <ul className="uk-list uk-list-divider uk-list-large">
@@ -36,6 +37,9 @@ class NotTranslated extends Component {
               <div className="uk-list uk-list-divider uk-list-large">
                 <li>
                   {v.content}
+                </li>
+                <li>
+                  {v.id}
                 </li>
               </div>
             );
