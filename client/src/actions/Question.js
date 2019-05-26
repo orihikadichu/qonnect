@@ -1,12 +1,9 @@
 import { createAction } from 'redux-actions';
 
 // 文字列定数
-export const CHANGE_CONTENT = Symbol('CHANGE_CONTENT');
-export const CHANGE_QUESTION_LIST_LANGUAGE = Symbol('CHANGE_QUESTION_LIST_LANGUAGE');
 export const FETCH_QUESTION_LIST = Symbol('FETCH_QUESTION_LIST');
 export const FETCH_QUESTION = Symbol('FETCH_QUESTION');
 export const POST_QUESTION_DATA = Symbol('POST_QUESTION_DATA');
-export const INITIALIZE_FORM = Symbol('INITIALIZE_FORM');
 export const REQUEST_DATA = Symbol('REQUEST_DATA');
 export const RECEIVE_DATA_SUCCESS = Symbol('RECEIVE_DATA_SUCCESS');
 export const RECEIVE_SINGLE_DATA_SUCCESS = Symbol('RECEIVE_SINGLE_DATA_SUCCESS');
@@ -16,12 +13,9 @@ export const SAVE_QUESTION_DATA = Symbol('SAVE_QUESTION_DATA');
 export const UPDATED_QUESTION_DATA = Symbol('UPDATED_QUESTION_DATA');
 export const DELETE_QUESTION = Symbol('DELETE_QUESTION');
 
-export const changeContent = createAction(CHANGE_CONTENT);
-export const changeQuestionListLanguage = createAction(CHANGE_QUESTION_LIST_LANGUAGE);
 export const fetchQuestionList = createAction(FETCH_QUESTION_LIST);
 export const fetchQuestion = createAction(FETCH_QUESTION);
 export const postQuestionData = createAction(POST_QUESTION_DATA);
-export const initializeForm = createAction(INITIALIZE_FORM);
 export const requestData = createAction(REQUEST_DATA);
 export const receiveDataSuccess = createAction(RECEIVE_DATA_SUCCESS);
 export const receiveSingleDataSuccess = createAction(RECEIVE_SINGLE_DATA_SUCCESS);

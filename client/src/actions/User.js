@@ -19,6 +19,9 @@ export const LOGIN_FAILED = Symbol('LOGIN_FAILED');
 export const GET_USER_PROFILE = Symbol('GET_USER_PROFILE');
 export const UPDATED_PROFILE_DATA = Symbol('UPDATED_PROFILE_DATA');
 export const PREPARED_AUTH = Symbol('PREPARED_AUTH');
+export const UPDATED_PROFILE_QUESTION_DATA = Symbol('UPDATED_PROFILE_QUESTION_DATA');
+export const UPDATED_PROFILE_ANSWER_DATA = Symbol('UPDATED_PROFILE_ANSWER_DATA');
+export const UPDATED_PROFILE_COMMENT_DATA = Symbol('UPDATED_PROFILE_COMMENT_DATA');
 
 
 export const createUserAccount = createAction(CREATE_USER_ACCOUNT);
@@ -39,3 +42,6 @@ export const loginFailed = createAction(LOGIN_FAILED);
 export const getUserProfile = createAction(GET_USER_PROFILE);
 export const updatedProfileData = createAction(UPDATED_PROFILE_DATA);
 export const preparedAuth = createAction(PREPARED_AUTH);
+export const updatedProfileQuestionData = createAction(UPDATED_PROFILE_QUESTION_DATA);
+export const updatedProfileAnswerData = createAction(UPDATED_PROFILE_ANSWER_DATA);
+export const updatedProfileCommentData = createAction(UPDATED_PROFILE_COMMENT_DATA);

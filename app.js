@@ -64,7 +64,6 @@ const getProfileImagePath = (userId) => {
 app.get('/api/questions', (req, res) => {
   // console.log('req.query', req.query);
   const params = req.query;
-  console.log('params', params);
   db.questions.findAll({
     where: params,
     include: [
@@ -471,6 +470,33 @@ app.get('/api/answers', (req, res) => {
     });
 });
 
+app.get('/api/answers_with_question', (req, res) => {
+  const params = req.query;
+  db.answers.findAll({
+    where: params,
+    include: [
+      {
+        model: db.users,
+        required: false
+      },
+      {
+        model: db.questions,
+        required: false,
+        include: [
+          db.question_translations
+        ]
+      },
+      {
+        model: db.answer_translations,
+        required: false,
+      },
+    ]
+  })
+    .then((instanses) => {
+      res.status(200).send(instanses);
+    });
+});
+
 app.get('/api/answers/:id', (req, res) => {
   const aId = req.params.id;
   db.answers.findOne({
@@ -695,6 +721,33 @@ app.get('/api/comments/:id', (req, res) => {
       {
         model: db.answers,
         required: false
+      },
+    ]
+  })
+    .then((instanses) => {
+      res.status(200).send(instanses);
+    });
+});
+
+app.get('/api/comments_with_answer', (req, res) => {
+  const params = req.query;
+  db.comments.findAll({
+    where: params,
+    include: [
+      {
+        model: db.users,
+        required: false
+      },
+      {
+        model: db.answers,
+        required: false,
+        include: [
+          db.answer_translations
+        ]
+      },
+      {
+        model: db.comment_translations,
+        required: false,
       },
     ]
   })
