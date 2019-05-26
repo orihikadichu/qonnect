@@ -6,12 +6,12 @@ export const fetchQuestionList = (params) => {
     });
 };
 
-// 未翻訳一覧を取得するAPI
-export const fetchNotTranslated = (params) => {
-  return axios.get('/api/nottranslated', {
-      params
-  });
-};
+// 未翻訳の質問一覧取得するAPI
+// export const fetchNotTranslated = (params) => {
+//   return axios.get('/api/nottranslated', {
+//       params
+//   });
+// };
 
 export const fetchQuestion = (id) => {
     return axios.get(`/api/questions/${id}`);

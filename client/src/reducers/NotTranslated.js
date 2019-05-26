@@ -16,13 +16,17 @@ export const list = (state = initialState.not_translate, action) => {
   
   case RECEIVE_DATA_SUCCESS:
 
+    console.log("action",action)
+    const { questions, answers, comments } = action.payload;
+
     return {
       ...state,
       //isFetchingは終了したのでfalseにしている。
       isFetching: false,
       //ここでquestionArrayに値を入れている。
-      questions: action.payload.data
-
+      questions,
+      answers,
+      comments,
     };
   
   default:
