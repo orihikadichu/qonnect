@@ -8,20 +8,42 @@ import {
 } from '../actions/NotTranslated';
 
 import {
-    fetchNotTranslated,
-} from './apis/Questions';
+    fetchNotTranslatedQuestions,
+    fetchNotTranslatedAnswers,
+    fetchNotTranslatedComments,
+} from './apis/NotTranslated';
+import { changeQuestionListLanguage } from './Question';
 
 export function* handleFetchData(action) {
   try {
 
     yield put(requestData());
 
-    const payload = yield call(fetchNotTranslated, action.payload);
+    //未翻訳一覧を取り出す
+    // const questions = yield call(fetchNotTranslated, action.payload);
 
+    //質問を取り出す
+    const questions = yield call(fetchNotTranslatedQuestions, action.payload);
+    console.log("questions",questions)
+    
+    //回答を取り出す
+    const answers = yield call(fetchNotTranslatedAnswers, action.payload);
+    console.log("answers",answers)
+
+    //コメントを取り出す
+    const comments = yield call(fetchNotTranslatedComments, action.payload);
+    console.log("comments",comments)
+
+   const NotTranslatedList={
+      questions : questions.data,
+      answers : answers.data,
+      comments: comments.data,  
+    };
+
+    console.log("NotTranslatedList",NotTranslatedList)
+  
     //reducers/NotTranslated.jsで関数を実行する。
-    yield put(receiveDataSuccess(payload));
-
-    console.log("-----------payload-------------",payload);
+    yield put(receiveDataSuccess(NotTranslatedList));
 　  　
   } catch (e) {
     // isFetchingをfalse

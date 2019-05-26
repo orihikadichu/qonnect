@@ -54,6 +54,7 @@ class QuestionList extends Component {
 
     const filteredQuestions = this.getFilteredQuestions(questionArray, translateLanguageId);
     const translatedQuestions = this.getTranslatedQuestions(filteredQuestions, translateLanguageId);
+    
 
     return translatedQuestions.map(question => {
       const { user } = question;
