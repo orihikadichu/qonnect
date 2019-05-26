@@ -67,7 +67,6 @@ app.get('/api/questions', (req, res) => {
   console.log('res', res);
   //渡されたparamsはreq.queryに入っている。
   const params = req.query;
-  console.log('params', params);
   db.questions.findAll({
     where: params,
     //includeをするとquestionsだけではなく、それに関連したuserデータや
@@ -462,6 +461,24 @@ app.get('/api/comment_translations', (req, res) => {
     });
 });
 
+app.get('/api/comment_translations/:id', (req, res) => {
+  const { id } = req.params;
+  db.comment_translations.findOne({
+    where: {
+      id
+    },
+    include: [
+      {
+        model: db.users,
+        required: false
+      },
+    ],
+  })
+    .then((instanse) => {
+      res.status(200).send(instanse);
+    });
+});
+
 app.post('/api/comment_translations', (req, res) => {
   const {
     content,
@@ -535,6 +552,33 @@ app.get('/api/answers', (req, res) => {
         include: [
           db.users,
           db.comment_translations
+        ]
+      },
+      {
+        model: db.answer_translations,
+        required: false,
+      },
+    ]
+  })
+    .then((instanses) => {
+      res.status(200).send(instanses);
+    });
+});
+
+app.get('/api/answers_with_question', (req, res) => {
+  const params = req.query;
+  db.answers.findAll({
+    where: params,
+    include: [
+      {
+        model: db.users,
+        required: false
+      },
+      {
+        model: db.questions,
+        required: false,
+        include: [
+          db.question_translations
         ]
       },
       {
@@ -772,6 +816,33 @@ app.get('/api/comments/:id', (req, res) => {
       {
         model: db.answers,
         required: false
+      },
+    ]
+  })
+    .then((instanses) => {
+      res.status(200).send(instanses);
+    });
+});
+
+app.get('/api/comments_with_answer', (req, res) => {
+  const params = req.query;
+  db.comments.findAll({
+    where: params,
+    include: [
+      {
+        model: db.users,
+        required: false
+      },
+      {
+        model: db.answers,
+        required: false,
+        include: [
+          db.answer_translations
+        ]
+      },
+      {
+        model: db.comment_translations,
+        required: false,
       },
     ]
   })

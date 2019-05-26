@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const apiUrl = '/api/comment_translations';
+
 export const fetchCommentTranslationList = (comment_id) => {
-  return axios.get('/api/comment_translations', {
+  return axios.get(apiUrl, {
     params: {
       comment_id
     }
@@ -9,11 +11,16 @@ export const fetchCommentTranslationList = (comment_id) => {
 };
 
 export const fetchCommentTranslation = (id) => {
-  return axios.get(`/api/comment_translations/${id}`);
+  return axios.get(`${apiUrl}/${id}`);
 };
 
 export const postCommentTranslationData = (params) => {
-  return axios.post('/api/comment_translations', {
+  return axios.post(apiUrl, {
     params
   });
+};
+
+export const saveCommentTranslationData = (saveData) => {
+  const { id } = saveData;
+  return axios.put(`${apiUrl}/${id}`, saveData);
 };

@@ -6,12 +6,15 @@ export const initialState = {
     hash: '',
   },
   profile: {
-    isFething: false,
-    user: {}
+    isFetching: false,
+    user: {},
+    questions: [],
+    answers: [],
+    comments: [],
   },
   auth: {
     isPrepared: false,
-    isFething: false,
+    isFetching: false,
     isLoggedIn: false,
     user: {},
     jwt: ''

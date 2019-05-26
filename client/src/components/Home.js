@@ -25,6 +25,7 @@ class Home extends React.Component {
       country_id: '',
       translate_language_id: ''
     };
+
     return (
       <main className="uk-container uk-container-small">
         <QuestionForm initialValues={questionFormInitVals} onSubmit={this.submitQuestionForm.bind(this)} />

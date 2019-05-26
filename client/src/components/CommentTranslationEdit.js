@@ -3,21 +3,23 @@ import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import TranslationEdit from './TranslationEdit';
 
-class AnswerTranslationEdit extends Component {
+
+class CommentTranslationEdit extends Component {
   constructor(props) {
     super(props);
     const { params } = props.match;
-    this.atId = parseInt(params.id, 10);
+    this.ctId = parseInt(params.id, 10);
   }
 
   componentWillMount() {
-    this.props.getAnswerTranslationById(this.atId);
+    console.log('getCommentTranslationById');
+    this.props.getCommentTranslationById(this.ctId);
   }
 
   handleSubmit(formData) {
     try {
       const { content, translate_language_id, country_id } = formData;
-      const id = this.atId;
+      const id = this.ctId;
       /* const { translate_language_id } = currentTranslation;*/
       const saveData = { content, id, translate_language_id, country_id };
       return this.props.handleSubmit(saveData);
@@ -33,17 +35,17 @@ class AnswerTranslationEdit extends Component {
       const { history } = this.props;
       const params = {
         user_id: user.id,
-        id: this.atId,
+        id: this.ctId,
         history
       };
-      return this.props.deleteAnswer(params);
+      return this.props.deleteCommentTranslation(params);
     } catch (e) {
       return;
     }
   }
 
   render() {
-    const { currentTranslation } = this.props.state.answerTranslations;
+    const { currentTranslation } = this.props.state.commentTranslations;
     const loginUser = this.props.state.auth.user;
 
     return (
@@ -57,4 +59,4 @@ class AnswerTranslationEdit extends Component {
   }
 }
 
-export default AnswerTranslationEdit;
+export default CommentTranslationEdit;
