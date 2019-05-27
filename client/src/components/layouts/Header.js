@@ -56,11 +56,6 @@ class Header extends React.Component {
           to: '/users/profile_edit',
           icon: "pencil",
         },
-        {
-          text: "新規登録",
-          to: '/users/signup',
-          icon: "check",
-        }
       ];
       return menuList.map((v, i) => (
         <MenuItem key={i} onClick={handleClose}>
@@ -115,6 +110,12 @@ class Header extends React.Component {
         >
           {profileElem}
           {loginElem}
+          <MenuItem onClick={handleClose}>
+            <Link to="/users/signup" >
+              <span uk-icon="check" ></span>
+              <span>新規登録</span>
+            </Link>
+          </MenuItem>
         </Menu>
       </div>
     );
