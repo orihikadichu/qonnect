@@ -66,28 +66,33 @@ class AnswerList extends Component {
     return translatedAnswers;
   }
 
-  getComment(answerId){
+  getComment(answerId) {
 
     const { buttonState } = this.state;
 
-    if( buttonState[answerId]==="open"){
-      return (
-        <div className="uk-margin-bottom" style={{"paddingLeft": "30px"}} >
-            {/*commentFormはコメントを投稿する場所*/}
-            <CommentForm form={`commentForm_${answerId}`} onSubmit={this.onClickCommentForm.bind(this)} initialValues={{answer_id: answerId}} />
-        </div>
-      );
+    if (buttonState[answerId] !== "open") {
+      return "";
     }
 
-    return "" ;
+    const initialValues = {
+      answer_id: answerId,
+      content: "",
+      translate_language_id: "",
+    };
 
+    return (
+      <div className="uk-margin-bottom" style={{"paddingLeft": "30px"}} >
+          {/*commentFormはコメントを投稿する場所*/}
+          <CommentForm form={`commentForm_${answerId}`} onSubmit={this.onClickCommentForm.bind(this)} initialValues={initialValues} />
+      </div>
+    );
   }
 
   onClickReply(answerId) {
     //値がtrueかfalseか値を取得
     let { buttonState } = this.state;
 
-    if ( buttonState[answerId] && buttonState[answerId]=="open") {
+    if (buttonState[answerId] && buttonState[answerId] == "open") {
       // this.state.buttonState= "close";
       buttonState[answerId] = "close";
       this.setState({buttonState});
