@@ -1,38 +1,43 @@
 import React, { Component } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
+import Linkify from 'react-linkify';
 import dayjs from 'dayjs';
 
 class NotTranslated extends Component {
 
 　componentDidMount() {
     const { questions } = this.props.state.not_translate;
-    // const { country_id } = this.props.state.auth.user;
     if (questions.length !== 0) {
       return;
     }
-    // const translate_language_id = translateLanguageId;
     let params = {};
-    // if (country_id) {
-    //   params.country_id = country_id;
-    // }
     this.props.handleFetchData(params);
   }
 
+  constructor(props) {
+    super(props);
+    //タブの切り替えのための要素
+    this.state = {currentTab: 'questions'};
+  }
+
   //各カテゴリの翻訳一覧を表示する関数
-  getNotTranslated(contents, url) {
+  getNotTranslated(contents, url, key) {
 
     // getNotTranslatedの関数
     return contents.map((v) => {
       const { user } = v;
       const userName = user ? user.name : '不明なユーザー';
       const profileLink = `/users/profile/${user.id}`;
+      //コンテンツに対応したidを返す関数
+      const id = this.getNotTranslatedId(v, key);
+
       // ここreturnはmap関数のreturn
       return(
           <li>
             {/* 未翻訳の質問を表示する */}
             <p className="uk-text-lead uk-text-truncate" >
-              <Link to={`/questions/${v}.id}`}>{`${v.content}`}</Link>
+              <Link to={`/questions/${id}`}>{`${v.content}`}</Link>
               <Link to={`${url}${v.id}`}><span uk-icon="world"></span></Link>
             </p>
             {/* 作成時間を表示する */}
@@ -51,20 +56,38 @@ class NotTranslated extends Component {
     })
   }
 
+  //コンテンツに対応したidを返す関数
+  getNotTranslatedId(v, key){
+    let id = "";
+    switch(key){
+      case "questions":
+        id = v.id;
+        break;
+      case "answers":
+        id = v.question_id;
+        break
+      case "comments":
+        id = v.answer.question_id;
+        break
+    }
+    return id
+  }
+
   //コンテンツに対応したurlを付加する関数
   getNotTranslatedQuestions(contents) {
     const url = "/question_translations/";
-    return this.getNotTranslated(contents, url);
+    const key = "questions";
+    return this.getNotTranslated(contents, url, key);
   }
-
   getNotTranslatedAnswers(contents) {
     const url = "/answer_translations/";
-    return this.getNotTranslated(contents, url);
+    const key = "answers";
+    return this.getNotTranslated(contents, url, key);
   }
-
   getNotTranslatedComments(contents) {
     const url = "/comment_translations/";
-    return this.getNotTranslated(contents, url);
+    const key = "comments";
+    return this.getNotTranslated(contents, url, key);
   }
 
   getNotTranslatedView(state) {
