@@ -6,6 +6,7 @@ import LanguageFormSelect from './LanguageFormSelect';
 class CommentForm extends Component {
 
   validate(values) {
+    console.log("values", values);
     let errors = {};
     if (!values.content) {
       errors.content = 'コメントが空欄です';
@@ -22,7 +23,9 @@ class CommentForm extends Component {
       <Formik
         initialValues={initialValues}
         enableReinitialize={true}
-        validate={this.validate.bind(this)}
+        // validate={this.validate.bind(this)}
+
+        validate={this.validate}
         onSubmit={(values, { setSubmitting, setErrors }) => {
             return this.props.onSubmit(values);
         }}

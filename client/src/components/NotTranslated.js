@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
-import Linkify from 'react-linkify';
 import dayjs from 'dayjs';
 
 class NotTranslated extends Component {
+
+  constructor(props) {
+    super(props);
+    //タブの切り替えのための要素
+    this.state = {currentTab: 'questions'};
+  }
 
 　componentDidMount() {
     const { questions } = this.props.state.not_translate;
@@ -13,12 +18,6 @@ class NotTranslated extends Component {
     }
     let params = {};
     this.props.handleFetchData(params);
-  }
-
-  constructor(props) {
-    super(props);
-    //タブの切り替えのための要素
-    this.state = {currentTab: 'questions'};
   }
 
   //各カテゴリの翻訳一覧を表示する関数
@@ -33,8 +32,10 @@ class NotTranslated extends Component {
       const id = this.getNotTranslatedId(v, key);
 
       // ここreturnはmap関数のreturn
-      return(
-          <li>
+      return (
+          //ここでcontentの種類+そのコンテンツのidの組み合わせをkeyとすることで一意にする
+          <li key={`${key}_${v.id}`} >
+          {/* <li> */}
             {/* 未翻訳の質問を表示する */}
             <p className="uk-text-lead uk-text-truncate" >
               <Link to={`/questions/${id}`}>{`${v.content}`}</Link>
@@ -57,20 +58,15 @@ class NotTranslated extends Component {
   }
 
   //コンテンツに対応したidを返す関数
-  getNotTranslatedId(v, key){
-    let id = "";
-    switch(key){
+  getNotTranslatedId(v, key) {
+    switch(key) {
       case "questions":
-        id = v.id;
-        break;
+        return v.id;
       case "answers":
-        id = v.question_id;
-        break
+        return v.question_id;
       case "comments":
-        id = v.answer.question_id;
-        break
+        return v.answer.question_id;
     }
-    return id
   }
 
   //コンテンツに対応したurlを付加する関数
@@ -90,37 +86,86 @@ class NotTranslated extends Component {
     return this.getNotTranslated(contents, url, key);
   }
 
-  getNotTranslatedView(state) {
-    
-    const {isFetching, questions, answers, comments} = state.not_translate;
+  //現在のユーザーリスト
+  getCurrentTabContents(tabState, currentTab) {
+    const { questions, answers, comments } = tabState;
+    if (currentTab === 'questions') {
+      return this.getNotTranslatedQuestions(questions);
+    } else if (currentTab === 'answers') {
+      return  this.getNotTranslatedAnswers(answers);
+    } else if (currentTab === 'comments') {
+      return this.getNotTranslatedComments(comments);
+    }
+  }
 
-    const question_lists = this.getNotTranslatedQuestions(questions);
-    const answer_lists = this.getNotTranslatedAnswers(answers);
-    const comment_lists = this.getNotTranslatedComments(comments);
-    
+  onClickTab(newTabKey, e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({
+      currentTab: newTabKey
+    });
+  }
+
+  getTabList() {
+    const tabData = [
+      {
+        name: '質問',
+        key: 'questions'
+      },
+      {
+        name: '回答',
+        key: 'answers'
+      },
+      {
+        name: 'コメント',
+        key: 'comments'
+      }
+    ];
+
+    return (
+      <ul className="uk-tab" >
+        {tabData.map(v => {
+           const active = this.state['currentTab'] === v.key
+                        ? 'uk-active'
+                        : '';
+           return (
+             <li key={v.key} className={active} onClick={this.onClickTab.bind(this, v.key)} >
+               <a href="">{v.name}</a>
+             </li>
+           );
+        })}
+      </ul>
+    );
+  }
+
+  getNotTranslatedView(state) {
+
+    const { isFetching } = state.not_translate;
+
     //読み込み中であることを示すロゴを表示する
     if (isFetching) {
       return (<ClipLoader />);
     }
 
+    const tabContents = this.getCurrentTabContents(state.not_translate, this.state.currentTab);
+
     return (
-      <div>
-        <ul className="uk-list uk-list-divider uk-list-large">
-          {question_lists}
-          {answer_lists}
-          {comment_lists}
-        </ul>
-      </div>
+      <ul className="uk-list uk-list-divider uk-list-large" >
+        {tabContents}
+      </ul>
     );
   }
 
   render() {
     const content = this.getNotTranslatedView(this.props.state);
+    const tabList = this.getTabList();
+  
     return (
       <div>
         <p>未翻訳コンテンツ一覧</p>
         <br></br>
         <div className="uk-margin uk-margin-left uk-margin-right">
+          {tabList}
           {content}
         </div>
       </div>
