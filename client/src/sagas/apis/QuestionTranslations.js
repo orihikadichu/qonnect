@@ -31,3 +31,8 @@ export const saveQuestionTranslationData = (saveData) => {
   const { id } = saveData;
   return axios.put(`${apiUrl}/${id}`, saveData);
 };
+
+export const deleteQuestionTranslation= (params) => {
+  const { id } = params;
+  return axios.delete(`${apiUrl}/${id}`, { params });
+};

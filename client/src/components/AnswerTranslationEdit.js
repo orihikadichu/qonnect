@@ -36,7 +36,7 @@ class AnswerTranslationEdit extends Component {
         id: this.atId,
         history
       };
-      return this.props.deleteAnswer(params);
+      return this.props.deleteAnswerTranslation(params);
     } catch (e) {
       return;
     }

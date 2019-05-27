@@ -11,7 +11,8 @@ import {
   FETCH_ANSWER_TRANSLATION_LIST,
   FETCH_ANSWER_TRANSLATION,
   POST_ANSWER_TRANSLATION_DATA,
-  SAVE_ANSWER_TRANSLATION_DATA
+  SAVE_ANSWER_TRANSLATION_DATA,
+  DELETE_ANSWER_TRANSLATION,
 } from '../actions/AnswerTranslation';
 import * as api from './apis/AnswerTranslations';
 import { notifySuccess, notifyError } from './Util';
@@ -66,11 +67,29 @@ export function* saveAnswerTranslationData(action) {
   }
 }
 
+export function* deleteAnswerTranslation(action) {
+  try {
+    const { id, history } = action.payload;
+    yield put(requestData());
+    yield call(api.deleteAnswerTranslation, action.payload);
+    const message = '翻訳を削除しました';
+    yield put(notifySuccess(message));
+    const payload = yield call(api.fetchAnswerTranslationList);
+    yield put(receiveDataSuccess(payload));
+    yield call(history.push, '/');
+  } catch (e) {
+    const message = '翻訳の削除に失敗しました';
+    yield put(notifyError(message));
+    yield put(receiveDataFailed());
+  }
+}
+
 const answerTranslationSagas = [
   takeEvery(POST_ANSWER_TRANSLATION_DATA, postAnswerTranslation),
   takeEvery(FETCH_ANSWER_TRANSLATION_LIST, handleFetchAnswerTranslationList),
   takeEvery(FETCH_ANSWER_TRANSLATION, handleFetchAnswerTranslationById),
   takeEvery(SAVE_ANSWER_TRANSLATION_DATA, saveAnswerTranslationData),
+  takeEvery(DELETE_ANSWER_TRANSLATION, deleteAnswerTranslation),
 ];
 
 export default answerTranslationSagas;
