@@ -19,13 +19,63 @@ class NotTranslated extends Component {
     this.props.handleFetchData(params);
   }
 
+  //各カテゴリの翻訳一覧を表示する関数
+  getNotTranslated(contents, url) {
+
+    // getNotTranslatedの関数
+    return contents.map((v) => {
+      const { user } = v;
+      const userName = user ? user.name : '不明なユーザー';
+      const profileLink = `/users/profile/${user.id}`;
+      // ここreturnはmap関数のreturn
+      return(
+          <li>
+            {/* 未翻訳の質問を表示する */}
+            <p className="uk-text-lead uk-text-truncate" >
+              <Link to={`/questions/${v}.id}`}>{`${v.content}`}</Link>
+              <Link to={`${url}${v.id}`}><span uk-icon="world"></span></Link>
+            </p>
+            {/* 作成時間を表示する */}
+            <p className="uk-text-meta">{dayjs(v.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
+            {/* プロフィールを表示する */}
+            <div className="uk-grid uk-grid-small uk-flex-middle" >
+              <div className="uk-width-auto">
+                <Link to={profileLink}><img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" /></Link>
+              </div>
+              <div className="uk-width-expand">
+                <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={profileLink}>{ userName }</Link></h4>
+                </div>
+            </div>
+          </li>
+      );
+    })
+  }
+
+  //コンテンツに対応したurlを付加する関数
+  getNotTranslatedQuestions(contents) {
+    const url = "/question_translations/";
+    return this.getNotTranslated(contents, url);
+  }
+
+  getNotTranslatedAnswers(contents) {
+    const url = "/answer_translations/";
+    return this.getNotTranslated(contents, url);
+  }
+
+  getNotTranslatedComments(contents) {
+    const url = "/comment_translations/";
+    return this.getNotTranslated(contents, url);
+  }
+
   getNotTranslatedView(state) {
     
     const {isFetching, questions, answers, comments} = state.not_translate;
-    console.log("answers",answers);
-    console.log("comments",comments);
+
+    const question_lists = this.getNotTranslatedQuestions(questions);
+    const answer_lists = this.getNotTranslatedAnswers(answers);
+    const comment_lists = this.getNotTranslatedComments(comments);
     
-    //読み込み中であることを示す。
+    //読み込み中であることを示すロゴを表示する
     if (isFetching) {
       return (<ClipLoader />);
     }
@@ -33,75 +83,9 @@ class NotTranslated extends Component {
     return (
       <div>
         <ul className="uk-list uk-list-divider uk-list-large">
-          {/* 未翻訳一覧を表示する */}
-          {questions.map((v) => {
-            const { user } = v;
-            const userName = user ? user.name : '不明なユーザー';
-            const profileLink = `/users/profile/${user.id}`;
-            return(
-                <li>
-                  {/* 未翻訳の質問を表示する */}
-                  <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${v}.id}`}>{`${v.content}`}</Link></p>
-                  {/* 作成時間を表示する */}
-                  <p className="uk-text-meta">{dayjs(v.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
-                  {/* 自分の名前や画像を表示する */}
-                  <div className="uk-grid uk-grid-small uk-flex-middle" >
-                    <div className="uk-width-auto">
-                      <Link to={profileLink}><img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" /></Link>
-                    </div>
-                    <div className="uk-width-expand">
-                      <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={profileLink}>{ userName }</Link></h4>
-                    </div>
-                  </div>
-                </li>
-            );
-          })}
-          {/* 未翻訳の回答一覧を表示する */}
-          {answers.map((v) => {
-            const { user } = v;
-            const userName = user ? user.name : '不明なユーザー';
-            const profileLink = `/users/profile/${user.id}`;
-            return(
-                <li>
-                  {/* 未翻訳の質問を表示する */}
-                  <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${v}.id}`}>{`${v.content}`}</Link></p>
-                  {/* 作成時間を表示する */}
-                  <p className="uk-text-meta">{dayjs(v.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
-                  {/* 自分の名前や画像を表示する */}
-                  <div className="uk-grid uk-grid-small uk-flex-middle" >
-                    <div className="uk-width-auto">
-                      <Link to={profileLink}><img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" /></Link>
-                    </div>
-                    <div className="uk-width-expand">
-                      <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={profileLink}>{ userName }</Link></h4>
-                    </div>
-                  </div>
-                </li>
-            );
-          })}
-          {/* 未翻訳のコメント一覧を表示する */}
-          {comments.map((v) => {
-            const { user } = v;
-            const userName = user ? user.name : '不明なユーザー';
-            const profileLink = `/users/profile/${user.id}`;
-            return(
-                <li>
-                  {/* 未翻訳の質問を表示する */}
-                  <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${v}.id}`}>{`${v.content}`}</Link></p>
-                  {/* 作成時間を表示する */}
-                  <p className="uk-text-meta">{dayjs(v.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
-                  {/* 自分の名前や画像を表示する */}
-                  <div className="uk-grid uk-grid-small uk-flex-middle" >
-                    <div className="uk-width-auto">
-                      <Link to={profileLink}><img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" /></Link>
-                    </div>
-                    <div className="uk-width-expand">
-                      <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={profileLink}>{ userName }</Link></h4>
-                    </div>
-                  </div>
-                </li>
-            );
-          })}
+          {question_lists}
+          {answer_lists}
+          {comment_lists}
         </ul>
       </div>
     );
