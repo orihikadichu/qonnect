@@ -11,7 +11,7 @@ import {
   FETCH_COMMENT_TRANSLATION,
   POST_COMMENT_TRANSLATION_DATA,
   SAVE_COMMENT_TRANSLATION_DATA,
-  DELETE_COMMENT_TRANSLATION_DATA,
+  DELETE_COMMENT_TRANSLATION,
 } from '../actions/CommentTranslation';
 import * as api from './apis/CommentTranslations';
 import { notifySuccess, notifyError } from './Util';
@@ -68,11 +68,29 @@ export function* saveCommentTranslationData(action) {
   }
 }
 
+export function* deleteCommentTranslation(action) {
+  try {
+    const { id, history } = action.payload;
+    yield put(requestData());
+    yield call(api.deleteCommentTranslation, action.payload);
+    const message = '翻訳を削除しました';
+    yield put(notifySuccess(message));
+    const payload = yield call(api.fetchCommentTranslationList);
+    yield put(receiveDataSuccess(payload));
+    yield call(history.push, '/');
+  } catch (e) {
+    const message = '翻訳の削除に失敗しました';
+    yield put(notifyError(message));
+    yield put(receiveDataFailed());
+  }
+}
+
 const commentTranslationSagas = [
   takeEvery(POST_COMMENT_TRANSLATION_DATA, postCommentTranslation),
   takeEvery(FETCH_COMMENT_TRANSLATION_LIST, handleFetchCommentTranslationList),
   takeEvery(FETCH_COMMENT_TRANSLATION, handleFetchCommentTranslationById),
   takeEvery(SAVE_COMMENT_TRANSLATION_DATA, saveCommentTranslationData),
+  takeEvery(DELETE_COMMENT_TRANSLATION, deleteCommentTranslation),
 ];
 
 export default commentTranslationSagas;

@@ -11,7 +11,8 @@ import {
   FETCH_QUESTION_TRANSLATION_LIST,
   FETCH_QUESTION_TRANSLATION,
   POST_QUESTION_TRANSLATION_DATA,
-  SAVE_QUESTION_TRANSLATION_DATA
+  SAVE_QUESTION_TRANSLATION_DATA,
+  DELETE_QUESTION_TRANSLATION,
 } from '../actions/QuestionTranslation';
 import * as api from './apis/QuestionTranslations';
 import { notifySuccess, notifyError } from './Util';
@@ -67,11 +68,29 @@ export function* saveQuestionTranslationData(action) {
   }
 }
 
+export function* deleteQuestionTranslation(action) {
+  try {
+    const { id, history } = action.payload;
+    yield put(requestData());
+    yield call(api.deleteQuestionTranslation, action.payload);
+    const message = '翻訳を削除しました';
+    yield put(notifySuccess(message));
+    const payload = yield call(api.fetchQuestionTranslationList);
+    yield put(receiveDataSuccess(payload));
+    yield call(history.push, '/');
+  } catch (e) {
+    const message = '翻訳の削除に失敗しました';
+    yield put(notifyError(message));
+    yield put(receiveDataFailed());
+  }
+}
+
 const questionTranslationSagas = [
   takeEvery(POST_QUESTION_TRANSLATION_DATA, postQuestionTranslation),
   takeEvery(FETCH_QUESTION_TRANSLATION_LIST, handleFetchQuestionTranslationList),
   takeEvery(FETCH_QUESTION_TRANSLATION, handleFetchQuestionTranslationById),
   takeEvery(SAVE_QUESTION_TRANSLATION_DATA, saveQuestionTranslationData),
+  takeEvery(DELETE_QUESTION_TRANSLATION, deleteQuestionTranslation),
 ];
 
 export default questionTranslationSagas;
