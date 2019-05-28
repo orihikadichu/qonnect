@@ -168,11 +168,7 @@ app.get('/api/not_translated_comments', (req, res) => {
         required: false
       },
       {
-<<<<<<< HEAD
         model: db.answers,    
-=======
-        model: db.answers,
->>>>>>> 6c4d18150342ae31bfb34024da8be04c09480d2a
         required: false
       },
     ],
