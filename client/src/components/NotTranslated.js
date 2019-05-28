@@ -83,6 +83,7 @@ class NotTranslated extends Component {
   getNotTranslatedComments(contents) {
     const url = "/comment_translations/";
     const key = "comments";
+    console.log('contents', contents);
     return this.getNotTranslated(contents, url, key);
   }
 

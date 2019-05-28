@@ -93,7 +93,7 @@ app.get('/api/questions', (req, res) => {
 });
 
 // 未翻訳の質問を取得する
-app.get('/api/nottranslatedquestions', (req, res) => {
+app.get('/api/not_translated_questions', (req, res) => {
   const params = req.query;
   db.questions.findAll({
     //ここでquestion_translationsテーブルのidカラムがnullのものだけを抽出している
@@ -122,7 +122,7 @@ app.get('/api/nottranslatedquestions', (req, res) => {
 });
 
 // 未翻訳の回答を取得する
-app.get('/api/nottranslatedanswers', (req, res) => {
+app.get('/api/not_translated_answers', (req, res) => {
   const params = req.query;
   db.answers.findAll({
     //ここでquestion_translationsテーブルのidカラムがnullのものだけを抽出している
@@ -151,7 +151,7 @@ app.get('/api/nottranslatedanswers', (req, res) => {
 });
 
 // 未翻訳のコメントを取得する
-app.get('/api/nottranslatedcomments', (req, res) => {
+app.get('/api/not_translated_comments', (req, res) => {
   const params = req.query;
   db.comments.findAll({
     //ここでquestion_translationsテーブルのidカラムがnullのものだけを抽出している
@@ -165,6 +165,10 @@ app.get('/api/nottranslatedcomments', (req, res) => {
       },
       {
         model: db.comment_translations,
+        required: false
+      },
+      {
+        model: db.answers,
         required: false
       },
     ],

@@ -9,21 +9,21 @@ import axios from 'axios';
 
 // 未翻訳の質問一覧取得するAPI
 export const fetchNotTranslatedQuestions = (params) => {
-    return axios.get('/api/nottranslatedquestions', {
+    return axios.get('/api/not_translated_questions', {
         params
     });
 };
 
 // 未翻訳の回答一覧取得するAPI
 export const fetchNotTranslatedAnswers = (params) => {
-    return axios.get('/api/nottranslatedanswers', {
+    return axios.get('/api/not_translated_answers', {
         params
     });
 };
 
 // 未翻訳のコメント一覧取得するAPI
 export const fetchNotTranslatedComments = (params) => {
-    return axios.get('/api/nottranslatedcomments', {
+    return axios.get('/api/not_translated_comments', {
         params
     });
 };

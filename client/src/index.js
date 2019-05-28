@@ -66,7 +66,7 @@ const render = () => {
                   <Route exact path='/answer_translations/edit/:id' component={AnswerTranslationEdit} />
                   <Route exact path='/comment_translations/edit/:id' component={CommentTranslationEdit} />
                   {/*未翻訳の質問を抽出するルートパス*/}
-                  <Route exact path='/nottranslated' component={NotTranslated} />
+                  <Route exact path='/not_translated' component={NotTranslated} />
                 </Switch>
               </UserOnly>
               <GuestOnly>
