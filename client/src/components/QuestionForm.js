@@ -48,7 +48,7 @@ class QuestionForm extends Component {
               </div>
               <div className="uk-margin uk-grid uk-grid-small uk-child-width-expand@s" >
                 <div className="uk-grid-margin" >
-                  <LanguageFormSelect name="country_id" placeholder="回答対象言語" />
+                  <LanguageFormSelect name="country_id" placeholder="回答対象国" />
                   {touched.country_id && errors.country_id && <div className="uk-text-warning">{errors.country_id}</div>}
                 </div>
                 <div className="uk-grid-margin" >
@@ -57,7 +57,7 @@ class QuestionForm extends Component {
                 </div>
               </div>
               <div className="uk-margin">
-                <button className="uk-button uk-button-default" >変更</button>
+                <button className="uk-button uk-button-default" >投稿</button>
               </div>
             </fieldset>
           </form>

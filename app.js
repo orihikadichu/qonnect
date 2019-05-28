@@ -62,9 +62,9 @@ const getProfileImagePath = (userId) => {
 // Questions
 app.get('/api/questions', (req, res) => {
   //apiサーバーなのでターミナルで見る
-  console.log('req.query', req.query);
+  // console.log('req.query', req.query);
   //resはquery
-  console.log('res', res);
+  // console.log('res', res);
   //渡されたparamsはreq.queryに入っている。
   const params = req.query;
   db.questions.findAll({
@@ -182,35 +182,6 @@ app.get('/api/not_translated_comments', (req, res) => {
     res.status(200).send(instanses);
   });
 });
-
-//アンサーデータを紐づけた状態でコメントを取得する
-// app.get('/api/comments_with_answer', (req, res) => {
-//   const params = req.query;
-//   db.comments.findAll({
-//     where: params,
-//     include: [
-//       {
-//         model: db.users,
-//         required: false
-//       },
-//       {
-//         model: db.answers,
-//         required: false,
-//         include: [
-//           db.answer_translations
-//         ]
-//       },
-//       {
-//         model: db.comment_translations,
-//         required: false,
-//       },
-//     ]
-//   })
-//     .then((instanses) => {
-//       res.status(200).send(instanses);
-//     });
-// });
-
 
 app.get('/api/questions/:id', (req, res) => {
   const qId = req.params.id;

@@ -2,7 +2,7 @@ import { createAction } from 'redux-actions';
 
 // 文字列定数
 export const CHANGE_QUESTION_LIST_LANGUAGE = Symbol('CHANGE_QUESTION_LIST_LANGUAGE');
-export const FETCH_QUESTION_LIST = Symbol('FETCH_QUESTION_LIST');
+// export const FETCH_QUESTION_LIST = Symbol('FETCH_QUESTION_LIST');
 
 export const FETCH_NOT_TRANSLATED = Symbol('FETCH_NOT_TRANSLATED');
 
@@ -15,7 +15,7 @@ export const RECEIVE_SINGLE_DATA_SUCCESS = Symbol('RECEIVE_SINGLE_DATA_SUCCESS')
 export const RECEIVE_DATA_FAILED = Symbol('RECEIVE_DATA_FAILED');
 
 export const changeQuestionListLanguage = createAction(CHANGE_QUESTION_LIST_LANGUAGE);
-export const fetchQuestionList = createAction(FETCH_QUESTION_LIST);
+// export const fetchQuestionList = createAction(FETCH_QUESTION_LIST);
 
 export const fetchNotTranslated = createAction(FETCH_NOT_TRANSLATED);
 
