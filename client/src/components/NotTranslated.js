@@ -11,7 +11,7 @@ class NotTranslated extends Component {
     this.state = {currentTab: 'questions'};
   }
 
-　componentDidMount() {
+  componentDidMount() {
     const { questions } = this.props.state.not_translate;
     if (questions.length !== 0) {
       return;
@@ -33,26 +33,26 @@ class NotTranslated extends Component {
 
       // ここreturnはmap関数のreturn
       return (
-          //ここでcontentの種類+そのコンテンツのidの組み合わせをkeyとすることでこのHTML要素が一意になるようにする
-          <li key={`${key}_${v.id}`} >
-          {/* <li> */}
-            {/* 未翻訳の質問を表示する */}
-            <p className="uk-text-lead uk-text-truncate" >
-              <Link to={`/questions/${id}`}>{`${v.content}`}</Link>
-              <Link to={`${url}${v.id}`}><span uk-icon="world"></span></Link>
-            </p>
-            {/* 作成時間を表示する */}
-            <p className="uk-text-meta">{dayjs(v.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
-            {/* プロフィールを表示する */}
-            <div className="uk-grid uk-grid-small uk-flex-middle" >
-              <div className="uk-width-auto">
-                <Link to={profileLink}><img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" /></Link>
-              </div>
-              <div className="uk-width-expand">
-                <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={profileLink}>{ userName }</Link></h4>
-                </div>
+        //ここでcontentの種類+そのコンテンツのidの組み合わせをkeyとすることでこのHTML要素が一意になるようにする
+        <li key={`${key}_${v.id}`} >
+        {/* <li> */}
+          {/* 未翻訳の質問を表示する */}
+          <p className="uk-text-lead uk-text-truncate" >
+            <Link to={`/questions/${id}`}>{`${v.content}`}</Link>
+            <Link to={`${url}${v.id}`}><span uk-icon="world"></span></Link>
+          </p>
+          {/* 作成時間を表示する */}
+          <p className="uk-text-meta">{dayjs(v.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
+          {/* プロフィールを表示する */}
+          <div className="uk-grid uk-grid-small uk-flex-middle" >
+            <div className="uk-width-auto">
+              <Link to={profileLink}><img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" /></Link>
             </div>
-          </li>
+            <div className="uk-width-expand">
+              <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={profileLink}>{ userName }</Link></h4>
+            </div>
+          </div>
+        </li>
       );
     })
   }
@@ -127,17 +127,17 @@ class NotTranslated extends Component {
 
     return (
       <ul className="uk-tab" >
-        {tabData.map(v => {
-           //currentTabとkeyが一致したとき、それをactiveにする
-           const active = this.state['currentTab'] === v.key
-                        ? 'uk-active'
-                        : '';
-           return (
-             <li key={v.key} className={active} onClick={this.onClickTab.bind(this, v.key)} >
-               <a href="">{v.name}</a>
-             </li>
-           );
-        })}
+      {tabData.map(v => {
+        //currentTabとkeyが一致したとき、それをactiveにする
+        const active = this.state['currentTab'] === v.key
+                     ? 'uk-active'
+                     : '';
+        return (
+          <li key={v.key} className={active} onClick={this.onClickTab.bind(this, v.key)} >
+            <a href="">{v.name}</a>
+          </li>
+        );
+      })}
       </ul>
     );
   }
@@ -163,18 +163,18 @@ class NotTranslated extends Component {
   render() {
     const content = this.getNotTranslatedView(this.props.state);
     const tabList = this.getTabList();
-  
+    
     return (
       <div>
-        <div className="uk-container uk-container-small">
-          <p>未翻訳コンテンツ一覧</p>
-          <br></br>
-        </div>
-        <div className="uk-container uk-container-small">
-          {tabList}
-          {content}
-        </div>
+      <div className="uk-container uk-container-small">
+      <p>未翻訳コンテンツ一覧</p>
+      <br></br>
       </div>
+      <div className="uk-container uk-container-small">
+      {tabList}
+      {content}
+          </div>
+          </div>
     );
   }
 }

@@ -107,8 +107,8 @@ class Profile extends Component {
   }
 
 
-  getCurrentUserPostList(profileState, currentTab) {
-    const { questions, answers, comments } = profileState;
+  getCurrentTabContents(tabState, currentTab) {
+    const { questions, answers, comments } = tabState;
     if (currentTab === 'questions') {
       return (<QuestionListView questionArray={questions} translateLanguageId={1} />);
     } else if (currentTab === 'answers') {
@@ -124,8 +124,6 @@ class Profile extends Component {
     const { profile } = this.props.state;
     const { user } = profile;
 
-    console.log("user",user);
-
     if (Object.keys(user).length === 0) {
       return (
         <div className="uk-position-center uk-overlay uk-overlay-default">
@@ -135,7 +133,7 @@ class Profile extends Component {
     }
 
     const tabList = this.getTabList();
-    const userPostList = this.getCurrentUserPostList(profile, this.state.currentTab);
+    const userPostList = this.getCurrentTabContents(profile, this.state.currentTab);
 
     return (
       <main className="uk-container uk-container-small">
