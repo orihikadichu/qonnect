@@ -47,7 +47,7 @@ class Profile extends Component {
                         ? 'uk-active'
                         : '';
            return (
-             <li className={active} onClick={this.onClickTab.bind(this, v.key)} >
+             <li className={active} onClick={this.onClickTab.bind(this, v.key)} key={v.key} >
                <a href="">{v.name}</a>
              </li>
            );
@@ -84,24 +84,24 @@ class Profile extends Component {
   getCommentList(comments) {
     return (
       <ul className="uk-list uk-list-divider uk-list-large">
-      {comments.map(comment => {
-        const { user } = comment;
-        const userName = user ? user.name : '不明なユーザー';
-        return (
-          <li key={comment.id} >
-            <p className="uk-text-lead uk-text-truncate" ><Link to={`/comment/${comment.id}`}>{`${comment.content}`}</Link></p>
-            <p className="uk-text-meta">{dayjs(comment.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
-            <div className="uk-grid uk-grid-small uk-flex-middle" >
-              <div className="uk-width-auto">
-                <img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" />
-              </div>
-              <div className="uk-width-expand">
-                <h4 className="uk-comment-meta uk-margin-remove">{ userName }</h4>
-              </div>
-            </div>
-          </li>
-        );
-      })}
+        {comments.map(comment => {
+           const { user } = comment;
+           const userName = user ? user.name : '不明なユーザー';
+           return (
+             <li key={comment.id} >
+               <p className="uk-text-lead uk-text-truncate" ><Link to={`/comment/${comment.id}`}>{`${comment.content}`}</Link></p>
+               <p className="uk-text-meta">{dayjs(comment.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
+               <div className="uk-grid uk-grid-small uk-flex-middle" >
+                 <div className="uk-width-auto">
+                   <img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" />
+                 </div>
+                 <div className="uk-width-expand">
+                   <h4 className="uk-comment-meta uk-margin-remove">{ userName }</h4>
+                 </div>
+               </div>
+             </li>
+           );
+        })}
       </ul>
     );
   }
