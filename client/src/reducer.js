@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import { reducer as reduxFormReducer } from 'redux-form';
 import { reducer as notificationsReducer } from 'reapop';
 import * as questions from './reducers/Question';
 import * as answers from './reducers/Answer';
@@ -11,9 +10,7 @@ import * as commentTranslations from './reducers/CommentTranslation';
 import * as notTranslated from './reducers/NotTranslated';
 
 const reducer = combineReducers({
-  answerForm: answers.form,
   answers: answers.list,
-  questionForm: questions.form,
   questions: questions.list,
   questionTranslations: questionTranslations.list,
   answerTranslations: answerTranslations.list,
@@ -23,7 +20,6 @@ const reducer = combineReducers({
   comments: comments.list,
   commentTranslations: commentTranslations.list,
   not_translate: notTranslated.list,
-  form: reduxFormReducer,
   notifications: notificationsReducer()
 });
 

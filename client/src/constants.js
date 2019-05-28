@@ -19,16 +19,6 @@ export const initialState = {
     user: {},
     jwt: ''
   },
-  answerForm: {
-    content: '',
-    translate_language_id: 1,
-    isFetching: false,
-  },
-  answerTranslationForm: {
-    isFetching: false,
-    translate_language_id: 1,
-    content: '',
-  },
   answers: {
     isFetching: false,
     answerArray: [],
@@ -38,16 +28,6 @@ export const initialState = {
     isFetching: false,
     currentTranslationList: [],
     currentTranslation: {},
-  },
-  questionForm: {
-    isFetching: false,
-    content: '',
-    translate_language_id: 1,
-  },
-  questionTranslationForm: {
-    content: '',
-    translate_language_id: 1,
-    isFetching: false,
   },
   questions: {
     isFetching: false,

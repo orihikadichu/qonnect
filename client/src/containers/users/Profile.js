@@ -139,11 +139,18 @@ class Profile extends Component {
 
     return (
       <main className="uk-container uk-container-small">
-        <p><img src={user.image_path} className="uk-border-circle" alt="" width="100" height="100" /></p>
-        <p className="uk-text-lead">{user.name}</p>
-        <p style={{"whiteSpace": "pre-wrap"}}>{user.profile}</p>
-        <p>出身地</p>
-        <p>{user.country.name}</p>
+        <div className="uk-grid uk-grid-small uk-flex-middle uk-margin-bottom">
+          <div className="uk-width-auto uk-flex-first">
+            <img src={user.image_path} className="uk-border-circle" alt="" width="120" height="" />
+          </div>
+          <div className="uk-width-expand" >
+            <p className="uk-text-lead">{user.name}</p>
+            <p>出身地: {user.country.name}</p>
+          </div>
+        </div>
+        <div>
+          <p style={{"whiteSpace": "pre-wrap"}}>{user.profile}</p>
+        </div>
         <h3 className="uk-heading-line"><span>投稿一覧</span></h3>
         {tabList}
         {userPostList}
