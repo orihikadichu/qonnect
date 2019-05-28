@@ -163,7 +163,14 @@ class AnswerList extends Component {
 
     const { translateLanguageId } = this.props;
     const answerList = this.getAnswerList(answerArray, translateLanguageId);
-    console.log("render");
+
+    if (answerList.length === 0) {
+      return (
+        <div>
+          <h4 className="uk-text-success">まだ回答がありません。最初の投稿者になりましょう！</h4>
+        </div>
+      );
+    }
 
     return (
       <div>
