@@ -167,6 +167,10 @@ app.get('/api/nottranslatedcomments', (req, res) => {
         model: db.comment_translations,
         required: false
       },
+      {
+        model: db.answers,    
+        required: false
+      },
     ],
     order: [
       ['created_at', 'DESC']
@@ -178,6 +182,34 @@ app.get('/api/nottranslatedcomments', (req, res) => {
     res.status(200).send(instanses);
   });
 });
+
+//アンサーデータを紐づけた状態でコメントを取得する
+// app.get('/api/comments_with_answer', (req, res) => {
+//   const params = req.query;
+//   db.comments.findAll({
+//     where: params,
+//     include: [
+//       {
+//         model: db.users,
+//         required: false
+//       },
+//       {
+//         model: db.answers,
+//         required: false,
+//         include: [
+//           db.answer_translations
+//         ]
+//       },
+//       {
+//         model: db.comment_translations,
+//         required: false,
+//       },
+//     ]
+//   })
+//     .then((instanses) => {
+//       res.status(200).send(instanses);
+//     });
+// });
 
 
 app.get('/api/questions/:id', (req, res) => {

@@ -124,6 +124,8 @@ class Profile extends Component {
     const { profile } = this.props.state;
     const { user } = profile;
 
+    console.log("user",user);
+
     if (Object.keys(user).length === 0) {
       return (
         <div className="uk-position-center uk-overlay uk-overlay-default">

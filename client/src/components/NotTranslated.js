@@ -33,7 +33,7 @@ class NotTranslated extends Component {
 
       // ここreturnはmap関数のreturn
       return (
-          //ここでcontentの種類+そのコンテンツのidの組み合わせをkeyとすることで一意にする
+          //ここでcontentの種類+そのコンテンツのidの組み合わせをkeyとすることでこのHTML要素が一意になるようにする
           <li key={`${key}_${v.id}`} >
           {/* <li> */}
             {/* 未翻訳の質問を表示する */}
