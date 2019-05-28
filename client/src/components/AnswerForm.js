@@ -52,7 +52,7 @@ class AnswerForm extends Component {
                 {touched.translate_language_id && errors.translate_language_id && <div className="uk-text-warning" >{errors.translate_language_id}</div>}
               </div>
               <div className="uk-margin">
-                <button className="uk-button uk-button-default" >投稿</button>
+                <button className="uk-button uk-button-default" >変更</button>
               </div>
             </fieldset>
           </form>

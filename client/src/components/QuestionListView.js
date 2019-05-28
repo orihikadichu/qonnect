@@ -35,6 +35,7 @@ class QuestionListView extends Component {
   }
 
   getQuestionList(questionArray, translateLanguageId) {
+
     const filteredQuestions = this.getFilteredQuestions(questionArray, translateLanguageId);
     const translatedQuestions = this.getTranslatedQuestions(filteredQuestions, translateLanguageId);
 
@@ -74,6 +75,7 @@ class QuestionListView extends Component {
   }
 
   render() {
+
     const { questionArray, translateLanguageId } = this.props;
     const content = this.getQuestionListView(questionArray, translateLanguageId);
 

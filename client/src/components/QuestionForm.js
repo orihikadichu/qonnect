@@ -57,7 +57,7 @@ class QuestionForm extends Component {
                 </div>
               </div>
               <div className="uk-margin">
-                <button className="uk-button uk-button-default" >投稿</button>
+                <button className="uk-button uk-button-default" >変更</button>
               </div>
             </fieldset>
           </form>

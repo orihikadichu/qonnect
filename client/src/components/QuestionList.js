@@ -23,6 +23,7 @@ class QuestionList extends Component {
   }
 
   render() {
+    console.log("this.props.state",this.props.state);
     const { isFetching, questionArray, translateLanguageId } = this.props.state.questions;
     if (isFetching) {
       return (<ClipLoader />);

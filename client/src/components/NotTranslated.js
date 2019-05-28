@@ -162,9 +162,11 @@ class NotTranslated extends Component {
   
     return (
       <div>
-        <p>未翻訳コンテンツ一覧</p>
-        <br></br>
-        <div className="uk-margin uk-margin-left uk-margin-right">
+        <div className="uk-container uk-container-small">
+          <p>未翻訳コンテンツ一覧</p>
+          <br></br>
+        </div>
+        <div className="uk-container uk-container-small">
           {tabList}
           {content}
         </div>
