@@ -28,6 +28,7 @@ export function* handleFetchData(action) {
     //action.payloadの中にparamsが入っている。
     //callはsagasの機能でapiを呼ぶための機能
     const payload = yield call(api.fetchQuestionList, action.payload);
+    // console.log("payload",payload);
     //reducers/Question.jsで関数を実行する。
     yield put(receiveDataSuccess(payload));
   } catch (e) {

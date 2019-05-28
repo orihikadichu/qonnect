@@ -88,6 +88,7 @@ class NotTranslated extends Component {
 
   //現在のユーザーリスト
   getCurrentTabContents(tabState, currentTab) {
+    //tabState = state.not_translate の中に3つの連想配列が入っている
     const { questions, answers, comments } = tabState;
     if (currentTab === 'questions') {
       return this.getNotTranslatedQuestions(questions);
@@ -101,6 +102,7 @@ class NotTranslated extends Component {
   onClickTab(newTabKey, e) {
     e.preventDefault();
     e.stopPropagation();
+    //stateの状態変更
     this.setState({
       currentTab: newTabKey
     });
@@ -125,6 +127,7 @@ class NotTranslated extends Component {
     return (
       <ul className="uk-tab" >
         {tabData.map(v => {
+           //currentTabとkeyが一致したとき、それをactiveにする
            const active = this.state['currentTab'] === v.key
                         ? 'uk-active'
                         : '';
