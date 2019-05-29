@@ -29,3 +29,10 @@ npm start
 ### DBの設定
 /config/config.jsonにて、「development」の項目をローカルのDBの設定と合わせる。
 
+### DBにデフォルトでレコードを挿入
+qonnectディレクトリに移動し、以下のコマンドを実行。
+```
+npx sequelize-cli db:seed:all
+```
+
+

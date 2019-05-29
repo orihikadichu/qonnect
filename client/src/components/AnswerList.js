@@ -125,6 +125,7 @@ class AnswerList extends Component {
                 <Linkify properties={{ target: '_blank'}} >{answer.dispText}</Linkify>
                 <Link to={`/answer_translations/${answer.id}`}><span uk-icon="world"></span></Link>
                 { editLink }
+                <Link to={""}><span uk-icon="star"></span></Link>
               </p>
               <p className="uk-text-meta">{dayjs(answer.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
 
