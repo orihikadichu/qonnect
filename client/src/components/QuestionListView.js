@@ -46,6 +46,7 @@ class QuestionListView extends Component {
       return (
         <li key={question.id} >
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
+          <Link to={""}><span uk-icon="star"></span></Link>
           <p className="uk-text-meta">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
           <div className="uk-grid uk-grid-small uk-flex-middle" >
             <div className="uk-width-auto">

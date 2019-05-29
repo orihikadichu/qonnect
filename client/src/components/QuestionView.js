@@ -96,6 +96,7 @@ class QuestionView extends Component {
             </div>
           </div>
           { editLink }
+          <Link to={""}><span uk-icon="star"></span></Link>
         </div>
 
         <h3 className="uk-heading-line"><span>回答一覧</span></h3>

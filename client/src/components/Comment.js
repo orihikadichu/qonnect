@@ -25,6 +25,7 @@ class Comment extends Component {
             <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${user.id}`}>{ user.name }</Link></h4>
           </div>
           { editLink }
+          <Link to={""}><span uk-icon="star"></span></Link>
         </div>
       </article>
     );
