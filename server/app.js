@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import mysql from 'mysql2';
 import sequelize from 'sequelize';
 import path from 'path';
-import db from './models/index';
+import db from '../models/index';
 import Mnemonic from 'bitcore-mnemonic';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
@@ -13,6 +13,14 @@ import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import jimp from 'jimp';
+import fs from 'fs';
+import {
+  getProfileImageName,
+  getProfileImageFilePath,
+  getProfileImageDir,
+  PROFILE_IMAGE_DIR,
+} from './users/util';
+
 
 const app = express();
 const secretKey = 'hogehogehogehogehogehoge';
@@ -38,7 +46,12 @@ const saltRounds = 10;
 const storage = multer.diskStorage({
   // ファイルの保存先を指定
   destination: (req, file, cb) => {
-    cb(null, './client/public/image');
+    const { id } = req.params;
+    const dirPath = './client/public' + getProfileImageDir(id);
+    if (!fs.existsSync(dirPath)){
+      fs.mkdirSync(dirPath);
+    }
+    cb(null, dirPath);
   },
   // ファイル名を指定(オリジナルのファイル名を指定)
   filename: (req, file, cb) => {
@@ -48,16 +61,6 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage: storage });
-
-const getProfileImageName = (userId) => {
-  const sha = crypto.createHash('sha512');
-  sha.update(String(userId));
-  return sha.digest('hex') + '.png';
-};
-
-const getProfileImagePath = (userId) => {
-  return '/image/' + getProfileImageName(userId);
-};
 
 // Questions
 app.get('/api/questions', (req, res) => {
@@ -686,7 +689,7 @@ app.get('/api/users/:id', (req, res) => {
       }
       const user = instance.get();
       delete user.wallet_address;
-      user.image_path = getProfileImagePath(user.id);
+      user.image_path = getProfileImageFilePath(user.id);
       res.status(200).send(user);
     });
 });
@@ -706,10 +709,12 @@ app.post('/api/users', (req, res) => {
 app.put('/api/users/:id', upload.single('image'), (req, res) => {
   const { id } = req.params;
   const params = req.body;
-  const imagePath = getProfileImagePath(id);
-  const filePath = __dirname + '/client/public' + imagePath;
+  const imagePath = getProfileImageFilePath(id);
+  const filePath = __dirname + '/../client/public' + imagePath;
+  console.log('filePath', filePath);
   jimp.read(filePath, function(err, image) {
     if (err) throw err;
+    console.log('soiya');
     image
       .cover(500, 500)
       .write(filePath);
