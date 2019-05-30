@@ -37,7 +37,6 @@ class CommentList extends Component {
     const { loginUser, translateLanguageId } = this.props;
     const commentList = this.props.list ? this.props.list : [];
     const filteredCommentList = this.getFilteredComments(commentList, translateLanguageId);
-    console.log('filteredCommentList', filteredCommentList);
     const translatedCommentList = this.getTranslatedComments(filteredCommentList, translateLanguageId);
     return (
       <ul className="uk-comment-list" >
@@ -45,7 +44,7 @@ class CommentList extends Component {
             const isOwner = loginUser.id === v.user.id;
             return (
               <li className="uk-margin-small-top" key={i} >
-                <Comment id={v.id} user={v.user} content={v.dispText} isOwner={isOwner} />
+                <Comment id={v.id} user={v.user} content={v.dispText} isOwner={isOwner}/>
               </li>
             );
         }) }

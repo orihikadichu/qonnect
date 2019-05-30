@@ -17,8 +17,6 @@ class QuestionView extends Component {
 
   }
 
-  //this.state.buttonState[answer.id];
-
   componentWillMount() {
     this.props.getQuestionById(this.qId);
   }
@@ -54,6 +52,17 @@ class QuestionView extends Component {
     return question;
   }
 
+  sendVote(questionId){
+    const postData = {
+      user_id: 1,
+      question_id: questionId,
+      answer_id: null,
+      comment_id: null,
+      status: 1,
+    };
+    return this.props.handlePostVote(postData);
+  }
+
   render() {
     const { currentQuestion, translateLanguageId } = this.props.state.questions;
 
@@ -69,15 +78,11 @@ class QuestionView extends Component {
 
     const question = this.getTranslatedQuestion(currentQuestion, translateLanguageId);
 
-    console.log("question",question);
-
     const { user } = currentQuestion;
     const answerFormInitVals = { content: '', translate_language_id: '' };
     const editLink = user.id === loginUser.id
                    ? <p><Link to={`/questions/edit/${this.qId}`}>編集</Link></p>
                    : '';
-
-    // const dispcomment = this.state.buttonState === true ?
 
     return (
       <main className="uk-container uk-container-small">
@@ -96,7 +101,10 @@ class QuestionView extends Component {
             </div>
           </div>
           { editLink }
-          <Link to={""}><span uk-icon="star"></span></Link>
+          {/* 評価機能のボタン */}
+          <button className="uk-button uk-button-default" onClick={this.sendVote.bind(this, question.id)}>
+             <span uk-icon="star">QuestionView</span>
+          </button>
         </div>
 
         <h3 className="uk-heading-line"><span>回答一覧</span></h3>

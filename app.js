@@ -59,6 +59,31 @@ const getProfileImagePath = (userId) => {
   return '/image/' + getProfileImageName(userId);
 };
 
+/*
+評価機能
+*/
+app.post('/api/votes', (req, res) => {
+  console.log('req.body', req.body);
+  const {
+    user_id,
+    question_id,
+    answer_id,
+    comment_id,
+    status
+  } = req.body;
+  db.votes.create({
+    user_id,
+    question_id,
+    answer_id,
+    comment_id,
+    status
+  })
+    .then((createdData) => {
+      res.status(200).send(createdData);
+    })
+  ;
+});
+
 // Questions
 app.get('/api/questions', (req, res) => {
   //apiサーバーなのでターミナルで見る

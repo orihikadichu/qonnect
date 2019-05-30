@@ -104,6 +104,17 @@ class AnswerList extends Component {
     }
   }
 
+  sendVote(answerId){
+    const postData = {
+      user_id: this.props.state.auth.user.id,
+      question_id: null,
+      answer_id: answerId,
+      comment_id: null,
+      status: 1,
+    };
+    return this.props.handlePostVote(postData);
+  }
+
   getAnswerList(answerArray, translateLanguageId) {
     const loginUser = this.props.state.auth.user;
 
@@ -125,7 +136,10 @@ class AnswerList extends Component {
                 <Linkify properties={{ target: '_blank'}} >{answer.dispText}</Linkify>
                 <Link to={`/answer_translations/${answer.id}`}><span uk-icon="world"></span></Link>
                 { editLink }
-                <Link to={""}><span uk-icon="star"></span></Link>
+                {/* 評価ボタン */}
+                <button className="uk-button uk-button-default" onClick={this.sendVote.bind(this, answer.id)}>
+                  <span uk-icon="star">AnswerList</span>
+                </button>
               </p>
               <p className="uk-text-meta">{dayjs(answer.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
 

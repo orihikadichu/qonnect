@@ -23,14 +23,13 @@ class QuestionList extends Component {
   }
 
   render() {
-    console.log("this.props.state",this.props.state);
     const { isFetching, questionArray, translateLanguageId } = this.props.state.questions;
     if (isFetching) {
       return (<ClipLoader />);
     }
 
     return (
-      <QuestionListView questionArray={questionArray} translateLanguageId={translateLanguageId} />
+      <QuestionListView questionArray={questionArray} translateLanguageId={translateLanguageId} loginUser={this.props.state.auth.user.id}/>
     );
   }
 }
