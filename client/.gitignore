@@ -25,4 +25,4 @@ yarn-error.log*
 /src/image/*
 /public/image/*
 !/public/image/.gitkeep
-!/public/image/blank-profile.png
+!/public/image/profile/blank-profile.png
