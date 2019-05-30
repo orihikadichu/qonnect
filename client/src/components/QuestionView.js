@@ -102,9 +102,7 @@ class QuestionView extends Component {
           </div>
           { editLink }
           {/* 評価機能のボタン */}
-          <button className="uk-button uk-button-default" onClick={this.sendVote.bind(this, question.id)}>
-             <span uk-icon="star">QuestionView</span>
-          </button>
+          <span className="uk-text-primary" uk-icon="heart" onClick={this.sendVote.bind(this, question.id)}></span>
         </div>
 
         <h3 className="uk-heading-line"><span>回答一覧</span></h3>

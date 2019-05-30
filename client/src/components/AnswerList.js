@@ -137,9 +137,7 @@ class AnswerList extends Component {
                 <Link to={`/answer_translations/${answer.id}`}><span uk-icon="world"></span></Link>
                 { editLink }
                 {/* 評価ボタン */}
-                <button className="uk-button uk-button-default" onClick={this.sendVote.bind(this, answer.id)}>
-                  <span uk-icon="star">AnswerList</span>
-                </button>
+                <span className="uk-text-primary" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id)}></span>
               </p>
               <p className="uk-text-meta">{dayjs(answer.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
 

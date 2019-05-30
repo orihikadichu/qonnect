@@ -63,9 +63,8 @@ class QuestionListView extends Component {
         <li key={question.id} >
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
           {/* 評価機能のボタン */}
-          <button className="uk-button uk-button-default" onClick={this.sendVote.bind(this, question.id)}>
-             <span uk-icon="star">QuestionListView</span>
-          </button>
+          <span className="uk-text-primary" uk-icon="heart" onClick={this.sendVote.bind(this, question.id)}></span>
+          
           <p className="uk-text-meta">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
           <div className="uk-grid uk-grid-small uk-flex-middle" >
             <div className="uk-width-auto">

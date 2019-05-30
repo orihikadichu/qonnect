@@ -33,7 +33,7 @@ class Comment extends Component {
             <Link to={`/comment_translations/${id}`}><span uk-icon="world"></span></Link>
           </p>
         </div>
-        <div className="uk-grid uk-grid-small uk-flex-middle" >
+        <div className="uk-grid uk-grid-small uk-flex-middle">
           <div className="uk-width-auto">
             <img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" />
           </div>
@@ -42,9 +42,7 @@ class Comment extends Component {
           </div>
           { editLink }
           {/* 評価機能のボタン */}
-          <button className="uk-button uk-button-default" onClick={this.sendVote.bind(this, id)}>
-             <span uk-icon="star">Comment</span>
-          </button>
+          <span className="uk-text-primary" uk-icon="heart" onClick={this.sendVote.bind(this, id)}></span>
         </div>
       </article>
     );
