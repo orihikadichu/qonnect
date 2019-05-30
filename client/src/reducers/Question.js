@@ -29,7 +29,6 @@ export const list = (state = initialState.questions, action) => {
       isFetching: true,
     };
   case RECEIVE_DATA_SUCCESS:
-    console.log("action",action);
     return {
       ...state,
       //isFetchingは終了したのでfalseにしている。

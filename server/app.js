@@ -66,7 +66,6 @@ const upload = multer({ storage: storage });
 評価機能
 */
 app.post('/api/votes', (req, res) => {
-  console.log('req.body', req.body);
   const {
     user_id,
     question_id,
@@ -79,6 +78,27 @@ app.post('/api/votes', (req, res) => {
     question_id,
     answer_id,
     comment_id,
+    status
+  })
+    .then((createdData) => {
+      res.status(200).send(createdData);
+    })
+  ;
+});
+
+app.post('/api/vote_translations', (req, res) => {
+  const {
+    user_id,
+    question_translation_id,
+    answer_translation_id,
+    comment_translation_id,
+    status
+  } = req.body;
+  db.vote_translations.create({
+    user_id,
+    question_translation_id,
+    answer_translation_id,
+    comment_translation_id,
     status
   })
     .then((createdData) => {

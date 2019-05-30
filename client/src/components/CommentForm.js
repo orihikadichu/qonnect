@@ -6,7 +6,6 @@ import LanguageFormSelect from './LanguageFormSelect';
 class CommentForm extends Component {
 
   validate(values) {
-    console.log("values", values);
     let errors = {};
     if (!values.content) {
       errors.content = 'コメントが空欄です';

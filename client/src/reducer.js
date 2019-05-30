@@ -9,6 +9,7 @@ import * as answerTranslations from './reducers/AnswerTranslation';
 import * as commentTranslations from './reducers/CommentTranslation';
 import * as notTranslated from './reducers/NotTranslated';
 import * as votes from './reducers/Votes';
+import * as voteTranslations from './reducers/VoteTranslation';
 
 const reducer = combineReducers({
   answers: answers.list,
@@ -22,6 +23,7 @@ const reducer = combineReducers({
   commentTranslations: commentTranslations.list,
   not_translate: notTranslated.list,
   votes: votes.list,
+  voteTranslations: voteTranslations.list,
   notifications: notificationsReducer()
 });
 

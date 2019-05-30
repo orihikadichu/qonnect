@@ -16,7 +16,6 @@ export function* fetchSingleComment(action) {
     yield put(act.requestData());
     const comment_id = action.payload;
     const comment = yield call(api.fetchComment, comment_id);
-    console.log('comment', comment);
     yield put(act.updatedSingleCommentData(comment));
   } catch (e) {
     const message = 'コメントの投稿に失敗しました。';

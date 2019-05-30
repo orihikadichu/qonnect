@@ -3,11 +3,11 @@ import {
     REQUEST_DATA,
     RECEIVE_DATA_SUCCESS,
     RECEIVE_DATA_FAILED,
-  } from '../actions/VoteTranslation.js';
+  } from '../actions/VoteTranslation';
 
   import { initialState } from '../constants';
   
-  export const form = (state = initialState.questionForm, action) => {
+  export const form = (state = initialState.voteTranslation, action) => {
     switch (action.type) {
     case POST_VOTE:
       return {
@@ -18,7 +18,7 @@ import {
     }
   };
   
-  export const list = (state = initialState.questions, action) => {
+  export const list = (state = initialState.voteTranslation, action) => {
     switch (action.type) {
     case REQUEST_DATA:
       return {
@@ -29,7 +29,7 @@ import {
       return {
         ...state,
         isFetching: false,
-        questionArray: action.payload.data                  
+        status: action.payload.data                  
       };
     case RECEIVE_DATA_FAILED:
       return {
@@ -40,4 +40,3 @@ import {
       return state;
     }
   };
-  

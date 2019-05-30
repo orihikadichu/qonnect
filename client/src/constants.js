@@ -64,4 +64,10 @@ export const initialState = {
     isFetching: false,
     status: [],
   },
+  //評価機能
+  voteTranslation: {
+    //api接続中である場合（非同期処理をしている途中）はtrueになる
+    isFetching: false,
+    status: [],
+  },
 };

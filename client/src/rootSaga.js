@@ -7,7 +7,8 @@ import answerTranslationSagas from './sagas/AnswerTranslation';
 import commentSagas from './sagas/Comment';
 import commentTranslationSagas from './sagas/CommentTranslation';
 import NotTranslatedSagas from './sagas/NotTranslated';     
-import voteSagas from './sagas/Votes';              
+import voteSagas from './sagas/Votes';
+import voteTranslationSagas from './sagas/VoteTranslation';              
 
 export default function* rootSaga() {
   yield all([
@@ -20,5 +21,6 @@ export default function* rootSaga() {
     ...commentTranslationSagas,
     ...NotTranslatedSagas,
     ...voteSagas,
+    ...voteTranslationSagas,
   ]);
 }
