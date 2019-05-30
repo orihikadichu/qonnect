@@ -2,6 +2,11 @@
 import crypto from 'crypto';
 import path from 'path';
 import fs from 'fs';
+import {
+  getProfileImageName,
+  getProfileImageFilePath,
+  PROFILE_IMAGE_DIR,
+} from '../server/users/util';
 
 module.exports = (sequelize, DataTypes) => {
   const users = sequelize.define('users', {
@@ -33,12 +38,12 @@ module.exports = (sequelize, DataTypes) => {
     image_path: {
       type: DataTypes.VIRTUAL(DataTypes.STRING, ['id']),
       get: function() {
-        const imagePath = getProfileImagePath(this.get('id'));
+        const imagePath = getProfileImageFilePath(this.get('id'));
         try {
           fs.statSync(__dirname + '/../client/public' + imagePath);
           return imagePath;
         } catch (e) {
-          return '/image/blank-profile.png';
+          return PROFILE_IMAGE_DIR + 'blank-profile.png';
         }
       }
     }
@@ -55,12 +60,3 @@ module.exports = (sequelize, DataTypes) => {
   return users;
 };
 
-const getProfileImageName = (userId) => {
-  const sha = crypto.createHash('sha512');
-  sha.update(String(userId));
-  return sha.digest('hex') + '.png';
-};
-
-const getProfileImagePath = (userId) => {
-  return '/image/' + getProfileImageName(userId);
-};

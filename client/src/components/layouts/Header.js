@@ -123,7 +123,7 @@ class Header extends React.Component {
 
   render() {
     const { user } = this.props.state.auth;
-    const imagePath = user.image_path ? user.image_path : '/image/blank-profile.png';
+    const imagePath = user.image_path ? user.image_path : '/image/profile/blank-profile.png';
     const displayMenuElem = <img src={imagePath} className="uk-border-circle" width="50" height="50" alt="" />;
     const menu = this.getMenu(displayMenuElem);
 
