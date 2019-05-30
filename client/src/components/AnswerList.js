@@ -5,6 +5,7 @@ import Linkify from 'react-linkify';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import dayjs from 'dayjs';
+import { getFilteredContents, getTranslatedContents } from '../utils/Translations';
 
 class AnswerList extends Component {
   constructor(props) {
@@ -37,35 +38,6 @@ class AnswerList extends Component {
     return this.props.handlePostComment(postData);
   }
 
-  getFilteredAnswers(answerArray, translateLanguageId) {
-    const filteredAnswers = answerArray.filter((v) => {
-      if (v.translate_language_id === translateLanguageId) {
-        return true;
-      }
-      const targetTranslationsNum = v.answer_translations.filter((v) => {
-        return (v.translate_language_id === translateLanguageId);
-      }).length;
-      return (targetTranslationsNum !== 0);
-    });
-    return filteredAnswers;
-  }
-
-  getTranslatedAnswers(answers, translateLanguageId) {
-    const translatedAnswers = answers.map((v) => {
-      if (v.translate_language_id === translateLanguageId) {
-        v.dispText = v.content;
-        return v;
-      }
-      const answerTranslation = v.answer_translations.filter(v => {
-        return (v.translate_language_id === translateLanguageId);
-      })[0];
-
-      v.dispText = answerTranslation.content;
-      return v;
-    });
-    return translatedAnswers;
-  }
-
   getComment(answerId) {
 
     const { buttonState } = this.state;
@@ -92,7 +64,7 @@ class AnswerList extends Component {
     //値がtrueかfalseか値を取得
     let { buttonState } = this.state;
 
-    if (buttonState[answerId] && buttonState[answerId] == "open") {
+    if (buttonState[answerId] && buttonState[answerId] === "open") {
       // this.state.buttonState= "close";
       buttonState[answerId] = "close";
       this.setState({buttonState});
@@ -118,8 +90,9 @@ class AnswerList extends Component {
   getAnswerList(answerArray, translateLanguageId) {
     const loginUser = this.props.state.auth.user;
 
-    const filteredAnswers = this.getFilteredAnswers(answerArray, translateLanguageId);
-    const translatedAnswers = this.getTranslatedAnswers(filteredAnswers, translateLanguageId);
+    const contentType = 'answer_translations';
+    const filteredAnswers = getFilteredContents(answerArray, translateLanguageId, contentType);
+    const translatedAnswers = getTranslatedContents(filteredAnswers, translateLanguageId, contentType);
 
     return translatedAnswers.map(answer => {
       const editLink = answer.user.id === loginUser.id
