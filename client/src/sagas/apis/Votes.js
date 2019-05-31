@@ -10,3 +10,8 @@ export const postVotes = (postData) => {
     return axios.post('/api/votes', postData);
 };
 
+export const deleteVotes = (params) => {
+    const { answer_id } = params;
+    return axios.delete(`/api/votes/${answer_id}`, { params });
+};
+

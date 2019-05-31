@@ -13,6 +13,7 @@ class AnswerList extends Component {
         //ここからはコメント機能を実装するところ
     this.state = {
         buttonState:{},//空のオブジェクト
+        voteState:{},//評価のための
     };
   }
 
@@ -112,7 +113,24 @@ class AnswerList extends Component {
       comment_id: null,
       status: 1,
     };
+    //votestate===1にして「いいね」をしている状態にする
+    const { voteState } = this.state;
+    voteState[answerId] = 1;
+    this.setState({voteState});
     return this.props.handlePostVote(postData);
+  }
+
+  deleteVote(answerId) {
+    const params = {
+      user_id: this.props.state.auth.user.id,
+      answer_id: answerId,
+    };
+    //votestate===0にして「いいね」を削除した状態にする
+    const { voteState } = this.state;
+    //ここではanswerId＝ 
+    voteState[ answerId ] = "";
+    this.setState({voteState});
+    return this.props.handleDeleteVote(params);
   }
 
   getAnswerList(answerArray, translateLanguageId) {
@@ -121,10 +139,16 @@ class AnswerList extends Component {
     const filteredAnswers = this.getFilteredAnswers(answerArray, translateLanguageId);
     const translatedAnswers = this.getTranslatedAnswers(filteredAnswers, translateLanguageId);
 
+    const { voteState } = this.state;
+
     return translatedAnswers.map(answer => {
       const editLink = answer.user.id === loginUser.id
                      ? <Link to={`/answers/edit/${answer.id}`}>編集</Link>
                      : '';
+
+      const votebutton = voteState[answer.id] === 1
+                    ?<span className="uk-text-danger" uk-icon="heart" onClick={this.deleteVote.bind(this, answer.id)}></span>
+                    :<span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id)}></span>;
 
       const commentForm = this.getComment(answer.id);
 
@@ -136,8 +160,7 @@ class AnswerList extends Component {
                 <Linkify properties={{ target: '_blank'}} >{answer.dispText}</Linkify>
                 <Link to={`/answer_translations/${answer.id}`}><span uk-icon="world"></span></Link>
                 { editLink }
-                {/* 評価ボタン */}
-                <span className="uk-text-primary" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id)}></span>
+                { votebutton }
               </p>
               <p className="uk-text-meta">{dayjs(answer.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
 

@@ -107,12 +107,28 @@ app.post('/api/vote_translations', (req, res) => {
   ;
 });
 
+//評価を削除する
+app.delete('/api/votes/:id', (req, res) => {
+
+  const { answer_id } = req.query;
+  const { user_id } = req.query;
+  const filter = {
+    where: { answer_id, user_id } 
+  };
+  db.votes.destroy(filter)
+    .then((result) => {
+      console.log('result', result);
+      if (result === 0) {
+        return res.status(500).send('いいねの削除に失敗しました。');
+      }
+      return res.status(200).send('いいねの削除に失敗しました。');
+    })
+  ;
+});
+
+
 // Questions
 app.get('/api/questions', (req, res) => {
-  //apiサーバーなのでターミナルで見る
-  // console.log('req.query', req.query);
-  //resはquery
-  // console.log('res', res);
   //渡されたparamsはreq.queryに入っている。
   const params = req.query;
   db.questions.findAll({

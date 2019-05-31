@@ -3,9 +3,11 @@ import { fetchAnswerList } from '../actions/Answer';
 import { postComment } from '../actions/Comment';
 import AnswerList from '../components/AnswerList';
 //評価するための関数
-import { postVote } from '../actions/Vote';
+import { postVote, deleteVote } from '../actions/Vote';
 
-//stateの
+
+
+//this.propsを取得する
 const mapStateToProps = state => {
     return {state};
 };
@@ -16,6 +18,8 @@ const mapDispatchToProps = dispatch => {
         handlePostComment: (data) => dispatch(postComment(data)),
         //評価機能
         handlePostVote: (data) => dispatch(postVote(data)),
+        //評価の削除機能
+        handleDeleteVote: (data) => dispatch(deleteVote(data)),
     };
 };
 
