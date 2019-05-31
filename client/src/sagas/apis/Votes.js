@@ -11,7 +11,7 @@ export const postVotes = (postData) => {
 };
 
 export const deleteVotes = (params) => {
-    const { answer_id } = params;
-    return axios.delete(`/api/votes/${answer_id}`, { params });
+    const { vote_id } = params;
+    return axios.delete(`/api/votes/${vote_id}`, { params });
 };
 

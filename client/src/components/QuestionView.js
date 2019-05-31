@@ -14,7 +14,9 @@ class QuestionView extends Component {
     const {params} = props.match;
     //idを１０進法の数値に変換する
     this.qId = parseInt(params.id, 10);
-
+    this.state = {
+      voteState:{},//評価の切り替えのための空オブジェクト
+    };
   }
 
   componentWillMount() {
@@ -60,7 +62,26 @@ class QuestionView extends Component {
       comment_id: null,
       status: 1,
     };
+    //votestate===1にして「いいね」をしている状態にする
+    const { voteState } = this.state;
+    voteState[ questionId ] = 1;
+    this.setState({voteState});
     return this.props.handlePostVote(postData);
+  }
+
+  deleteVote(questionId) {
+    const params = {
+      user_id: this.props.user.id,
+      key : "question",
+      //他のコンテンツと共通化するためvote_idというkeyにする
+      vote_id: questionId,
+    };
+    //votestate===0にして「いいね」を削除した状態にする
+    const { voteState } = this.state;
+    //ここではanswerId＝ 
+    voteState[ questionId ] = "";
+    this.setState({voteState});
+    return this.props.handleDeleteVote(params);
   }
 
   render() {
@@ -83,6 +104,11 @@ class QuestionView extends Component {
     const editLink = user.id === loginUser.id
                    ? <p><Link to={`/questions/edit/${this.qId}`}>編集</Link></p>
                    : '';
+    //評価機能のための変数
+    const { voteState } = this.state;
+    const votebutton = voteState[question.id] === 1
+                   ?<span className="uk-text-danger" uk-icon="heart" onClick={this.deleteVote.bind(this, question.id)}></span>
+                   :<span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, question.id)}></span>;
 
     return (
       <main className="uk-container uk-container-small">
@@ -101,8 +127,10 @@ class QuestionView extends Component {
             </div>
           </div>
           { editLink }
+          { votebutton }
+
           {/* 評価機能のボタン */}
-          <span className="uk-text-primary" uk-icon="heart" onClick={this.sendVote.bind(this, question.id)}></span>
+          {/* <span className="uk-text-primary" uk-icon="heart" onClick={this.sendVote.bind(this, question.id)}></span> */}
         </div>
 
         <h3 className="uk-heading-line"><span>回答一覧</span></h3>

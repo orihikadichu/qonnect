@@ -95,7 +95,9 @@ class AnswerList extends Component {
   deleteVote(answerId) {
     const params = {
       user_id: this.props.state.auth.user.id,
-      answer_id: answerId,
+      key : "answer",
+      //他のコンテンツと共通化するためvote_idというkeyにする
+      vote_id: answerId,
     };
     //votestate===0にして「いいね」を削除した状態にする
     const { voteState } = this.state;
@@ -111,7 +113,7 @@ class AnswerList extends Component {
     const contentType = 'answer_translations';
     const filteredAnswers = getFilteredContents(answerArray, translateLanguageId, contentType);
     const translatedAnswers = getTranslatedContents(filteredAnswers, translateLanguageId, contentType);
-
+    //評価機能のための変数
     const { voteState } = this.state;
 
     return translatedAnswers.map(answer => {

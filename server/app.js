@@ -110,10 +110,30 @@ app.post('/api/vote_translations', (req, res) => {
 //評価を削除する
 app.delete('/api/votes/:id', (req, res) => {
 
-  const { answer_id } = req.query;
+  const { vote_id } = req.query;
+  const { key } = req.query;
   const { user_id } = req.query;
+
+  let whereContent
+  
+  //コンテンツによってidの切り替え
+  switch(key){
+    case "question":
+        const question_id = vote_id;
+        whereContent = { user_id, question_id } ;
+        break;
+    case "answer":
+        const answer_id = vote_id;
+        whereContent = { user_id, answer_id } ;
+        break;
+    case "comment":
+        const comment_id = vote_id;
+        whereContent = { user_id, comment_id } ;
+        break;
+  }
+
   const filter = {
-    where: { answer_id, user_id } 
+    where: whereContent,
   };
   db.votes.destroy(filter)
     .then((result) => {

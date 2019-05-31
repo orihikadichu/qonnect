@@ -7,9 +7,16 @@ import { getFilteredContents, getTranslatedContents } from '../utils/Translation
 //componentの中でdispatchするための設定
 import { connect } from 'react-redux';
 //評価するための関数
-import { postVote } from '../actions/Vote';
+import { postVote, deleteVote } from '../actions/Vote';
 
 class QuestionListView extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+        voteState:{},//評価の切り替えのための空オブジェクト
+    };
+  }
 
   sendVote(questionId){
     const postData = {
@@ -19,7 +26,26 @@ class QuestionListView extends Component {
       comment_id: null,
       status: 1,
     };
+    //votestate===1にして「いいね」をしている状態にする
+    const { voteState } = this.state;
+    voteState[ questionId ] = 1;
+    this.setState({voteState});
     return this.props.handlePostVote(postData);
+  }
+
+  deleteVote(questionId) {
+    const params = {
+      user_id: this.props.user.id,
+      key : "question",
+      //他のコンテンツと共通化するためvote_idというkeyにする
+      vote_id: questionId,
+    };
+    //votestate===0にして「いいね」を削除した状態にする
+    const { voteState } = this.state;
+    //ここではanswerId＝ 
+    voteState[ questionId ] = "";
+    this.setState({voteState});
+    return this.props.handleDeleteVote(params);
   }
 
   getQuestionList(questionArray, translateLanguageId) {
@@ -31,12 +57,17 @@ class QuestionListView extends Component {
       const { user } = question;
       const userName = user ? user.name : '不明なユーザー';
       const profileLink = `/users/profile/${user.id}`;
+      //評価機能のための変数
+      const { voteState } = this.state;
+      const votebutton = voteState[question.id] === 1
+                   ?<span className="uk-text-danger" uk-icon="heart" onClick={this.deleteVote.bind(this, question.id)}></span>
+                   :<span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, question.id)}></span>;
+
       return (
         <li key={question.id} >
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
           <Link to={`/question_translations/${question.id}`}><span uk-icon="world"></span></Link>
-          {/* 評価機能のボタン */}
-          <span className="uk-text-danger" uk-icon="heart" onClick={this.sendVote.bind(this, question.id)}></span>
+          { votebutton }
           
           <p className="uk-text-meta">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
           <div className="uk-grid uk-grid-small uk-flex-middle" >
@@ -92,6 +123,7 @@ const mapDispatchToProps = dispatch => {
   return {
       //評価機能
       handlePostVote: (data) => dispatch(postVote(data)),
+      handleDeleteVote: (data) => dispatch(deleteVote(data)),
   };
 };
 
