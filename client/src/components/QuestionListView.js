@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { getFilteredContents, getTranslatedContents } from '../utils/Translations';
 
 //componentの中でdispatchするための設定
 import { connect } from 'react-redux';
@@ -9,35 +10,6 @@ import { connect } from 'react-redux';
 import { postVote } from '../actions/Vote';
 
 class QuestionListView extends Component {
-
-  getFilteredQuestions(questionArray, translateLanguageId) {
-    const filteredQuestions = questionArray.filter((v) => {
-      if (v.translate_language_id === translateLanguageId) {
-        return true;
-      }
-      const targetTranslationsNum = v.question_translations.filter((v) => {
-        return (v.translate_language_id === translateLanguageId);
-      }).length;
-      return (targetTranslationsNum !== 0);
-    });
-    return filteredQuestions;
-  }
-  
-  getTranslatedQuestions(questions, translateLanguageId) {
-    const translatedQuestions = questions.map((v) => {
-      if (v.translate_language_id === translateLanguageId) {
-        v.dispText = v.content;
-        return v;
-      }
-      const questionTranslation = v.question_translations.filter(v => {
-        return (v.translate_language_id === translateLanguageId);
-      })[0];
-
-      v.dispText = questionTranslation.content;
-      return v;
-    });
-    return translatedQuestions;
-  }
 
   sendVote(questionId){
     const postData = {
@@ -51,9 +23,9 @@ class QuestionListView extends Component {
   }
 
   getQuestionList(questionArray, translateLanguageId) {
-
-    const filteredQuestions = this.getFilteredQuestions(questionArray, translateLanguageId);
-    const translatedQuestions = this.getTranslatedQuestions(filteredQuestions, translateLanguageId);
+    const contentType = 'question_translations';
+    const filteredQuestions = getFilteredContents(questionArray, translateLanguageId, contentType);
+    const translatedQuestions = getTranslatedContents(filteredQuestions, translateLanguageId, contentType);
 
     return translatedQuestions.map(question => {
       const { user } = question;
