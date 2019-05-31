@@ -2,6 +2,7 @@ import React from 'react';
 import QuestionList from '../containers/QuestionList';
 import QuestionForm from './QuestionForm';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 class Home extends React.Component {
 
@@ -19,7 +20,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { translateLanguageId } = this.props.state.questions;
+    const { locale, translateLanguageId } = this.props.state.intl;
     const questionFormInitVals = {
       content: '',
       country_id: '',
@@ -28,14 +29,15 @@ class Home extends React.Component {
 
     return (
       <main className="uk-container uk-container-small">
+        {/* <FormattedMessage id="hello" /> */}
         <QuestionForm initialValues={questionFormInitVals} onSubmit={this.submitQuestionForm.bind(this)} />
         {/*未編集の質問一覧表示するサイト*/}
         <p><Link to={`/not_translated`}>未翻訳の一覧を見る</Link></p>
         <h3 className="uk-heading-line"><span>質問一覧</span></h3>
         <div className="uk-margin">
-          <select className="uk-select" onChange={e => this.props.changeLanguage(e.target.value)} >
-            <option value="1" >日本語</option>
-            <option value="2" >英語</option>
+          <select className="uk-select" value={locale} onChange={e => this.props.changeLanguage(e.target.value)} >
+            <option value="ja" >日本語</option>
+            <option value="en" >英語</option>
           </select>
         </div>
         <QuestionList translate_language_id={translateLanguageId} />
