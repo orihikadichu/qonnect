@@ -8,14 +8,7 @@ import { postVote, deleteVote } from '../actions/Vote';
 
 class Comment extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-        voteState:{},//評価の切り替えのための空オブジェクト
-    };
-  }
-
-  sendVote(commentId){
+  sendVote(commentId, currentQuestionId){
     const postData = {
       user_id: this.props.user.id,
       question_id: null,
@@ -23,38 +16,33 @@ class Comment extends Component {
       comment_id: commentId,
       status: 1,
     };
-    //votestate===1にして「いいね」をしている状態にする
-    const { voteState } = this.state;
-    voteState[ commentId ] = 1;
-    this.setState({voteState});
-    return this.props.handlePostVote(postData);
+    const question_id = currentQuestionId;
+    const data = { postData, question_id };
+    return this.props.handlePostVote(data);
   }
 
-  deleteVote(commentId) {
+  deleteVote(commentId, currentQuestionId) {
+  
     const params = {
       user_id: this.props.user.id,
       key : "comment",
       //他のコンテンツと共通化するためvote_idというkeyにする
       vote_id: commentId,
     };
-    //votestate===0にして「いいね」を削除した状態にする
-    const { voteState } = this.state;
-    //ここではanswerId＝ 
-    voteState[ commentId ] = "";
-    this.setState({voteState});
-    return this.props.handleDeleteVote(params);
+    const question_id = currentQuestionId;
+    const data = { params,  question_id };
+    return this.props.handleDeleteVote(data);
   }
 
   render() {
-    const { id, user, content, isOwner } = this.props;
+    const { id, user, content, isOwner, voteState, questions } = this.props;
+    const currentQuestionId = questions.currentQuestion.id;
     const editLink = isOwner
                    ? <Link to={`/comments/edit/${id}`}>編集</Link>
                    : '';
-    //評価機能のための変数
-    const { voteState } = this.state;
-    const votebutton = voteState[id] === 1
-                   ?<span className="uk-text-danger" uk-icon="heart" onClick={this.deleteVote.bind(this, id)}></span>
-                   :<span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, id)}></span>;
+    const votebutton = voteState
+                   ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, id, currentQuestionId)}></span>
+                   : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, id, currentQuestionId)}></span>;
 
     return (
       <article className="uk-comment uk-comment-primary">
@@ -81,16 +69,18 @@ class Comment extends Component {
 
 //stateの中からauthだけを取り出す。
 const mapStateToProps = state => {
+  const { questions } = state;
   const { user } = state.auth;
   return {
-    user
+    user,
+    questions
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
       //評価機能
-      handlePostVote: (data) => dispatch(postVote(data)),
+      handlePostVote: (data, questionId) => dispatch(postVote(data, questionId)),
       handleDeleteVote: (data) => dispatch(deleteVote(data)),
   };
 };

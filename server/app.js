@@ -110,9 +110,7 @@ app.post('/api/vote_translations', (req, res) => {
 //評価を削除する
 app.delete('/api/votes/:id', (req, res) => {
 
-  const { vote_id } = req.query;
-  const { key } = req.query;
-  const { user_id } = req.query;
+  const { vote_id, key, user_id } = req.query;
 
   let whereContent
   
@@ -636,16 +634,22 @@ app.get('/api/answers', (req, res) => {
       {
         model: db.comments,
         required: false,
+
         include: [
           db.users,
-          db.comment_translations
+          db.comment_translations,
+          //評価データの追加
+          db.votes
         ]
       },
       {
         model: db.answer_translations,
         required: false,
       },
-    ]
+    ],
+    order: [
+      [db.comments, 'created_at', 'ASC']
+    ],
   })
     .then((instanses) => {
       res.status(200).send(instanses);
