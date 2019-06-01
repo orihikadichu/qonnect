@@ -115,14 +115,12 @@ class AnswerList extends Component {
                      ? <Link to={`/answers/edit/${answer.id}`}>編集</Link>
                      : '';
       
-      console.log("------------answer-----------",answer);
       const voteState = answer.votes.length !== 0 ;
       console.log("voteState", voteState);
 
       const votebutton = voteState
                     ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, answer.id, this.props.qId)}></span>
                     : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id, this.props.qId)}></span>;
-
 
       const commentForm = this.getComment(answer.id);
 
