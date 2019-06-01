@@ -9,7 +9,7 @@ import { postVote, deleteVote } from '../actions/Vote';
 class Comment extends Component {
 
   sendVote(commentId, currentQuestionId){
-    const postData = {
+    const params = {
       user_id: this.props.user.id,
       question_id: null,
       answer_id: null,
@@ -17,7 +17,7 @@ class Comment extends Component {
       status: 1,
     };
     const question_id = currentQuestionId;
-    const data = { postData, question_id };
+    const data = { params, question_id };
     return this.props.handlePostVote(data);
   }
 

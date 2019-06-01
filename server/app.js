@@ -634,11 +634,10 @@ app.get('/api/answers', (req, res) => {
       {
         model: db.comments,
         required: false,
-
         include: [
           db.users,
           db.comment_translations,
-          //評価データの追加
+          //コメントのいいねデータを取得
           db.votes
         ]
       },
@@ -646,9 +645,15 @@ app.get('/api/answers', (req, res) => {
         model: db.answer_translations,
         required: false,
       },
+      //回答のいいねデータを取得
+      {
+        model: db.votes,
+        required: false,
+      },
     ],
     order: [
-      [db.comments, 'created_at', 'ASC']
+      [db.comments, 'created_at', 'ASC'],
+      ['created_at', 'ASC'],
     ],
   })
     .then((instanses) => {

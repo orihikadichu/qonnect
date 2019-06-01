@@ -15,9 +15,9 @@ import { notifySuccess, notifyError } from './Util';
 
 export function* postVote(action) {
   try {
-    const { postData, question_id } = action.payload;
+    const { params, question_id } = action.payload;
     yield put(requestData());
-    yield call(postVotes, postData);
+    yield call(postVotes, params);
     const data = { payload: {
       question_id: question_id,
       translate_language_id: 1

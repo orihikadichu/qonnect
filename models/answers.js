@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     answers.belongsTo(models.questions, {foreignKey: 'question_id'});
     answers.hasMany(models.comments, {foreignKey: 'answer_id'});
     answers.hasMany(models.answer_translations, {foreignKey: 'answer_id'});
+    answers.hasMany(models.votes, {foreignKey: 'answer_id'});
   };
   return answers;
 };

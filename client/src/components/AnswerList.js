@@ -66,7 +66,6 @@ class AnswerList extends Component {
     let { buttonState } = this.state;
 
     if (buttonState[answerId] && buttonState[answerId] === "open") {
-      // this.state.buttonState= "close";
       buttonState[answerId] = "close";
       this.setState({buttonState});
       return
@@ -77,34 +76,29 @@ class AnswerList extends Component {
     }
   }
 
-  sendVote(answerId){
-    const postData = {
+  sendVote(answerId, currentQuestionId){
+    const params = {
       user_id: this.props.state.auth.user.id,
       question_id: null,
       answer_id: answerId,
       comment_id: null,
       status: 1,
     };
-    //votestate===1にして「いいね」をしている状態にする
-    const { voteState } = this.state;
-    voteState[answerId] = 1;
-    this.setState({voteState});
-    return this.props.handlePostVote(postData);
+    const question_id = currentQuestionId;
+    const data = { params, question_id };
+    return this.props.handlePostVote(data);
   }
 
-  deleteVote(answerId) {
+  deleteVote(answerId, currentQuestionId) {
     const params = {
       user_id: this.props.state.auth.user.id,
       key : "answer",
       //他のコンテンツと共通化するためvote_idというkeyにする
       vote_id: answerId,
     };
-    //votestate===0にして「いいね」を削除した状態にする
-    const { voteState } = this.state;
-    //ここではanswerId＝ 
-    voteState[ answerId ] = "";
-    this.setState({voteState});
-    return this.props.handleDeleteVote(params);
+    const question_id = currentQuestionId;
+    const data = { params, question_id };
+    return this.props.handleDeleteVote(data);
   }
 
   getAnswerList(answerArray, translateLanguageId) {
@@ -113,17 +107,22 @@ class AnswerList extends Component {
     const contentType = 'answer_translations';
     const filteredAnswers = getFilteredContents(answerArray, translateLanguageId, contentType);
     const translatedAnswers = getTranslatedContents(filteredAnswers, translateLanguageId, contentType);
-    //評価機能のための変数
-    const { voteState } = this.state;
+
+    console.log(this.props);
 
     return translatedAnswers.map(answer => {
       const editLink = answer.user.id === loginUser.id
                      ? <Link to={`/answers/edit/${answer.id}`}>編集</Link>
                      : '';
+      
+      console.log("------------answer-----------",answer);
+      const voteState = answer.votes.length !== 0 ;
+      console.log("voteState", voteState);
 
-      const votebutton = voteState[answer.id] === 1
-                    ?<span className="uk-text-danger" uk-icon="heart" onClick={this.deleteVote.bind(this, answer.id)}></span>
-                    :<span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id)}></span>;
+      const votebutton = voteState
+                    ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, answer.id, this.props.qId)}></span>
+                    : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id, this.props.qId)}></span>;
+
 
       const commentForm = this.getComment(answer.id);
 
