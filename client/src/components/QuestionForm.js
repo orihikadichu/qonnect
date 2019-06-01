@@ -1,25 +1,29 @@
 import React, { Component } from 'react';
 import { Field, Formik } from 'formik';
 import LanguageFormSelect from './LanguageFormSelect';
+import { injectIntl } from 'react-intl';
 
 class QuestionForm extends Component {
 
   validate(values) {
+    console.log('values', values);
+    const { formatMessage } = this.props.intl;
     let errors = {};
     if (!values.content) {
-      errors.content = '質問文を入力してください';
+      errors.content = formatMessage({id: "errors.questions.content"});
     }
     if (!values.country_id) {
-      errors.country_id = '回答対象言語を指定してください';
+      errors.country_id = formatMessage({id: "errors.questions.country_id"});
     }
     if (!values.translate_language_id) {
-      errors.translate_language_id = '投稿言語を指定してください';
+      errors.translate_language_id = formatMessage({id: "errors.questions.translate_language_id"});
     }
     return errors;
   }
 
   render() {
     const { initialValues } = this.props;
+    const { formatMessage } = this.props.intl;
     return (
       <Formik
         initialValues={initialValues}
@@ -40,7 +44,7 @@ class QuestionForm extends Component {
                      name="content"
                      component="textarea"
                      type="text"
-                     placeholder="質問を入力してください"
+                     placeholder={formatMessage({id: 'placeholders.questions.content'})}
                      rows="5"
                      className={'form-control uk-textarea'}
                 />
@@ -48,16 +52,16 @@ class QuestionForm extends Component {
               </div>
               <div className="uk-margin uk-grid uk-grid-small uk-child-width-expand@s" >
                 <div className="uk-grid-margin" >
-                  <LanguageFormSelect name="country_id" placeholder="回答対象国" />
+                  <LanguageFormSelect name="country_id" placeholder={formatMessage({id: 'placeholders.questions.country_id'})} />
                   {touched.country_id && errors.country_id && <div className="uk-text-warning">{errors.country_id}</div>}
                 </div>
                 <div className="uk-grid-margin" >
-                  <LanguageFormSelect name="translate_language_id" placeholder="投稿言語" />
+                  <LanguageFormSelect name="translate_language_id" placeholder={formatMessage({id: "placeholders.questions.translate_language_id"})} />
                   {touched.translate_language_id && errors.translate_language_id && <div className="uk-text-warning">{errors.translate_language_id}</div>}
                 </div>
               </div>
               <div className="uk-margin">
-                <button className="uk-button uk-button-default" >投稿</button>
+                <button className="uk-button uk-button-default" >{formatMessage({id: "placeholders.questions.submit_btn"})}</button>
               </div>
             </fieldset>
           </form>
@@ -67,4 +71,4 @@ class QuestionForm extends Component {
   }
 }
 
-export default QuestionForm;
+export default injectIntl(QuestionForm);

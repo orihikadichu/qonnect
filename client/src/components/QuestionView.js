@@ -64,7 +64,8 @@ class QuestionView extends Component {
   }
 
   render() {
-    const { currentQuestion, translateLanguageId } = this.props.state.questions;
+    const { currentQuestion } = this.props.state.questions;
+    const { translateLanguageId } = this.props.state.intl;
 
     if (Object.keys(currentQuestion).length === 0) {
       return (
