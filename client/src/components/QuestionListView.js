@@ -11,26 +11,18 @@ import { postVote, deleteVote } from '../actions/Vote';
 
 class QuestionListView extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-        voteState:{},//評価の切り替えのための空オブジェクト
-    };
-  }
-
   sendVote(questionId){
-    const postData = {
+    const params = {
       user_id: this.props.user.id,
       question_id: questionId,
       answer_id: null,
       comment_id: null,
       status: 1,
+      country_id:2,
     };
-    //votestate===1にして「いいね」をしている状態にする
-    const { voteState } = this.state;
-    voteState[ questionId ] = 1;
-    this.setState({voteState});
-    return this.props.handlePostVote(postData);
+    const question_id = "";
+    const data = { params,  question_id };
+    return this.props.handlePostVote(data);
   }
 
   deleteVote(questionId) {
@@ -39,13 +31,11 @@ class QuestionListView extends Component {
       key : "question",
       //他のコンテンツと共通化するためvote_idというkeyにする
       vote_id: questionId,
+      country_id:2,
     };
-    //votestate===0にして「いいね」を削除した状態にする
-    const { voteState } = this.state;
-    //ここではanswerId＝ 
-    voteState[ questionId ] = "";
-    this.setState({voteState});
-    return this.props.handleDeleteVote(params);
+    const question_id = "";
+    const data = { params,  question_id };
+    return this.props.handleDeleteVote(data);
   }
 
   getQuestionList(questionArray, translateLanguageId) {
@@ -58,9 +48,10 @@ class QuestionListView extends Component {
       const userName = user ? user.name : '不明なユーザー';
       const profileLink = `/users/profile/${user.id}`;
       //評価機能のための変数
-      const { voteState } = this.state;
-      const votebutton = voteState[question.id] === 1
-                   ?<span className="uk-text-danger" uk-icon="heart" onClick={this.deleteVote.bind(this, question.id)}></span>
+
+      const voteState = question.votes.length !== 0 ;
+      const votebutton = voteState
+                   ?<span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, question.id)}></span>
                    :<span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, question.id)}></span>;
 
       return (
@@ -108,8 +99,6 @@ class QuestionListView extends Component {
     );
   }
 }
-
-// export default QuestionListView;
 
 //stateの中からauthだけを取り出す。
 const mapStateToProps = state => {

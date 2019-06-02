@@ -147,7 +147,7 @@ app.delete('/api/votes/:id', (req, res) => {
 
 // Questions
 app.get('/api/questions', (req, res) => {
-  //渡されたparamsはreq.queryに入っている。
+  //params＝country.id
   const params = req.query;
   db.questions.findAll({
     where: params,
@@ -160,6 +160,10 @@ app.get('/api/questions', (req, res) => {
       },
       {
         model: db.question_translations,
+        required: false
+      },
+      {
+        model: db.votes,
         required: false
       },
     ],

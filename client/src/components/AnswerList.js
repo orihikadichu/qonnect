@@ -108,16 +108,12 @@ class AnswerList extends Component {
     const filteredAnswers = getFilteredContents(answerArray, translateLanguageId, contentType);
     const translatedAnswers = getTranslatedContents(filteredAnswers, translateLanguageId, contentType);
 
-    console.log(this.props);
-
     return translatedAnswers.map(answer => {
       const editLink = answer.user.id === loginUser.id
                      ? <Link to={`/answers/edit/${answer.id}`}>編集</Link>
                      : '';
       
       const voteState = answer.votes.length !== 0 ;
-      console.log("voteState", voteState);
-
       const votebutton = voteState
                     ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, answer.id, this.props.qId)}></span>
                     : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id, this.props.qId)}></span>;
