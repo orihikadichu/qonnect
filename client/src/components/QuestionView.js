@@ -5,6 +5,7 @@ import Linkify from 'react-linkify';
 import AnswerForm from './AnswerForm';
 import AnswerList from '../containers/AnswerList';
 import dayjs from 'dayjs';
+import { injectIntl } from 'react-intl';
 
 class QuestionView extends Component {
   constructor(props) {
@@ -66,6 +67,7 @@ class QuestionView extends Component {
   render() {
     const { currentQuestion } = this.props.state.questions;
     const { translateLanguageId } = this.props.state.intl;
+    const { formatMessage } = this.props.intl;
 
     if (Object.keys(currentQuestion).length === 0) {
       return (
@@ -82,7 +84,7 @@ class QuestionView extends Component {
     const { user } = currentQuestion;
     const answerFormInitVals = { content: '', translate_language_id: '' };
     const editLink = user.id === loginUser.id
-                   ? <p><Link to={`/questions/edit/${this.qId}`}>編集</Link></p>
+                   ? <p><Link to={`/questions/edit/${this.qId}`}>{formatMessage({id: 'links.edit'})}</Link></p>
                    : '';
 
     return (
@@ -106,7 +108,7 @@ class QuestionView extends Component {
           <span className="uk-text-primary" uk-icon="heart" onClick={this.sendVote.bind(this, question.id)}></span>
         </div>
 
-        <h3 className="uk-heading-line"><span>回答一覧</span></h3>
+        <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.answer_list"})}</span></h3>
 
         <div className="uk-margin-bottom">
           <AnswerForm qId={this.qId} initialValues={answerFormInitVals} onSubmit={this.handleSubmit.bind(this)}/>
@@ -120,4 +122,4 @@ class QuestionView extends Component {
   }
 }
 
-export default QuestionView;
+export default injectIntl(QuestionView);

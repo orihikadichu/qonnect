@@ -6,7 +6,6 @@ import { injectIntl } from 'react-intl';
 class QuestionForm extends Component {
 
   validate(values) {
-    console.log('values', values);
     const { formatMessage } = this.props.intl;
     let errors = {};
     if (!values.content) {
@@ -28,7 +27,7 @@ class QuestionForm extends Component {
       <Formik
         initialValues={initialValues}
         enableReinitialize={true}
-        validate={this.validate}
+        validate={this.validate.bind(this)}
         onSubmit={(values, { setSubmitting, setErrors, resetForm }) => {
             this.props.onSubmit(values);
             setSubmitting(false);
@@ -61,7 +60,7 @@ class QuestionForm extends Component {
                 </div>
               </div>
               <div className="uk-margin">
-                <button className="uk-button uk-button-default" >{formatMessage({id: "placeholders.questions.submit_btn"})}</button>
+                <button type="submit" className="uk-button uk-button-default" >{formatMessage({id: "placeholders.questions.submit_btn"})}</button>
               </div>
             </fieldset>
           </form>

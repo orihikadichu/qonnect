@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, Formik } from 'formik';
+import { injectIntl } from 'react-intl';
 
 class SignUpForm extends React.Component {
   validate(values) {
@@ -28,6 +29,8 @@ class SignUpForm extends React.Component {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
+
     return (
       <Formik
         initialValues={{
@@ -53,7 +56,7 @@ class SignUpForm extends React.Component {
                      name="name"
                      component="input"
                      type="text"
-                     placeholder="名前"
+                     placeholder={formatMessage({id: "placeholders.sign_ups.name"})}
                      className={'form-control uk-input'}
                 />
                 {touched.name && errors.name && <div className="uk-text-warning">{errors.name}</div>}
@@ -64,7 +67,7 @@ class SignUpForm extends React.Component {
                      name="mail"
                      component="input"
                      type="text"
-                     placeholder="メールアドレス"
+                     placeholder={formatMessage({id: "placeholders.sign_ups.mail"})}
                      className={'form-control uk-input'}
                 />
                 {touched.mail && errors.mail && <div className="uk-text-warning">{errors.mail}</div>}
@@ -75,7 +78,7 @@ class SignUpForm extends React.Component {
                      name="password"
                      component="input"
                      type="password"
-                     placeholder="パスワード"
+                     placeholder={formatMessage({id: "placeholders.sign_ups.password"})}
                      className={'form-control uk-input'}
                 />
                 {touched.password && errors.password && <div className="uk-text-warning">{errors.password}</div>}
@@ -86,13 +89,13 @@ class SignUpForm extends React.Component {
                      name="passwordConfirm"
                      component="input"
                      type="password"
-                     placeholder="パスワード確認"
+                     placeholder={formatMessage({id: "placeholders.sign_ups.confirm_password"})}
                      className={'form-control uk-input'}
                 />
                 {touched.passwordConfirm && errors.passwordConfirm && <div className="uk-text-warning">{errors.passwordConfirm}</div>}
               </div>
               <div className="uk-margin">
-                <button className="uk-button uk-button-primary" >新規登録</button>
+                <button className="uk-button uk-button-primary" >{formatMessage({id: "buttons.title.sign_up"})}</button>
               </div>
             </fieldset>
           </form>
@@ -114,4 +117,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SignUpForm));
