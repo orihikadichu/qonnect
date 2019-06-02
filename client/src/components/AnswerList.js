@@ -15,6 +15,7 @@ class AnswerList extends Component {
         //ここからはコメント機能を実装するところ
     this.state = {
         buttonState:{},//空のオブジェクト
+        voteState:{},//評価のための
     };
   }
 
@@ -66,7 +67,6 @@ class AnswerList extends Component {
     let { buttonState } = this.state;
 
     if (buttonState[answerId] && buttonState[answerId] === "open") {
-      // this.state.buttonState= "close";
       buttonState[answerId] = "close";
       this.setState({buttonState});
       return
@@ -77,15 +77,29 @@ class AnswerList extends Component {
     }
   }
 
-  sendVote(answerId){
-    const postData = {
+  sendVote(answerId, currentQuestionId){
+    const params = {
       user_id: this.props.state.auth.user.id,
       question_id: null,
       answer_id: answerId,
       comment_id: null,
       status: 1,
     };
-    return this.props.handlePostVote(postData);
+    const question_id = currentQuestionId;
+    const data = { params, question_id };
+    return this.props.handlePostVote(data);
+  }
+
+  deleteVote(answerId, currentQuestionId) {
+    const params = {
+      user_id: this.props.state.auth.user.id,
+      key : "answer",
+      //他のコンテンツと共通化するためvote_idというkeyにする
+      vote_id: answerId,
+    };
+    const question_id = currentQuestionId;
+    const data = { params, question_id };
+    return this.props.handleDeleteVote(data);
   }
 
   getAnswerList(answerArray, translateLanguageId) {
@@ -100,6 +114,11 @@ class AnswerList extends Component {
       const editLink = answer.user.id === loginUser.id
                      ? <Link to={`/answers/edit/${answer.id}`}>{ formatMessage({id: "links.edit"}) }</Link>
                      : '';
+      
+      const voteState = answer.votes.length !== 0 ;
+      const votebutton = voteState
+                    ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, answer.id, this.props.qId)}></span>
+                    : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id, this.props.qId)}></span>;
 
       const commentForm = this.getComment(answer.id);
 
@@ -111,8 +130,7 @@ class AnswerList extends Component {
                 <Linkify properties={{ target: '_blank'}} >{answer.dispText}</Linkify>
                 <Link to={`/answer_translations/${answer.id}`}><span uk-icon="world"></span></Link>
                 { editLink }
-                {/* 評価ボタン */}
-                <span className="uk-text-primary" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id)}></span>
+                { votebutton }
               </p>
               <p className="uk-text-meta">{dayjs(answer.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
 

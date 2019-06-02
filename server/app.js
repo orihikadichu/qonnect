@@ -107,13 +107,47 @@ app.post('/api/vote_translations', (req, res) => {
   ;
 });
 
+//評価を削除する
+app.delete('/api/votes/:id', (req, res) => {
+
+  const { vote_id, key, user_id } = req.query;
+
+  let whereContent
+  
+  //コンテンツによってidの切り替え
+  switch(key){
+    case "question":
+        const question_id = vote_id;
+        whereContent = { user_id, question_id } ;
+        break;
+    case "answer":
+        const answer_id = vote_id;
+        whereContent = { user_id, answer_id } ;
+        break;
+    case "comment":
+        const comment_id = vote_id;
+        whereContent = { user_id, comment_id } ;
+        break;
+  }
+
+  const filter = {
+    where: whereContent,
+  };
+  db.votes.destroy(filter)
+    .then((result) => {
+      console.log('result', result);
+      if (result === 0) {
+        return res.status(500).send('いいねの削除に失敗しました。');
+      }
+      return res.status(200).send('いいねの削除に失敗しました。');
+    })
+  ;
+});
+
+
 // Questions
 app.get('/api/questions', (req, res) => {
-  //apiサーバーなのでターミナルで見る
-  // console.log('req.query', req.query);
-  //resはquery
-  // console.log('res', res);
-  //渡されたparamsはreq.queryに入っている。
+  //params＝country.id
   const params = req.query;
   db.questions.findAll({
     where: params,
@@ -126,6 +160,10 @@ app.get('/api/questions', (req, res) => {
       },
       {
         model: db.question_translations,
+        required: false
+      },
+      {
+        model: db.votes,
         required: false
       },
     ],
@@ -602,14 +640,25 @@ app.get('/api/answers', (req, res) => {
         required: false,
         include: [
           db.users,
-          db.comment_translations
+          db.comment_translations,
+          //コメントのいいねデータを取得
+          db.votes
         ]
       },
       {
         model: db.answer_translations,
         required: false,
       },
-    ]
+      //回答のいいねデータを取得
+      {
+        model: db.votes,
+        required: false,
+      },
+    ],
+    order: [
+      [db.comments, 'created_at', 'ASC'],
+      ['created_at', 'ASC'],
+    ],
   })
     .then((instanses) => {
       res.status(200).send(instanses);

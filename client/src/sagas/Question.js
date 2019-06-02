@@ -21,18 +21,10 @@ import { notifySuccess, notifyError } from './Util';
 
 export function* handleFetchData(action) {
   try {
-    // axios.get()を呼ぶ前にisFetchingをtrueにしておく
-    //yieldは一旦ここで動きが止まるような同的てな処理が可能。
-    //非同期処理をしないで、１つ１つの作業を終了してから次のコードを実行する
     yield put(requestData());
-    //action.payloadの中にparamsが入っている。
-    //callはsagasの機能でapiを呼ぶための機能
     const payload = yield call(api.fetchQuestionList, action.payload);
-    // console.log("payload",payload);
-    //reducers/Question.jsで関数を実行する。
     yield put(receiveDataSuccess(payload));
   } catch (e) {
-    // isFetchingをfalse
     yield put(receiveDataFailed());
   }
 };

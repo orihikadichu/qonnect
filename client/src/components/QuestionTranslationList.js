@@ -44,7 +44,7 @@ class QuestionTranslationList extends Component {
                 <Linkify properties={{ target: '_blank'}} >{translation.content}</Linkify>
                 { editLink }
                 {/* 評価機能のボタン */}
-                <span className="uk-text-primary" uk-icon="heart" onClick={this.sendVote.bind(this, translation.id)}></span>
+                {/* <span className="uk-text-primary" uk-icon="heart" onClick={this.sendVote.bind(this, translation.id)}></span> */}
               </p>
               <p className="uk-text-meta">{dayjs(translation.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
 
