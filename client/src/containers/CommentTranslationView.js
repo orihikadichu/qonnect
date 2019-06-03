@@ -12,6 +12,7 @@ import {
 import {
   postCommentTranslationData
 } from '../actions/CommentTranslation';
+import { isEmptyObject } from '../utils';
 
 
 class CommentTranslationView extends Component {
@@ -44,7 +45,7 @@ class CommentTranslationView extends Component {
 
   render() {
     const { currentComment } = this.props.state.comments;
-    if (Object.keys(currentComment).length === 0) {
+    if (isEmptyObject(currentComment)) {
       return (
         <div className="uk-position-center uk-overlay uk-overlay-default">
           <ClipLoader />

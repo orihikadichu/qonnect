@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import CommentForm from './CommentForm';
+import { isEmptyObject } from '../utils';
 
 class CommentEdit extends Component {
   constructor(props) {
@@ -61,7 +62,7 @@ class CommentEdit extends Component {
   render() {
     const { currentComment } = this.props.state.comments;
 
-    if (Object.keys(currentComment).length === 0) {
+    if (isEmptyObject(currentComment)) {
       return (
         <div className="uk-position-center uk-overlay uk-overlay-default">
           <ClipLoader />

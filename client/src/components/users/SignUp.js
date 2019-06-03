@@ -17,7 +17,7 @@ class SignUp extends React.Component {
     return (
       <main className="uk-container uk-container-small">
         <h2 className="uk-h3" >{ formatMessage({id: "titles.sign_up"}) }</h2>
-        
+
         <SignUpForm onSubmit={this.onClickSubmit.bind(this)} />
 
         <div className="uk-margin">

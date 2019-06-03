@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 /* import { ClipLoader } from 'react-spinners';*/
 import LoginForm from './LoginForm';
+import { injectIntl } from 'react-intl';
 
 class Login extends React.Component {
 
@@ -13,10 +14,11 @@ class Login extends React.Component {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     return (
       <main className="uk-container uk-container-small">
-        <h2 className="uk-h3" >Login</h2>
-        
+        <h2 className="uk-h3" >{formatMessage({id: "titles.login"})}</h2>
+
         <LoginForm onSubmit={this.onClickSubmit.bind(this)} />
 
         <div className="uk-margin">
@@ -28,4 +30,4 @@ class Login extends React.Component {
   }
 };
 
-export default Login;
+export default injectIntl(Login);

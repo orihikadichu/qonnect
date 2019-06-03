@@ -5,24 +5,25 @@ import { injectIntl } from 'react-intl';
 
 class SignUpForm extends React.Component {
   validate(values) {
+    const { formatMessage } = this.props.intl;
     let errors = {};
 
     if (!values.name) {
-      errors.name = 'ユーザー名を入力してください';
+      errors.name = formatMessage({id: "errors.sign_ups.name"});
     }
 
     if (!values.mail) {
-      errors.mail = 'メールアドレスを入力してください';
+      errors.mail = formatMessage({id: "errors.sign_ups.mail"});
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.mail)) {
-      errors.mail = '適切なメールアドレスを指定してください';
+      errors.mail = formatMessage({id: "errors.sign_ups.appropriate_mail"});
     }
 
     if (!values.password) {
-      errors.password = 'パスワードを入力してください';
+      errors.password = formatMessage({id: "errors.sign_ups.password"});
     }
 
     if (values.passwordConfirm !== values.password) {
-      errors.passwordConfirm = 'パスワードが一致していません';
+      errors.passwordConfirm = formatMessage({id: "errors.sign_ups.confirm_password"});
     }
 
     return errors;
@@ -40,7 +41,7 @@ class SignUpForm extends React.Component {
           passwordConfirm: ''
         }}
         enableReinitialize={true}
-        validate={this.validate}
+        validate={this.validate.bind(this)}
         onSubmit={(values, { setSubmitting, setErrors, resetForm }) => {
             this.props.onSubmit(values);
             setSubmitting(false);

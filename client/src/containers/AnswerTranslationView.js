@@ -13,6 +13,7 @@ import {
 import {
   postAnswerTranslationData
 } from '../actions/AnswerTranslation';
+import { isEmptyObject } from '../utils';
 
 
 class AnswerTranslationView extends Component {
@@ -44,7 +45,7 @@ class AnswerTranslationView extends Component {
 
   render() {
     const { currentAnswer } = this.props.state.answers;
-    if (Object.keys(currentAnswer).length === 0) {
+    if (isEmptyObject(currentAnswer)) {
       return (
         <div className="uk-position-center uk-overlay uk-overlay-default">
           <ClipLoader />

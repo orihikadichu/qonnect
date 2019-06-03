@@ -6,6 +6,7 @@ import AnswerForm from './AnswerForm';
 import AnswerList from '../containers/AnswerList';
 import dayjs from 'dayjs';
 import { injectIntl } from 'react-intl';
+import { isEmptyObject } from '../utils';
 
 class QuestionView extends Component {
   constructor(props) {
@@ -90,7 +91,7 @@ class QuestionView extends Component {
     const { translateLanguageId } = this.props.state.intl;
     const { formatMessage } = this.props.intl;
 
-    if (Object.keys(currentQuestion).length === 0) {
+    if (isEmptyObject(currentQuestion)) {
       return (
         <div className="uk-position-center uk-overlay uk-overlay-default">
           <ClipLoader />
