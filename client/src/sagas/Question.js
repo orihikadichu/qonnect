@@ -31,7 +31,7 @@ export function* handleFetchData(action) {
 
 export function* handleFetchQuestionById(action) {
   try {
-    const id  = action.payload;
+    const  id   = action.payload;
     yield put(requestData());
     const payload = yield call(api.fetchQuestion, id);
     yield put(receiveSingleDataSuccess(payload));

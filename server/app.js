@@ -269,7 +269,13 @@ app.get('/api/not_translated_comments', (req, res) => {
 });
 
 app.get('/api/questions/:id', (req, res) => {
+  console.log("--------------");
+  console.log(req.params);
+  console.log("--------------");
   const qId = req.params.id;
+  console.log("--------------");
+  console.log(qId);
+  console.log("--------------");
   db.questions.findOne({
     where: {id: qId},
     include: [

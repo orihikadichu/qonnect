@@ -53,7 +53,7 @@ class QuestionView extends Component {
 
   sendVote(question){
     const params = {
-      user_id: 1,
+      user_id: question.user_id,
       question_id: question.id,
       answer_id: null,
       comment_id: null,
@@ -62,12 +62,11 @@ class QuestionView extends Component {
     const key = "questionView";
     const data = { params,  key };
     return this.props.handlePostVote(data);
-
   }
 
   deleteVote(question) {
     const params = {
-      user_id: this.props.user.id,
+      user_id: question.user_id,
       key : "question",
       //他のコンテンツと共通化するためvote_idというkeyにする
       vote_id: question.id,

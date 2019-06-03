@@ -10,9 +10,15 @@ import {
 import * as answerSaga from './Answer';
 import * as questionSagas from './Question';
 
-import { postVotes, deleteVotes } from './apis/Votes';
+import { 
+  postVotes, 
+  deleteVotes 
+} from './apis/Votes';
 
-import { notifySuccess, notifyError } from './Util';
+import { 
+  notifySuccess, 
+  notifyError 
+} from './Util';
 
 export function* postVote(action) {
   try {
@@ -37,9 +43,7 @@ export function* postVote(action) {
           yield call(questionSagas.handleFetchData, data);
           break;
       case "questionView":
-          data = { payload: {
-            id: params.question_id,
-          } };
+          data = { payload: params.question_id };
           yield call(questionSagas.handleFetchQuestionById, data);
           break;
     }
@@ -77,9 +81,7 @@ export function* deleteVote(action) {
           yield call(questionSagas.handleFetchData, data);
           break;
       case "questionView":
-          data = { payload: {
-            id: params.question_id,
-          } };
+          data = { payload: params.question_id };
           yield call(questionSagas.handleFetchQuestionById, data);
           break;
     }

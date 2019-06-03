@@ -8,7 +8,10 @@ import {
     fetchAnswerList
 } from '../actions/Answer';
 //評価するための関数
-import { postVote } from '../actions/Vote';
+import { 
+    postVote, 
+    deleteVote 
+} from '../actions/Vote';
 
 const mapStateToProps = state => {
     return {state};
@@ -20,6 +23,7 @@ const mapDispatchToProps = dispatch => {
         handleSubmit: (postData) => dispatch(postAnswerData(postData)),
         fetchAnswers: (question_id) => dispatch(fetchAnswerList(question_id)),
         handlePostVote: (data) => dispatch(postVote(data)),
+        handleDeleteVote: (data) => dispatch(deleteVote(data)),
     };
 };
 
