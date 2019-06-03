@@ -12,6 +12,8 @@ import {
 import {
   postCommentTranslationData
 } from '../actions/CommentTranslation';
+import { isEmptyObject } from '../utils';
+import { injectIntl } from 'react-intl';
 
 
 class CommentTranslationView extends Component {
@@ -28,9 +30,9 @@ class CommentTranslationView extends Component {
   handleSubmit(formData) {
     try {
       const { content, translate_language_id } = formData;
-      console.log('content', content);
       if (content === '') {
-        throw new Error('空文字で投稿はできません。');
+        const msg = '空文字で投稿はできません。';
+        throw new Error(msg);
       }
       const { user } = this.props.state.auth;
       const comment_id = this.commentId;
@@ -43,8 +45,10 @@ class CommentTranslationView extends Component {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const { currentComment } = this.props.state.comments;
-    if (Object.keys(currentComment).length === 0) {
+
+    if (isEmptyObject(currentComment)) {
       return (
         <div className="uk-position-center uk-overlay uk-overlay-default">
           <ClipLoader />
@@ -64,11 +68,11 @@ class CommentTranslationView extends Component {
               <img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" />
             </div>
             <div className="uk-width-expand">
-              <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${user.id}`}>{ user.name }</Link></h4>
+              <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${user.id}`}>{ userName }</Link></h4>
             </div>
           </div>
         </div>
-        <h3 className="uk-heading-line"><span>翻訳一覧</span></h3>
+        <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.translation_list"})}</span></h3>
         <CommentTranslationForm commentId={this.commentId} onSubmit={this.handleSubmit.bind(this)} />
         <CommentTranslationList commentId={this.commentId} />
         <hr className="uk-divider-icon" />
@@ -89,4 +93,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommentTranslationView);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(CommentTranslationView));

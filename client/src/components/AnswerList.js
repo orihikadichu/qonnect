@@ -6,6 +6,7 @@ import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import dayjs from 'dayjs';
 import { getFilteredContents, getTranslatedContents } from '../utils/Translations';
+import { injectIntl } from 'react-intl';
 
 class AnswerList extends Component {
   constructor(props) {
@@ -106,6 +107,7 @@ class AnswerList extends Component {
   }
 
   getAnswerList(answerArray, translateLanguageId) {
+    const { formatMessage } = this.props.intl;
     const loginUser = this.props.state.auth.user;
 
     const contentType = 'answer_translations';
@@ -114,7 +116,7 @@ class AnswerList extends Component {
 
     return translatedAnswers.map(answer => {
       const editLink = answer.user.id === loginUser.id
-                     ? <Link to={`/answers/edit/${answer.id}`}>編集</Link>
+                     ? <Link to={`/answers/edit/${answer.id}`}>{ formatMessage({id: "links.edit"}) }</Link>
                      : '';
       
       const voteState = answer.votes.length !== 0 ;
@@ -151,7 +153,7 @@ class AnswerList extends Component {
             {/*CommentListはすでに投稿されたコメントの一覧を表示する*/}
             <CommentList list={answer.comments} loginUser={loginUser} translateLanguageId={translateLanguageId} />
             <button className="uk-button uk-button-default" onClick={this.onClickReply.bind(this,answer.id)}>
-                返信する
+              {formatMessage({id: "buttons.title.reply"})}
             </button>
           </div>
 
@@ -164,6 +166,7 @@ class AnswerList extends Component {
 
   render() {
     const { isFetching, answerArray } = this.props.state.answers;
+    const { formatMessage } = this.props.intl;
 
     if (isFetching) {
       return (<ClipLoader />);
@@ -175,7 +178,7 @@ class AnswerList extends Component {
     if (answerList.length === 0) {
       return (
         <div>
-          <h4 className="uk-text-success">まだ回答がありません。最初の投稿者になりましょう！</h4>
+          <h4 className="uk-text-success">{formatMessage({id: "messages.empty_answer"})}</h4>
         </div>
       );
     }
@@ -190,4 +193,4 @@ class AnswerList extends Component {
   }
 }
 
-export default AnswerList;
+export default injectIntl(AnswerList);

@@ -1,33 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, Formik } from 'formik';
+import { injectIntl } from 'react-intl';
 
 class SignUpForm extends React.Component {
   validate(values) {
+    const { formatMessage } = this.props.intl;
     let errors = {};
 
     if (!values.name) {
-      errors.name = 'ユーザー名を入力してください';
+      errors.name = formatMessage({id: "errors.sign_ups.name"});
     }
 
     if (!values.mail) {
-      errors.mail = 'メールアドレスを入力してください';
+      errors.mail = formatMessage({id: "errors.sign_ups.mail"});
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.mail)) {
-      errors.mail = '適切なメールアドレスを指定してください';
+      errors.mail = formatMessage({id: "errors.sign_ups.appropriate_mail"});
     }
 
     if (!values.password) {
-      errors.password = 'パスワードを入力してください';
+      errors.password = formatMessage({id: "errors.sign_ups.password"});
     }
 
     if (values.passwordConfirm !== values.password) {
-      errors.passwordConfirm = 'パスワードが一致していません';
+      errors.passwordConfirm = formatMessage({id: "errors.sign_ups.confirm_password"});
     }
 
     return errors;
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
+
     return (
       <Formik
         initialValues={{
@@ -37,7 +41,7 @@ class SignUpForm extends React.Component {
           passwordConfirm: ''
         }}
         enableReinitialize={true}
-        validate={this.validate}
+        validate={this.validate.bind(this)}
         onSubmit={(values, { setSubmitting, setErrors, resetForm }) => {
             this.props.onSubmit(values);
             setSubmitting(false);
@@ -53,7 +57,7 @@ class SignUpForm extends React.Component {
                      name="name"
                      component="input"
                      type="text"
-                     placeholder="名前"
+                     placeholder={formatMessage({id: "placeholders.sign_ups.name"})}
                      className={'form-control uk-input'}
                 />
                 {touched.name && errors.name && <div className="uk-text-warning">{errors.name}</div>}
@@ -64,7 +68,7 @@ class SignUpForm extends React.Component {
                      name="mail"
                      component="input"
                      type="text"
-                     placeholder="メールアドレス"
+                     placeholder={formatMessage({id: "placeholders.sign_ups.mail"})}
                      className={'form-control uk-input'}
                 />
                 {touched.mail && errors.mail && <div className="uk-text-warning">{errors.mail}</div>}
@@ -75,7 +79,7 @@ class SignUpForm extends React.Component {
                      name="password"
                      component="input"
                      type="password"
-                     placeholder="パスワード"
+                     placeholder={formatMessage({id: "placeholders.sign_ups.password"})}
                      className={'form-control uk-input'}
                 />
                 {touched.password && errors.password && <div className="uk-text-warning">{errors.password}</div>}
@@ -86,13 +90,13 @@ class SignUpForm extends React.Component {
                      name="passwordConfirm"
                      component="input"
                      type="password"
-                     placeholder="パスワード確認"
+                     placeholder={formatMessage({id: "placeholders.sign_ups.confirm_password"})}
                      className={'form-control uk-input'}
                 />
                 {touched.passwordConfirm && errors.passwordConfirm && <div className="uk-text-warning">{errors.passwordConfirm}</div>}
               </div>
               <div className="uk-margin">
-                <button className="uk-button uk-button-primary" >新規登録</button>
+                <button className="uk-button uk-button-primary" >{formatMessage({id: "buttons.title.sign_up"})}</button>
               </div>
             </fieldset>
           </form>
@@ -114,4 +118,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SignUpForm));

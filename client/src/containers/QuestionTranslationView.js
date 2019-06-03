@@ -15,6 +15,8 @@ import {
 import {
     postQuestionTranslationData
 } from '../actions/QuestionTranslation';
+import { isEmptyObject } from '../utils';
+import { injectIntl } from 'react-intl';
 
 
 class QuestionTranslationView extends Component {
@@ -45,8 +47,9 @@ class QuestionTranslationView extends Component {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const { currentQuestion } = this.props.state.questions;
-    if (Object.keys(currentQuestion).length === 0) {
+    if (isEmptyObject(currentQuestion)) {
       return (
         <div className="uk-position-center uk-overlay uk-overlay-default">
           <ClipLoader />
@@ -70,7 +73,7 @@ class QuestionTranslationView extends Component {
             </div>
           </div>
         </div>
-        <h3 className="uk-heading-line"><span>翻訳一覧</span></h3>
+        <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.translation_list"})}</span></h3>
         <QuestionTranslationForm qId={this.qId} onSubmit={this.handleSubmit.bind(this)} />
         <QuestionTranslationList qId={this.qId} />
         <hr className="uk-divider-icon" />
@@ -92,4 +95,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionTranslationView);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(QuestionTranslationView));

@@ -34,7 +34,7 @@ export const list = (state = initialState.questions, action) => {
       //isFetchingは終了したのでfalseにしている。
       isFetching: false,
       //ここでquestionArrayに値を入れている。
-      questionArray: action.payload.data                  
+      questionArray: action.payload.data
     };
   case RECEIVE_SINGLE_DATA_SUCCESS:
     return {

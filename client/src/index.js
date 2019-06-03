@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
 import Home from './containers/Home';
 import QuestionView from './containers/QuestionView';
 import QuestionEdit from './containers/QuestionEdit';
@@ -32,11 +33,19 @@ import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
 
 // Styles
-/* import './css/skeleton.css';*/
 import './css/normalize.css';
 import './css/main.css';
 import './css/uikit.min.css';
-/* import './css/uikit-rtl.min.css';*/
+
+// 言語設定
+import { addLocaleData, IntlProvider } from 'react-intl';
+import ja from 'react-intl/locale-data/ja';
+import en from 'react-intl/locale-data/en';
+const { intl } = store.getState();
+const { locale, messages } = intl;
+addLocaleData([...ja, ...en]);
+
+console.log('intl', intl);
 
 // JS
 UIkit.use(Icons);
@@ -44,39 +53,41 @@ UIkit.use(Icons);
 const render = () => {
   ReactDOM.render(
     <Provider store={store}>
-      <BrowserRouter>
-        <App>
-          <ScrollToTop>
-            <Switch>
-              <Route exact path='/' component={Home} />
-              <Route exact path='/questions/:id' component={QuestionView}  onEnter={() => window.scrollTo(0, 0)}/>
-              <Route exact path='/question_translations/:question_id' component={QuestionTranslationView} />
-              <Route exact path='/answer_translations/:answer_id' component={AnswerTranslationView} />
-              <Route exact path='/comment_translations/:comment_id' component={CommentTranslationView} />
-              <Route path='/users/profile/:id' component={Profile} />
-              <Route path='/users/login' component={Login} />
-              <Route path='/users/signup' component={SignUp} />
-              <UserOnly>
-                <Switch>
-                  <Route exact path='/questions/edit/:id' component={QuestionEdit} />
-                  <Route exact path='/answers/edit/:id' component={AnswerEdit} />
-                  <Route exact path='/comments/edit/:id' component={CommentEdit} />
-                  <Route exact path='/users/profile_edit' component={ProfileEdit} />
-                  <Route exact path='/question_translations/edit/:id' component={QuestionTranslationEdit} />
-                  <Route exact path='/answer_translations/edit/:id' component={AnswerTranslationEdit} />
-                  <Route exact path='/comment_translations/edit/:id' component={CommentTranslationEdit} />
-                  {/*未翻訳の質問を抽出するルートパス*/}
-                  <Route exact path='/not_translated' component={NotTranslated} />
-                </Switch>
-              </UserOnly>
-              <GuestOnly>
-                <Switch>
-                </Switch>
-              </GuestOnly>
-            </Switch>
-          </ScrollToTop>
-        </App>
-      </BrowserRouter>
+      <IntlProvider locale={locale} messages={messages} >
+        <BrowserRouter>
+          <App>
+            <ScrollToTop>
+              <Switch>
+                <Route exact path='/' component={Home} />
+                <Route exact path='/questions/:id' component={QuestionView}  onEnter={() => window.scrollTo(0, 0)}/>
+                <Route exact path='/question_translations/:question_id' component={QuestionTranslationView} />
+                <Route exact path='/answer_translations/:answer_id' component={AnswerTranslationView} />
+                <Route exact path='/comment_translations/:comment_id' component={CommentTranslationView} />
+                <Route path='/users/profile/:id' component={Profile} />
+                <Route path='/users/login' component={Login} />
+                <Route path='/users/signup' component={SignUp} />
+                <UserOnly>
+                  <Switch>
+                    <Route exact path='/questions/edit/:id' component={QuestionEdit} />
+                    <Route exact path='/answers/edit/:id' component={AnswerEdit} />
+                    <Route exact path='/comments/edit/:id' component={CommentEdit} />
+                    <Route exact path='/users/profile_edit' component={ProfileEdit} />
+                    <Route exact path='/question_translations/edit/:id' component={QuestionTranslationEdit} />
+                    <Route exact path='/answer_translations/edit/:id' component={AnswerTranslationEdit} />
+                    <Route exact path='/comment_translations/edit/:id' component={CommentTranslationEdit} />
+                    {/*未翻訳の質問を抽出するルートパス*/}
+                    <Route exact path='/not_translated' component={NotTranslated} />
+                  </Switch>
+                </UserOnly>
+                <GuestOnly>
+                  <Switch>
+                  </Switch>
+                </GuestOnly>
+              </Switch>
+            </ScrollToTop>
+          </App>
+        </BrowserRouter>
+      </IntlProvider>
     </Provider>,
     document.getElementById('root')
   );
