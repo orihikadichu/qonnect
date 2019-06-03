@@ -14,6 +14,7 @@ import {
   postAnswerTranslationData
 } from '../actions/AnswerTranslation';
 import { isEmptyObject } from '../utils';
+import { injectIntl } from 'react-intl';
 
 
 class AnswerTranslationView extends Component {
@@ -31,7 +32,8 @@ class AnswerTranslationView extends Component {
     try {
       const { content, translate_language_id } = formData;
       if (content === '') {
-        throw new Error('空文字で投稿はできません。');
+        const msg = '空文字で投稿はできません。';
+        throw new Error(msg);
       }
       const { user } = this.props.state.auth;
       const answer_id = this.aId;
@@ -44,6 +46,7 @@ class AnswerTranslationView extends Component {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const { currentAnswer } = this.props.state.answers;
     if (isEmptyObject(currentAnswer)) {
       return (
@@ -65,12 +68,12 @@ class AnswerTranslationView extends Component {
               <img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" />
             </div>
             <div className="uk-width-expand">
-              <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${user.id}`}>{ user.name }</Link></h4>
+              <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${user.id}`}>{ userName }</Link></h4>
             </div>
           </div>
 
         </div>
-        <h3 className="uk-heading-line"><span>翻訳一覧</span></h3>
+        <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.translation_list"})}</span></h3>
         <AnswerTranslationForm aId={this.aId} onSubmit={this.handleSubmit.bind(this)} />
         <AnswerTranslationList aId={this.aId} />
         <hr className="uk-divider-icon" />
@@ -92,4 +95,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AnswerTranslationView);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(AnswerTranslationView));
