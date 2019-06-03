@@ -10,28 +10,40 @@ import {
 import * as answerSaga from './Answer';
 import * as questionSagas from './Question';
 
-import { postVotes, postQuestionVote, deleteVotes } from './apis/Votes';
+import { postVotes, deleteVotes } from './apis/Votes';
 
 import { notifySuccess, notifyError } from './Util';
 
 export function* postVote(action) {
   try {
-    const { params, question_id } = action.payload;
+    const { params, key } = action.payload;
     yield put(requestData());
     yield call(postVotes, params);
-    //question_idがある場合は質問、ない場合は回答とコメント
-    if( question_id ){
-      const data = { payload: {
-        question_id: question_id,
-        translate_language_id: 1
-      } };
-      yield call(answerSaga.handleFetchAnswerData, data);
-    }else{
-      const data = { payload: {
-        country_id: params.country_id,
-      } };
-      yield call(questionSagas.handleFetchData, data);
+    
+    let data;
+    switch (key) {
+      case "comment":
+      case "answer":
+          data = { payload: {
+            question_id: params.questionId,
+            translate_language_id: 1,
+          } };
+          yield call(answerSaga.handleFetchAnswerData, data);
+          break;
+      case "questionList":
+          data = { payload: {
+            country_id: params.country_id,
+          } };
+          yield call(questionSagas.handleFetchData, data);
+          break;
+      case "questionView":
+          data = { payload: {
+            id: params.question_id,
+          } };
+          yield call(questionSagas.handleFetchQuestionById, data);
+          break;
     }
+
     const message = 'いいねしました';
     yield put(notifySuccess(message));
 
@@ -44,22 +56,32 @@ export function* postVote(action) {
 
 export function* deleteVote(action) {
   try {
-    // const { answer_id, user_id} = action.payload;
-    const { params, question_id } = action.payload;
+    const { params, key } = action.payload;
     yield put(requestData());
     yield call(deleteVotes, params);
-    //question_idがある場合は質問、ない場合は回答とコメント
-    if( question_id ){
-      const data = { payload: {
-        question_id: question_id,
-        translate_language_id: 1
-      } };
-      yield call(answerSaga.handleFetchAnswerData, data);
-    }else{
-      const data = { payload: {
-        country_id: params.country_id,
-      } };
-      yield call(questionSagas.handleFetchData, data);
+
+    let data;
+    switch (key) {
+      case "comment":
+      case "answer":
+          data = { payload: {
+            question_id: params.questionId,
+            translate_language_id: 1,
+          } };
+          yield call(answerSaga.handleFetchAnswerData, data);
+          break;
+      case "questionList":
+          data = { payload: {
+            country_id: params.country_id,
+          } };
+          yield call(questionSagas.handleFetchData, data);
+          break;
+      case "questionView":
+          data = { payload: {
+            id: params.question_id,
+          } };
+          yield call(questionSagas.handleFetchQuestionById, data);
+          break;
     }
     const message = 'いいねを削除しました';
     yield put(notifySuccess(message));

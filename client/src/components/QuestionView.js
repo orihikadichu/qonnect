@@ -14,9 +14,6 @@ class QuestionView extends Component {
     const {params} = props.match;
     //idを１０進法の数値に変換する
     this.qId = parseInt(params.id, 10);
-    this.state = {
-      voteState:{},//評価の切り替えのための空オブジェクト
-    };
   }
 
   componentWillMount() {
@@ -54,34 +51,30 @@ class QuestionView extends Component {
     return question;
   }
 
-  sendVote(questionId){
-    const postData = {
+  sendVote(question){
+    const params = {
       user_id: 1,
-      question_id: questionId,
+      question_id: question.id,
       answer_id: null,
       comment_id: null,
       status: 1,
     };
-    //votestate===1にして「いいね」をしている状態にする
-    const { voteState } = this.state;
-    voteState[ questionId ] = 1;
-    this.setState({voteState});
-    return this.props.handlePostVote(postData);
+    const key = "questionView";
+    const data = { params,  key };
+    return this.props.handlePostVote(data);
+
   }
 
-  deleteVote(questionId) {
+  deleteVote(question) {
     const params = {
       user_id: this.props.user.id,
       key : "question",
       //他のコンテンツと共通化するためvote_idというkeyにする
-      vote_id: questionId,
+      vote_id: question.id,
     };
-    //votestate===0にして「いいね」を削除した状態にする
-    const { voteState } = this.state;
-    //ここではanswerId＝ 
-    voteState[ questionId ] = "";
-    this.setState({voteState});
-    return this.props.handleDeleteVote(params);
+    const key = "questionView";
+    const data = { params,  key };
+    return this.props.handleDeleteVote(data);
   }
 
   render() {
@@ -96,19 +89,16 @@ class QuestionView extends Component {
     }
 
     const loginUser = this.props.state.auth.user;
-
     const question = this.getTranslatedQuestion(currentQuestion, translateLanguageId);
-
-    const { user } = currentQuestion;
+    const { user, votes } = currentQuestion;
     const answerFormInitVals = { content: '', translate_language_id: '' };
     const editLink = user.id === loginUser.id
                    ? <p><Link to={`/questions/edit/${this.qId}`}>編集</Link></p>
                    : '';
-    //評価機能のための変数
-    const { voteState } = this.state;
-    const votebutton = voteState[question.id] === 1
-                   ?<span className="uk-text-danger" uk-icon="heart" onClick={this.deleteVote.bind(this, question.id)}></span>
-                   :<span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, question.id)}></span>;
+    const voteState = votes.length !== 0 ;
+    const votebutton = voteState
+                   ?<span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, currentQuestion)}></span>
+                   :<span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, currentQuestion)}></span>;
 
     return (
       <main className="uk-container uk-container-small">
@@ -128,9 +118,6 @@ class QuestionView extends Component {
           </div>
           { editLink }
           { votebutton }
-
-          {/* 評価機能のボタン */}
-          {/* <span className="uk-text-primary" uk-icon="heart" onClick={this.sendVote.bind(this, question.id)}></span> */}
         </div>
 
         <h3 className="uk-heading-line"><span>回答一覧</span></h3>

@@ -113,7 +113,6 @@ app.delete('/api/votes/:id', (req, res) => {
   const { vote_id, key, user_id } = req.query;
 
   let whereContent
-  
   //コンテンツによってidの切り替え
   switch(key){
     case "question":
@@ -295,6 +294,10 @@ app.get('/api/questions/:id', (req, res) => {
         model: db.question_translations,
         required: false
       },
+      {
+        model: db.votes,
+        required: false
+      },  
     ],
   })
     .then((instanse) => {

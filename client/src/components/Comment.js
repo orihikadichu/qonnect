@@ -15,9 +15,11 @@ class Comment extends Component {
       answer_id: null,
       comment_id: commentId,
       status: 1,
+      //再レンダリングするためのquestion_id
+      questionId: currentQuestionId,
     };
-    const question_id = currentQuestionId;
-    const data = { params, question_id };
+    const key = "comment";
+    const data = { params, key };
     return this.props.handlePostVote(data);
   }
 
@@ -28,9 +30,11 @@ class Comment extends Component {
       key : "comment",
       //他のコンテンツと共通化するためvote_idというkeyにする
       vote_id: commentId,
+      //再レンダリングするためのquestion_id
+      questionId: currentQuestionId,
     };
-    const question_id = currentQuestionId;
-    const data = { params,  question_id };
+    const key = "comment";
+    const data = { params,  key };
     return this.props.handleDeleteVote(data);
   }
 

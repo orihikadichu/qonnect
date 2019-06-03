@@ -83,9 +83,11 @@ class AnswerList extends Component {
       answer_id: answerId,
       comment_id: null,
       status: 1,
+       //再レンダリングするためのquestion_id
+       questionId: currentQuestionId,
     };
-    const question_id = currentQuestionId;
-    const data = { params, question_id };
+    const key = "answer";
+    const data = { params, key };     
     return this.props.handlePostVote(data);
   }
 
@@ -95,9 +97,11 @@ class AnswerList extends Component {
       key : "answer",
       //他のコンテンツと共通化するためvote_idというkeyにする
       vote_id: answerId,
+      //再レンダリングするためのquestion_id
+      questionId: currentQuestionId,
     };
-    const question_id = currentQuestionId;
-    const data = { params, question_id };
+    const key = "answer";
+    const data = { params, key };    
     return this.props.handleDeleteVote(data);
   }
 
