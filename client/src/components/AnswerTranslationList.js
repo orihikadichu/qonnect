@@ -3,6 +3,7 @@ import { ClipLoader } from 'react-spinners';
 import Linkify from 'react-linkify';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { injectIntl } from 'react-intl';
 
 //componentの中でdispatchするための設定
 import { connect } from 'react-redux';
@@ -31,11 +32,13 @@ class AnswerTranslationList extends Component {
   }
 
   getTranslationList(translationList, loginUser) {
+    const { formatMessage } = this.props.intl;
+
     return (
       <ul className="uk-list uk-list-divider uk-list-large" >
         {translationList.map(translation => {
            const editLink = translation.user.id === loginUser.id
-                          ? <Link to={`/answer_translations/edit/${translation.id}`}>編集</Link>
+                          ? <Link to={`/answer_translations/edit/${translation.id}`}>{formatMessage({id: "links.edit"})}</Link>
                           : '';
 
            return (
@@ -102,4 +105,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 //root（全部の状態を持っているオブジェクト）に持っているstateをAnswerListに対して適用する
-export default connect(mapStateToProps, mapDispatchToProps)(AnswerTranslationList);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(AnswerTranslationList));

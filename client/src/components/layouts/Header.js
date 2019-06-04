@@ -6,6 +6,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
 
 class Header extends React.Component {
 
@@ -23,8 +24,9 @@ class Header extends React.Component {
     return this.props.logout(actionData);
   }
 
-  getMenu = (displayName) => {
+  getMenu(displayName) {
     const { anchorEl } = this.state;
+    const { formatMessage } = this.props.intl;
 
     const handleClick = event => {
       this.setState({ anchorEl: event.currentTarget });
@@ -38,7 +40,6 @@ class Header extends React.Component {
       handleClose();
       return this.onClickLogout();
     };
-    
 
     const getProfileElem = (auth) => {
       if (!auth.isLoggedIn) {
@@ -47,12 +48,12 @@ class Header extends React.Component {
       const { user } = auth;
       const menuList = [
         {
-          text: "プロフィールページ",
+          text: formatMessage({id: "links.profile"}),
           to: `/users/profile/${user.id}`,
           icon: "user"
         },
         {
-          text: "プロフィール編集",
+          text: formatMessage({id: "links.profile_edit"}),
           to: '/users/profile_edit',
           icon: "pencil",
         },
@@ -73,7 +74,7 @@ class Header extends React.Component {
              <MenuItem onClick={handleLogout.bind(this)}>
                <Link to="" >
                  <span uk-icon="sign-out" ></span>
-                 <span>ログアウト</span>
+                 <span>{formatMessage({id: "links.logout"})}</span>
                </Link>
              </MenuItem>
            )
@@ -81,7 +82,7 @@ class Header extends React.Component {
              <MenuItem onClick={handleClose}>
                <Link to="/users/login" >
                  <span uk-icon="sign-in" ></span>
-                 <span>ログイン</span>
+                 <span>{formatMessage({id: "links.login"})}</span>
                </Link>
              </MenuItem>
            );
@@ -113,7 +114,7 @@ class Header extends React.Component {
           <MenuItem onClick={handleClose}>
             <Link to="/users/signup" >
               <span uk-icon="check" ></span>
-              <span>新規登録</span>
+              <span>{formatMessage({id: "links.sign_up"})}</span>
             </Link>
           </MenuItem>
         </Menu>
@@ -146,4 +147,4 @@ class Header extends React.Component {
   }
 };
 
-export default Header;
+export default injectIntl(Header);

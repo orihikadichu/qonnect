@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SignUpForm from './SignUpForm';
+import { injectIntl } from 'react-intl';
 
 class SignUp extends React.Component {
 
@@ -11,11 +12,12 @@ class SignUp extends React.Component {
   }
 
   render() {
-    /* const mnemonicView = this.getMnemonicView();*/
+    const { formatMessage } = this.props.intl;
+
     return (
       <main className="uk-container uk-container-small">
-        <h2 className="uk-h3" >新規登録</h2>
-        
+        <h2 className="uk-h3" >{ formatMessage({id: "titles.sign_up"}) }</h2>
+
         <SignUpForm onSubmit={this.onClickSubmit.bind(this)} />
 
         <div className="uk-margin">
@@ -26,4 +28,4 @@ class SignUp extends React.Component {
   }
 };
 
-export default SignUp;
+export default injectIntl(SignUp);

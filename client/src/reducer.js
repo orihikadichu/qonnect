@@ -10,8 +10,10 @@ import * as commentTranslations from './reducers/CommentTranslation';
 import * as notTranslated from './reducers/NotTranslated';
 import * as votes from './reducers/Votes';
 import * as voteTranslations from './reducers/VoteTranslation';
+import { intl } from './reducers/Intl';
 
 const reducer = combineReducers({
+  intl: intl,
   answers: answers.list,
   questions: questions.list,
   questionTranslations: questionTranslations.list,

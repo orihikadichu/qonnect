@@ -1,4 +1,11 @@
+import { locales } from './intl';
+
+const savedLocale = localStorage.getItem('locale');
+const currentLocale = savedLocale ? savedLocale : 'ja';
+
+
 export const initialState = {
+  intl: locales[currentLocale],
   signUp: {
     mail: '',
     password: '',
@@ -65,7 +72,7 @@ export const initialState = {
     status: [],
   },
   //評価機能
-  voteTranslation: {
+  voteTranslations: {
     //api接続中である場合（非同期処理をしている途中）はtrueになる
     isFetching: false,
     status: [],

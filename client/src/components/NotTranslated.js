@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { injectIntl } from 'react-intl';
 
 class NotTranslated extends Component {
 
@@ -110,34 +111,35 @@ class NotTranslated extends Component {
   }
 
   getTabList() {
+    const { formatMessage } = this.props.intl;
     const tabData = [
       {
-        name: '質問',
+        name: formatMessage({id: "links.question"}),
         key: 'questions'
       },
       {
-        name: '回答',
+        name: formatMessage({id: "links.answer"}),
         key: 'answers'
       },
       {
-        name: 'コメント',
+        name: formatMessage({id: "links.comment"}),
         key: 'comments'
       }
     ];
 
     return (
       <ul className="uk-tab" >
-      {tabData.map(v => {
-        //currentTabとkeyが一致したとき、それをactiveにする
-        const active = this.state['currentTab'] === v.key
-                     ? 'uk-active'
-                     : '';
-        return (
-          <li key={v.key} className={active} onClick={this.onClickTab.bind(this, v.key)} >
-            <a href="">{v.name}</a>
-          </li>
-        );
-      })}
+        {tabData.map(v => {
+           //currentTabとkeyが一致したとき、それをactiveにする
+           const active = this.state['currentTab'] === v.key
+                        ? 'uk-active'
+                        : '';
+           return (
+             <li key={v.key} className={active} onClick={this.onClickTab.bind(this, v.key)} >
+               <a href="">{v.name}</a>
+             </li>
+           );
+        })}
       </ul>
     );
   }
@@ -161,22 +163,23 @@ class NotTranslated extends Component {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const content = this.getNotTranslatedView(this.props.state);
     const tabList = this.getTabList();
     
     return (
       <div>
-      <div className="uk-container uk-container-small">
-      <p>未翻訳コンテンツ一覧</p>
-      <br></br>
+        <div className="uk-container uk-container-small">
+          <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.not_translated_list"})}</span></h3>
+          <br></br>
+        </div>
+        <div className="uk-container uk-container-small">
+          {tabList}
+          {content}
+        </div>
       </div>
-      <div className="uk-container uk-container-small">
-      {tabList}
-      {content}
-          </div>
-          </div>
     );
   }
 }
 
-export default NotTranslated;
+export default injectIntl(NotTranslated);

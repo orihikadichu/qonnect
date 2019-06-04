@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import AnswerForm from './AnswerForm';
+import { isEmptyObject } from '../utils';
 
 class AnswerEdit extends Component {
   constructor(props) {
@@ -60,7 +61,7 @@ class AnswerEdit extends Component {
   render() {
     const { currentAnswer } = this.props.state.answers;
 
-    if (Object.keys(currentAnswer).length === 0) {
+    if (isEmptyObject(currentAnswer)) {
       return (
         <div className="uk-position-center uk-overlay uk-overlay-default">
           <ClipLoader />

@@ -3,6 +3,7 @@ import { ClipLoader } from 'react-spinners';
 import Linkify from 'react-linkify';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { injectIntl } from 'react-intl';
 
 //componentの中でdispatchするための設定
 import { connect } from 'react-redux';
@@ -49,9 +50,11 @@ class QuestionTranslationList extends Component {
   }
 
   getTranslationList(translationList, loginUser) {
+    const { formatMessage } = this.props.intl;
+
     return translationList.map(translation => {
       const editLink = translation.user.id === loginUser.id
-                     ? <Link to={`/question_translations/edit/${translation.id}`}>編集</Link>
+                     ? <Link to={`/question_translations/edit/${translation.id}`}>{formatMessage({id: "links.edit"})}</Link>
                      : '';
 
       const voteState = translation.vote_translations.length;
@@ -121,4 +124,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 //root（全部の状態を持っているオブジェクト）に持っているstateをAnswerListに対して適用する
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionTranslationList);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(QuestionTranslationList));

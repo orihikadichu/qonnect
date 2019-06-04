@@ -5,6 +5,8 @@ import { getUserProfile } from '../../actions/User';
 import QuestionListView from '../../components/QuestionListView';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { isEmptyObject } from '../../utils';
+import { injectIntl } from 'react-intl';
 
 class Profile extends Component {
   constructor(props) {
@@ -25,17 +27,18 @@ class Profile extends Component {
   }
 
   getTabList() {
+    const { formatMessage } = this.props.intl;
     const tabData = [
       {
-        name: '質問',
+        name: formatMessage({id: "links.question"}),
         key: 'questions'
       },
       {
-        name: '回答',
+        name: formatMessage({id: "links.answer"}),
         key: 'answers'
       },
       {
-        name: 'コメント',
+        name: formatMessage({id: "links.comment"}),
         key: 'comments'
       }
     ];
@@ -123,8 +126,9 @@ class Profile extends Component {
     // propsで渡されたuserIdのプロフィールページを表示するようにする。
     const { profile } = this.props.state;
     const { user } = profile;
+    const { formatMessage } = this.props.intl;
 
-    if (Object.keys(user).length === 0) {
+    if (isEmptyObject(user)) {
       return (
         <div className="uk-position-center uk-overlay uk-overlay-default">
           <ClipLoader />
@@ -143,13 +147,13 @@ class Profile extends Component {
           </div>
           <div className="uk-width-expand" >
             <p className="uk-text-lead">{user.name}</p>
-            <p>出身地: {user.country.name}</p>
+            <p>{formatMessage({id: "messages.birthplace"})}: {user.country.name}</p>
           </div>
         </div>
         <div>
           <p style={{"whiteSpace": "pre-wrap"}}>{user.profile}</p>
         </div>
-        <h3 className="uk-heading-line"><span>投稿一覧</span></h3>
+        <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.post_list"})}</span></h3>
         {tabList}
         {userPostList}
       </main>
@@ -167,4 +171,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Profile));

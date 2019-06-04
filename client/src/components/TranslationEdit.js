@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import TranslationForm from './TranslationForm';
+import { isEmptyObject } from '../utils';
 
 class TranslationEdit extends Component {
 
@@ -17,7 +18,7 @@ class TranslationEdit extends Component {
   render() {
     const { currentTranslation, handleSubmit, onClickDeleteBtn, loginUser } = this.props;
 
-    if (Object.keys(currentTranslation).length === 0) {
+    if (isEmptyObject(currentTranslation)) {
       return (
         <div className="uk-position-center uk-overlay uk-overlay-default">
           <ClipLoader />
