@@ -8,7 +8,7 @@ import { injectIntl } from 'react-intl';
 //componentの中でdispatchするための設定
 import { connect } from 'react-redux';
 //評価するための関数
-import { postVote } from '../actions/VoteTranslation';
+import { postVote, deleteVote } from '../actions/VoteTranslation';
 
 class AnswerTranslationList extends Component {
   constructor(props) {
@@ -20,15 +20,33 @@ class AnswerTranslationList extends Component {
     this.props.handleFetchData(this.aId);
   }
 
-  sendVote(answerId){
-    const postData = {
-      user_id: this.props.user.id,
+  sendVote(answer){
+    const params = {
+      user_id: answer.user_id,
       question_translation_id: null,
-      answer_translation_id: answerId,
-      comment_translation_id: null,
+      answer_translation_id: answer.id,
+      commcomment_translation_id: null,
       status: 1,
+      //再レンダリング用のId
+      answerId: answer.answer_id
     };
-    return this.props.handlePostVote(postData);
+    const key = "answer";
+    const data = { params,  key };
+    return this.props.handlePostVote(data);
+  }
+
+  deleteVote(answer) {
+    const params = {
+      user_id: answer.user_id,
+      key : "answer",
+      //他のコンテンツと共通化するためvote_idというkeyにする
+      vote_id: answer.id,
+      //再レンダリング用のId
+      answerId: answer.answer_id,
+    };
+    const key = "answer";
+    const data = { params,  key };
+    return this.props.handleDeleteVote(data);
   }
 
   getTranslationList(translationList, loginUser) {
@@ -41,6 +59,11 @@ class AnswerTranslationList extends Component {
                           ? <Link to={`/answer_translations/edit/${translation.id}`}>{formatMessage({id: "links.edit"})}</Link>
                           : '';
 
+           const voteState = translation.vote_translations.length;
+           const votebutton = voteState
+                           ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this,translation)}></span>
+                           : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this,translation)}></span>;
+
            return (
              <li key={translation.id} >
                <article className="uk-comment">
@@ -48,8 +71,7 @@ class AnswerTranslationList extends Component {
                    <p style={{"whiteSpace": "pre-wrap"}} >
                      <Linkify properties={{ target: '_blank'}} >{translation.content}</Linkify>
                      { editLink }
-                     {/* 評価機能のボタン */}
-                     <span className="uk-text-primary" uk-icon="heart" onClick={this.sendVote.bind(this, translation.id)}></span>
+                     { votebutton }
                    </p>
                    <p className="uk-text-meta">{dayjs(translation.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
                  </div>
@@ -77,10 +99,7 @@ class AnswerTranslationList extends Component {
     if (isFetching) {
       return (<ClipLoader />);
     }
-
     const content = this.getTranslationList(currentTranslationList, loginUser);
-
-
     return (
       <div>
         {content}
@@ -101,6 +120,7 @@ const mapDispatchToProps = dispatch => {
   return {
       //評価機能
       handlePostVote: (data) => dispatch(postVote(data)),
+      handleDeleteVote: (data) => dispatch(deleteVote(data)),
   };
 };
 

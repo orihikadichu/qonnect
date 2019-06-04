@@ -500,10 +500,19 @@ app.get('/api/answer_translations', (req, res) => {
   const { answer_id } = req.query;
   db.answer_translations.findAll({
     where: { answer_id },
-    include: [{
+    include: [
+    {
       model: db.users,
       required: false
-    }]
+    },
+    {
+      model: db.vote_translations,
+      required: false    
+    },
+  ],
+  order: [
+    ['created_at', 'DESC']
+  ]
   })
     .then((instanses) => {
       res.status(200).send(instanses);
@@ -589,7 +598,15 @@ app.get('/api/comment_translations', (req, res) => {
     include: [{
       model: db.users,
       required: false
-    }]
+    },
+    {
+      model: db.vote_translations,
+      required: false    
+    },
+  ],
+  order: [
+    ['created_at', 'DESC']
+  ]
   })
     .then((instanses) => {
       res.status(200).send(instanses);

@@ -9,6 +9,7 @@ import {
 
 import * as answerTranslationSagas from './AnswerTranslation';
 import * as questionTranslationSagas from './QuestionTranslation';
+import * as commentTranslationSagas from './CommentTranslation';
 
 import { 
   notifySuccess, 
@@ -25,20 +26,16 @@ export function* postVote(action) {
     let data;
     switch (key) {
       case "comment":
+          data = { payload: params.commentId } ;
+          yield call(commentTranslationSagas.handleFetchCommentTranslationList, data);
+          break;
       case "answer":
-          data = { payload: {
-            question_id: params.questionId,
-            translate_language_id: 1,
-          } };
-          // yield call(answerTranslationSagas.handleFetchAnswerData, data);
+          data = { payload: params.answerId } ;
+          yield call(answerTranslationSagas.handleFetchAnswerTranslationList, data);
           break;
       case "question":
-          data = { payload: params.questionId } 
+          data = { payload: params.questionId } ;
           yield call(questionTranslationSagas.handleFetchQuestionTranslationList, data);
-          break;
-      case "questionView":
-          data = { payload: params.question_id };
-          // yield call(questionTranslationSagas.handleFetchQuestionById, data);
           break;
     }
 
@@ -61,20 +58,16 @@ export function* deleteVote(action) {
     let data;
     switch (key) {
       case "comment":
+          data = { payload: params.commentId } ;
+          yield call(commentTranslationSagas.handleFetchCommentTranslationList, data);
+          break;
       case "answer":
-          data = { payload: {
-            question_id: params.questionId,
-            translate_language_id: 1,
-          } };
-          // yield call(answerTranslationSagas.handleFetchAnswerData, data);
+          data = { payload: params.answerId };
+          yield call(answerTranslationSagas.handleFetchAnswerTranslationList, data);
           break;
       case "question":
           data = { payload:  params.questionId };
           yield call(questionTranslationSagas.handleFetchQuestionTranslationList, data);
-          break;
-      case "questionView":
-          data = { payload: params.question_id };
-          // yield call(questionTranslationSagas.handleFetchQuestionById, data);
           break;
     }
     const message = 'いいねを削除しました';
