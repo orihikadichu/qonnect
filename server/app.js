@@ -143,6 +143,41 @@ app.delete('/api/votes/:id', (req, res) => {
   ;
 });
 
+//翻訳の評価を削除する
+app.delete('/api/vote_translations/:id', (req, res) => {
+
+  const { vote_id, key, user_id } = req.query;
+
+  let whereContent
+  //コンテンツによってidの切り替え
+  switch(key){
+    case "question":
+        const question_translation_id = vote_id;
+        whereContent = { user_id, question_translation_id } ;
+        break;
+    case "answer":
+        const answer_translation_id = vote_id;
+        whereContent = { user_id, answer_translation_id } ;
+        break;
+    case "comment":
+        const comment_translation_id = vote_id;
+        whereContent = { user_id, comment_translation_id } ;
+        break;
+  }
+  const filter = {
+    where: whereContent,
+  };
+  db.vote_translations.destroy(filter)
+    .then((result) => {
+      console.log('result', result);
+      if (result === 0) {
+        return res.status(500).send('いいねの削除に失敗しました。');
+      }
+      return res.status(200).send('いいねの削除に失敗しました。');
+    })
+  ;
+});
+
 
 // Questions
 app.get('/api/questions', (req, res) => {
@@ -269,13 +304,7 @@ app.get('/api/not_translated_comments', (req, res) => {
 });
 
 app.get('/api/questions/:id', (req, res) => {
-  console.log("--------------");
-  console.log(req.params);
-  console.log("--------------");
   const qId = req.params.id;
-  console.log("--------------");
-  console.log(qId);
-  console.log("--------------");
   db.questions.findOne({
     where: {id: qId},
     include: [
@@ -369,14 +398,22 @@ app.delete('/api/questions/:id', (req, res) => {
  * question_translations
  */
 app.get('/api/question_translations', (req, res) => {
-  // console.log('req.query', req.query);
   const { question_id } = req.query;
   db.question_translations.findAll({
     where: { question_id },
-    include: [{
-      model: db.users,
-      required: false
-    }]
+    include: [
+      {
+        model: db.users,
+        required: false
+      },
+      {
+        model: db.vote_translations,
+        required: false    
+      },
+  ],
+  order: [
+    ['created_at', 'DESC']
+  ]
   })
     .then((instanses) => {
       res.status(200).send(instanses);
