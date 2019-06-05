@@ -1,11 +1,10 @@
 import axios from 'axios';
 
-export const fetchVote = (params) => {
-    return axios.get('/api/vote_translations', {
-        params
-    });
+export const postVotes = (params) => {
+    return axios.post('/api/vote_translations', params);
 };
 
-export const postVotes = (postData) => {
-    return axios.post('/api/vote_translations', postData);
+export const deleteVotes = (params) => {
+    const { vote_id } = params;
+    return axios.delete(`/api/vote_translations/${vote_id}`, { params });
 };

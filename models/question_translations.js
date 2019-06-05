@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   question_translations.associate = function(models) {
     question_translations.belongsTo(models.users, {foreignKey: 'user_id'});
     question_translations.belongsTo(models.questions, {foreignKey: 'question_id'});
+    question_translations.hasMany(models.vote_translations, {foreignKey: 'question_translation_id'});
   };
   return question_translations;
 };

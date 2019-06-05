@@ -9,16 +9,28 @@ import {
 
 import * as answerSaga from './Answer';
 import * as questionSagas from './Question';
-
 import {
   postVotes,
-  deleteVotes
+  deleteVotes,
+  fetchQuestionVotesList,
 } from './apis/Votes';
 
 import {
   notifySuccess,
   notifyError
 } from './Util';
+
+
+export function* handleFetchQestionVotesList(action) {
+  try {
+    yield put(requestData());
+    const payload = yield call(fetchQuestionVotesList, action.payload);
+    yield put(receiveDataSuccess(payload));
+  } catch (e) {
+    // isFetchingをfalse
+    yield put(receiveDataFailed());
+  }
+};
 
 export function* postVote(action) {
   try {

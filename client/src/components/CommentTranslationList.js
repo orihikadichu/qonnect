@@ -8,7 +8,7 @@ import { injectIntl } from 'react-intl';
 //componentの中でdispatchするための設定
 import { connect } from 'react-redux';
 //評価するための関数
-import { postVote } from '../actions/VoteTranslation';
+import { postVote, deleteVote } from '../actions/VoteTranslation';
 
 class CommentTranslationList extends Component {
   constructor(props) {
@@ -20,15 +20,33 @@ class CommentTranslationList extends Component {
     this.props.handleFetchData(this.commentId);
   }
 
-  sendVote(commentId){
-    const postData = {
-      user_id: this.props.user.id,
+  sendVote(comment){
+    const params = {
+      user_id: comment.user_id,
       question_translation_id: null,
       answer_translation_id: null,
-      comment_translation_id: commentId,
+      comment_translation_id: comment.id,
       status: 1,
+      //再レンダリング用のId
+      commentId: comment.comment_id
     };
-    return this.props.handlePostVote(postData);
+    const key = "comment";
+    const data = { params,  key };
+    return this.props.handlePostVote(data);
+  }
+
+  deleteVote(comment) {
+    const params = {
+      user_id: comment.user_id,
+      key : "comment",
+      //他のコンテンツと共通化するためvote_idというkeyにする
+      vote_id: comment.id,
+      //再レンダリング用のId
+      commentId: comment.comment_id,
+    };
+    const key = "comment";
+    const data = { params,  key };
+    return this.props.handleDeleteVote(data);
   }
 
   getTranslationList(translationList, loginUser) {
@@ -40,6 +58,11 @@ class CommentTranslationList extends Component {
            const editLink = translation.user.id === loginUser.id
                           ? <Link to={`/comment_translations/edit/${translation.id}`}>{formatMessage({id: "links.edit"})}</Link>
                           : '';
+          
+           const voteState = translation.vote_translations.length;
+           const votebutton = voteState
+                          ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this,translation)}></span>
+                          : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this,translation)}></span>;
 
            return (
              <li key={translation.id} >
@@ -48,11 +71,9 @@ class CommentTranslationList extends Component {
                    <p style={{"whiteSpace": "pre-wrap"}} >
                      <Linkify properties={{ target: '_blank'}} >{translation.content}</Linkify>
                      { editLink }
-                     {/* 評価機能のボタン */}
-                     <span className="uk-text-primary" uk-icon="heart" onClick={this.sendVote.bind(this, translation.id)}></span>
+                     { votebutton }
                    </p>
                    <p className="uk-text-meta">{dayjs(translation.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
-
                  </div>
                  <div className="uk-grid uk-grid-small uk-flex-middle" >
                    <div className="uk-width-auto">
@@ -100,6 +121,7 @@ const mapDispatchToProps = dispatch => {
   return {
       //評価機能
       handlePostVote: (data) => dispatch(postVote(data)),
+      handleDeleteVote: (data) => dispatch(deleteVote(data)),
   };
 };
 

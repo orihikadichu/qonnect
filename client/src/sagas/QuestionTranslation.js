@@ -19,7 +19,6 @@ import * as questionSagas from './Question';
 
 export function* handleFetchQuestionTranslationList(action) {
   try {
-    // axios.get()を呼ぶ前にisFetchingをtrueにしておく
     yield put(requestData());
     const payload = yield call(api.fetchQuestionTranslationList, action.payload);
     yield put(receiveDataSuccess(payload));

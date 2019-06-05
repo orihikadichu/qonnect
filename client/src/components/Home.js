@@ -8,10 +8,10 @@ class Home extends React.Component {
 
   submitQuestionForm(formData) {
     try {
-      const { content, translate_language_id, country_id } = formData;
+      const { content, translate_language_id, country_id, category_id } = formData;
       const { user } = this.props.state.auth;
       const user_id = user.id;
-      const postData = { content, user_id, translate_language_id, country_id };
+      const postData = { content, user_id, translate_language_id, country_id, category_id };
       return this.props.handleSubmit(postData);
     } catch (e) {
       console.log('e.message', e.message);
@@ -25,7 +25,8 @@ class Home extends React.Component {
     const questionFormInitVals = {
       content: '',
       country_id: '',
-      translate_language_id: ''
+      translate_language_id: '',
+      category_id: ''
     };
 
     return (

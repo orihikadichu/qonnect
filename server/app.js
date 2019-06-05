@@ -65,6 +65,25 @@ const upload = multer({ storage: storage });
 /*
 評価機能
 */
+
+//question_id
+app.get('/api/votes/questions', (req, res) => {
+  const { id } = req.params;
+  db.questions.findOne({
+    where: { id },
+    include: [
+      {
+        model: db.votes,
+        required: false
+      },
+    ],
+  })
+    .then((instanse) => {
+      res.status(200).send(instanse);
+    });
+});
+
+
 app.post('/api/votes', (req, res) => {
   const {
     user_id,
@@ -143,6 +162,41 @@ app.delete('/api/votes/:id', (req, res) => {
   ;
 });
 
+//翻訳の評価を削除する
+app.delete('/api/vote_translations/:id', (req, res) => {
+
+  const { vote_id, key, user_id } = req.query;
+
+  let whereContent
+  //コンテンツによってidの切り替え
+  switch(key){
+    case "question":
+        const question_translation_id = vote_id;
+        whereContent = { user_id, question_translation_id } ;
+        break;
+    case "answer":
+        const answer_translation_id = vote_id;
+        whereContent = { user_id, answer_translation_id } ;
+        break;
+    case "comment":
+        const comment_translation_id = vote_id;
+        whereContent = { user_id, comment_translation_id } ;
+        break;
+  }
+  const filter = {
+    where: whereContent,
+  };
+  db.vote_translations.destroy(filter)
+    .then((result) => {
+      console.log('result', result);
+      if (result === 0) {
+        return res.status(500).send('いいねの削除に失敗しました。');
+      }
+      return res.status(200).send('いいねの削除に失敗しました。');
+    })
+  ;
+});
+
 
 // Questions
 app.get('/api/questions', (req, res) => {
@@ -150,8 +204,6 @@ app.get('/api/questions', (req, res) => {
   const params = req.query;
   db.questions.findAll({
     where: params,
-    //includeをするとquestionsだけではなく、それに関連したuserデータや
-    //質問データも引き出してくる。
     include: [
       {
         model: db.users,
@@ -179,12 +231,10 @@ app.get('/api/questions', (req, res) => {
 
 // 未翻訳の質問を取得する
 app.get('/api/not_translated_questions', (req, res) => {
-  const params = req.query;
+  // const params = req.query;
   db.questions.findAll({
     //ここでquestion_translationsテーブルのidカラムがnullのものだけを抽出している
     where: {'$question_translations.id$' : null},
-    //includeをするとquestionsだけではなく、それに関連したuserデータや
-    //質問データも引き出してくる。
     include: [
       {
         model: db.users,
@@ -212,8 +262,6 @@ app.get('/api/not_translated_answers', (req, res) => {
   db.answers.findAll({
     //ここでquestion_translationsテーブルのidカラムがnullのものだけを抽出している
     where: {'$answer_translations.id$' : null},
-    //includeをするとquestionsだけではなく、それに関連したuserデータや
-    //質問データも引き出してくる。
     include: [
       {
         model: db.users,
@@ -241,8 +289,6 @@ app.get('/api/not_translated_comments', (req, res) => {
   db.comments.findAll({
     //ここでquestion_translationsテーブルのidカラムがnullのものだけを抽出している
     where: {'$comment_translations.id$' : null},
-    //includeをするとquestionsだけではなく、それに関連したuserデータや
-    //質問データも引き出してくる。
     include: [
       {
         model: db.users,
@@ -309,18 +355,22 @@ app.get('/api/questions/:id', (req, res) => {
 });
 
 app.post('/api/questions', (req, res) => {
-  console.log('req.body', req.body);
+  console.log("-----------------------------------------");
+  console.log("res.body",req.body);
+  console.log("-----------------------------------------");
   const {
     user_id,
     content,
     translate_language_id,
-    country_id
+    country_id,
+    category_id,
   } = req.body;
   db.questions.create({
     content,
     user_id,
     translate_language_id,
-    country_id
+    country_id,
+    category_id,
   })
     .then((createdData) => {
       res.status(200).send(createdData);
@@ -366,14 +416,22 @@ app.delete('/api/questions/:id', (req, res) => {
  * question_translations
  */
 app.get('/api/question_translations', (req, res) => {
-  // console.log('req.query', req.query);
   const { question_id } = req.query;
   db.question_translations.findAll({
     where: { question_id },
-    include: [{
-      model: db.users,
-      required: false
-    }]
+    include: [
+      {
+        model: db.users,
+        required: false
+      },
+      {
+        model: db.vote_translations,
+        required: false    
+      },
+  ],
+  order: [
+    ['created_at', 'DESC']
+  ]
   })
     .then((instanses) => {
       res.status(200).send(instanses);
@@ -460,10 +518,19 @@ app.get('/api/answer_translations', (req, res) => {
   const { answer_id } = req.query;
   db.answer_translations.findAll({
     where: { answer_id },
-    include: [{
+    include: [
+    {
       model: db.users,
       required: false
-    }]
+    },
+    {
+      model: db.vote_translations,
+      required: false    
+    },
+  ],
+  order: [
+    ['created_at', 'DESC']
+  ]
   })
     .then((instanses) => {
       res.status(200).send(instanses);
@@ -549,7 +616,15 @@ app.get('/api/comment_translations', (req, res) => {
     include: [{
       model: db.users,
       required: false
-    }]
+    },
+    {
+      model: db.vote_translations,
+      required: false    
+    },
+  ],
+  order: [
+    ['created_at', 'DESC']
+  ]
   })
     .then((instanses) => {
       res.status(200).send(instanses);

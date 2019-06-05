@@ -6,24 +6,13 @@ import {
   } from '../actions/VoteTranslation.js';
 
   import { initialState } from '../constants';
-  
-  // export const form = (state = initialState.questionForm, action) => {
-  //   switch (action.type) {
-  //   case POST_VOTE:
-  //     return {
-  //       ...state
-  //     };
-  //   default:
-  //     return state;
-  //   }
-  // };
-  
+    
   export const list = (state = initialState.votes, action) => {
     switch (action.type) {
     case POST_VOTE:
       return {
         ...state
-      };
+      }; 
     case REQUEST_DATA:
       return {
         ...state,
