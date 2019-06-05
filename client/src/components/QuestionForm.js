@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Field, Formik } from 'formik';
 import LanguageFormSelect from './LanguageFormSelect';
+import CategoryFormSelect from './CategoryFormSelect';
 import { injectIntl } from 'react-intl';
 
 class QuestionForm extends Component {
@@ -16,6 +17,9 @@ class QuestionForm extends Component {
     }
     if (!values.translate_language_id) {
       errors.translate_language_id = formatMessage({id: "errors.questions.translate_language_id"});
+    }
+    if (!values.category_id) {
+      errors.category_id = formatMessage({id: "errors.questions.category_id"});
     }
     return errors;
   }
@@ -57,6 +61,11 @@ class QuestionForm extends Component {
                 <div className="uk-grid-margin" >
                   <LanguageFormSelect name="translate_language_id" placeholder={formatMessage({id: "placeholders.questions.translate_language_id"})} />
                   {touched.translate_language_id && errors.translate_language_id && <div className="uk-text-warning">{errors.translate_language_id}</div>}
+                </div>
+                {/* カテゴリー指定 */}
+                <div className="uk-grid-margin" >
+                  <CategoryFormSelect name="category_id" placeholder={formatMessage({id: "placeholders.questions.category_id"})} />
+                  {touched.category_id && errors.category_id && <div className="uk-text-warning">{errors.category_id}</div>}
                 </div>
               </div>
               <div className="uk-margin">

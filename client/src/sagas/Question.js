@@ -42,6 +42,7 @@ export function* handleFetchQuestionById(action) {
 
 export function* postQuestion(action) {
   try {
+    console.log("---------saveQuestionData----------",action);
     yield put(requestData());
     yield call(api.postQuestionData, action.payload);
     const payload = yield call(api.fetchQuestionList);
