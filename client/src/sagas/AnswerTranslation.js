@@ -1,5 +1,4 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
-import { reset } from 'redux-form';
 import {
   requestData,
   receiveDataSuccess,
@@ -16,6 +15,7 @@ import {
 } from '../actions/AnswerTranslation';
 import * as api from './apis/AnswerTranslations';
 import { notifySuccess, notifyError } from './Util';
+import * as questionSagas from './Question';
 
 export function* handleFetchAnswerTranslationList(action) {
   try {
@@ -47,7 +47,6 @@ export function* postAnswerTranslation(action) {
     yield call(api.postAnswerTranslationData, action.payload);
     const payload = yield call(api.fetchAnswerTranslationList, answer_id);
     yield put(receiveDataSuccess(payload));
-    yield put(reset('answerTranslationForm'));
   } catch (e) {
     yield put(receiveDataFailed());
   }

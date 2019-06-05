@@ -18,6 +18,7 @@ const en_US = {
   "links.sign_up": 'Sign Up',
   "links.login": 'Login',
   "links.logout": 'Logout',
+  "links.to_question_view": 'to question page',
   "languages.japanese": 'Japanese',
   "languages.english": 'English',
   "errors.questions.content": 'Please write a question text.',

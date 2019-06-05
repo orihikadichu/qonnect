@@ -58,6 +58,7 @@ class AnswerTranslationView extends Component {
 
     const user = (currentAnswer.user) ? currentAnswer.user : null;
     const userName = (user) ? user.name : '';
+    const { question_id } = currentAnswer;
     return (
       <main className="uk-container uk-container-small">
         <div className="uk-card uk-card-default uk-card-body uk-box-shadow-small">
@@ -77,7 +78,8 @@ class AnswerTranslationView extends Component {
         <AnswerTranslationForm aId={this.aId} onSubmit={this.handleSubmit.bind(this)} />
         <AnswerTranslationList aId={this.aId} />
         <hr className="uk-divider-icon" />
-        <Link to="/">Top</Link>
+        <p><Link to={`/questions/${question_id}`}>{formatMessage({id: "links.to_question_view"})}</Link></p>
+        <p><Link to="/">Top</Link></p>
       </main>
     );
   }

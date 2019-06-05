@@ -25,6 +25,10 @@ class CommentTranslationView extends Component {
 
   componentWillMount() {
     this.props.getCommentById(this.commentId);
+    const { currentQuestion } = this.props.state.questions;
+    if (isEmptyObject(currentQuestion)) {
+
+    }
   }
 
   handleSubmit(formData) {
@@ -47,6 +51,7 @@ class CommentTranslationView extends Component {
   render() {
     const { formatMessage } = this.props.intl;
     const { currentComment } = this.props.state.comments;
+    const { currentQuestion } = this.props.state.questions;
 
     if (isEmptyObject(currentComment)) {
       return (
@@ -76,7 +81,8 @@ class CommentTranslationView extends Component {
         <CommentTranslationForm commentId={this.commentId} onSubmit={this.handleSubmit.bind(this)} />
         <CommentTranslationList commentId={this.commentId} />
         <hr className="uk-divider-icon" />
-        <Link to="/">Top</Link>
+        <p><Link to={`/questions/${currentQuestion.id}`}>{formatMessage({id: "links.to_question_view"})}</Link></p>
+        <p><Link to="/">Top</Link></p>
       </main>
     );
   }

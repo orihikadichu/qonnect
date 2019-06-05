@@ -112,7 +112,7 @@ app.delete('/api/votes/:id', (req, res) => {
 
   const { vote_id, key, user_id } = req.query;
 
-  let whereContent
+  let whereContent;
   //コンテンツによってidの切り替え
   switch(key){
     case "question":
@@ -269,13 +269,7 @@ app.get('/api/not_translated_comments', (req, res) => {
 });
 
 app.get('/api/questions/:id', (req, res) => {
-  console.log("--------------");
-  console.log(req.params);
-  console.log("--------------");
   const qId = req.params.id;
-  console.log("--------------");
-  console.log(qId);
-  console.log("--------------");
   db.questions.findOne({
     where: {id: qId},
     include: [
@@ -303,8 +297,11 @@ app.get('/api/questions/:id', (req, res) => {
       {
         model: db.votes,
         required: false
-      },  
+      },
     ],
+    order: [
+      [db.question_translations, 'created_at', 'DESC'],
+    ]
   })
     .then((instanse) => {
       res.status(200).send(instanse);
@@ -665,8 +662,9 @@ app.get('/api/answers', (req, res) => {
       },
     ],
     order: [
-      [db.comments, 'created_at', 'ASC'],
       ['created_at', 'ASC'],
+      [db.comments, 'created_at', 'ASC'],
+      [db.answer_translations, 'created_at', 'DESC'],
     ],
   })
     .then((instanses) => {

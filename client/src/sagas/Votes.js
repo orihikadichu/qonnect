@@ -10,14 +10,14 @@ import {
 import * as answerSaga from './Answer';
 import * as questionSagas from './Question';
 
-import { 
-  postVotes, 
-  deleteVotes 
+import {
+  postVotes,
+  deleteVotes
 } from './apis/Votes';
 
-import { 
-  notifySuccess, 
-  notifyError 
+import {
+  notifySuccess,
+  notifyError
 } from './Util';
 
 export function* postVote(action) {
@@ -25,7 +25,7 @@ export function* postVote(action) {
     const { params, key } = action.payload;
     yield put(requestData());
     yield call(postVotes, params);
-    
+
     let data;
     switch (key) {
       case "comment":
