@@ -94,7 +94,7 @@ export function* deleteVote(action) {
           yield call(questionSagas.handleFetchData, data);
           break;
       case "questionView":
-          data = { payload: params.question_id };
+          data = { payload: params.vote_id };
           yield call(questionSagas.handleFetchQuestionById, data);
           break;
     }

@@ -39,11 +39,14 @@ class Comment extends Component {
   }
 
   render() {
-    const { id, user, content, isOwner, voteState, questions } = this.props;
+    const { id, user, content, isOwner, voteList, questions } = this.props;
     const currentQuestionId = questions.currentQuestion.id;
     const editLink = isOwner
                    ? <Link to={`/comments/edit/${id}`}>編集</Link>
                    : '';
+
+    const myVotes = voteList.filter(v => {return v.user_id === user.id});
+    const voteState = myVotes.length !== 0;
     const votebutton = voteState
                    ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, id, currentQuestionId)}></span>
                    : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, id, currentQuestionId)}></span>;

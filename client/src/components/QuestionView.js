@@ -55,7 +55,7 @@ class QuestionView extends Component {
 
   sendVote(question){
     const params = {
-      user_id: question.user_id,
+      user_id: this.props.state.auth.user.id,
       question_id: question.id,
       answer_id: null,
       comment_id: null,
@@ -68,7 +68,7 @@ class QuestionView extends Component {
 
   deleteVote(question) {
     const params = {
-      user_id: question.user_id,
+      user_id: this.props.state.auth.user.id,
       key : "question",
       //他のコンテンツと共通化するためvote_idというkeyにする
       vote_id: question.id,
@@ -98,7 +98,9 @@ class QuestionView extends Component {
     const editLink = user.id === loginUser.id
                    ? <p><Link to={`/questions/edit/${this.qId}`}>{formatMessage({id: 'links.edit'})}</Link></p>
                    : '';
-    const voteState = votes.length !== 0 ;
+  
+    const myVotes = votes.filter(v => {return v.user_id === loginUser.id});
+    const voteState = myVotes.length !== 0;
     const votebutton = voteState
                    ?<span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, currentQuestion)}></span>
                    :<span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, currentQuestion)}></span>;

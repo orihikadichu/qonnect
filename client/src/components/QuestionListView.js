@@ -47,8 +47,9 @@ class QuestionListView extends Component {
       const { user } = question;
       const userName = user ? user.name : '不明なユーザー';
       const profileLink = `/users/profile/${user.id}`;
-      //評価機能のための変数
-      const voteState = question.votes.length !== 0 ;
+
+      const myVotes = question.votes.filter(v => {return v.user_id === user.id});
+      const voteState = myVotes.length !== 0;
       const votebutton = voteState
                    ?<span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, question)}></span>
                    :<span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, question)}></span>;
