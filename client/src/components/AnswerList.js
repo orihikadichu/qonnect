@@ -88,7 +88,7 @@ class AnswerList extends Component {
        questionId: currentQuestionId,
     };
     const key = "answer";
-    const data = { params, key };     
+    const data = { params, key };
     return this.props.handlePostVote(data);
   }
 
@@ -102,7 +102,7 @@ class AnswerList extends Component {
       questionId: currentQuestionId,
     };
     const key = "answer";
-    const data = { params, key };    
+    const data = { params, key };
     return this.props.handleDeleteVote(data);
   }
 
@@ -118,7 +118,7 @@ class AnswerList extends Component {
       const editLink = answer.user.id === loginUser.id
                      ? <Link to={`/answers/edit/${answer.id}`}>{ formatMessage({id: "links.edit"}) }</Link>
                      : '';
-      
+
       const voteState = answer.votes.length !== 0 ;
       const votebutton = voteState
                     ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, answer.id, this.props.qId)}></span>
@@ -178,7 +178,7 @@ class AnswerList extends Component {
     if (answerList.length === 0) {
       return (
         <div>
-          <h4 className="uk-text-success">{formatMessage({id: "messages.empty_answer"})}</h4>
+          <h4 className="uk-text-success">{formatMessage({id: "messages.empty_answers"})}</h4>
         </div>
       );
     }
