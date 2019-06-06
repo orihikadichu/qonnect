@@ -48,7 +48,8 @@ class QuestionListView extends Component {
       const userName = user ? user.name : '不明なユーザー';
       const profileLink = `/users/profile/${user.id}`;
 
-      const myVotes = question.votes.filter(v => {return v.user_id === user.id});
+      const { votes } = question;
+      const myVotes = votes.filter(v => {return v.user_id === this.props.user.id});
       const voteState = myVotes.length !== 0;
       const votebutton = voteState
                    ?<span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, question)}></span>
