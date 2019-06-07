@@ -39,7 +39,6 @@ export function* createUserAccount(action) {
 export function* loginUserAccount(action) {
   const { history } = action.payload;
   try {
-    console.log('loginUserAccount');
     const payload = yield call(api.loginUser, action.payload);
     yield put(loginSuccess(payload));
     const { jwt } = payload.data;

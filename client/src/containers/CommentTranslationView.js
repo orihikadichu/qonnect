@@ -25,10 +25,6 @@ class CommentTranslationView extends Component {
 
   componentWillMount() {
     this.props.getCommentById(this.commentId);
-    const { currentQuestion } = this.props.state.questions;
-    if (isEmptyObject(currentQuestion)) {
-
-    }
   }
 
   handleSubmit(formData) {
@@ -63,27 +59,30 @@ class CommentTranslationView extends Component {
 
     const user = (currentComment.user) ? currentComment.user : null;
     const userName = (user) ? user.name : '';
+    const toQuestionViewLink = !isEmptyObject(currentQuestion)
+                             ? (<p><Link to={`/questions/${currentQuestion.id}`}>{formatMessage({id: "links.to_question_view"})}</Link></p>)
+                             : '';
     return (
-      <main className="uk-container uk-container-small">
-        <div className="uk-card uk-card-default uk-card-body uk-box-shadow-small">
-          <p><Linkify properties={{ target: '_blank'}} >{currentComment.content}</Linkify></p>
-          <p className="uk-text-meta">{dayjs(currentComment.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
-          <div className="uk-grid uk-grid-small uk-flex-middle" >
-            <div className="uk-width-auto">
-              <img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" />
-            </div>
-            <div className="uk-width-expand">
-              <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${user.id}`}>{ userName }</Link></h4>
-            </div>
+    <main className="uk-container uk-container-small">
+      <div className="uk-card uk-card-default uk-card-body uk-box-shadow-small">
+        <p><Linkify properties={{ target: '_blank'}} >{currentComment.content}</Linkify></p>
+        <p className="uk-text-meta">{dayjs(currentComment.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
+        <div className="uk-grid uk-grid-small uk-flex-middle" >
+          <div className="uk-width-auto">
+            <img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" />
+          </div>
+          <div className="uk-width-expand">
+            <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${user.id}`}>{ userName }</Link></h4>
           </div>
         </div>
-        <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.translation_list"})}</span></h3>
-        <CommentTranslationForm commentId={this.commentId} onSubmit={this.handleSubmit.bind(this)} />
-        <CommentTranslationList commentId={this.commentId} />
-        <hr className="uk-divider-icon" />
-        <p><Link to={`/questions/${currentQuestion.id}`}>{formatMessage({id: "links.to_question_view"})}</Link></p>
-        <p><Link to="/">Top</Link></p>
-      </main>
+      </div>
+      <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.translation_list"})}</span></h3>
+      <CommentTranslationForm commentId={this.commentId} onSubmit={this.handleSubmit.bind(this)} />
+      <CommentTranslationList commentId={this.commentId} />
+      <hr className="uk-divider-icon" />
+      { toQuestionViewLink }
+      <p><Link to="/">Top</Link></p>
+    </main>
     );
   }
 }

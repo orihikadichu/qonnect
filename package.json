@@ -47,6 +47,7 @@
     "expect": "^24.7.1",
     "faker": "^4.1.0",
     "iconv-lite": "^0.4.24",
+    "nodemailer": "^6.2.1",
     "supertest": "^4.0.2"
   }
 }

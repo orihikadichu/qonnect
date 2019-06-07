@@ -14,6 +14,7 @@ import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import jimp from 'jimp';
 import fs from 'fs';
+import nodemailer from 'nodemailer';
 import {
   getProfileImageName,
   getProfileImageFilePath,
@@ -21,9 +22,21 @@ import {
   PROFILE_IMAGE_DIR,
 } from './users/util';
 
-
 const app = express();
 const secretKey = 'Eg2fTPSp6attfKcC6bsNbWkwsn6R4v';
+
+// メール送信関連
+const smtpConfig = {
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // SSL
+  auth: {
+    user: 'qonnect.2019@gmail.com',
+    pass: 'Qonnect0607'
+  }
+};
+
+const transporter = nodemailer.createTransport(smtpConfig);
 
 // console.log({
 //   host            : process.env.MYSQL_HOST,
@@ -1105,6 +1118,21 @@ app.delete('/api/comments/:id', (req, res) => {
       return res.status(200).send('コメントを削除しました');
     })
   ;
+});
+
+app.post('/api/mail', (req, res) => {
+  const { from, to, subject, text } = req.body;
+
+  const message = { from, to, subject, text };
+
+  transporter.sendMail(message, (err, response) => {
+    if (err) {
+      console.log(err || response);
+      return res.status(500).send('メールの送信に失敗しました');
+    }
+    return res.status(200).send('sent!');
+  });
+
 });
 
 

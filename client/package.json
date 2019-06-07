@@ -26,7 +26,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "jest --silent=false --verbose false",
     "test:watch": "yarn test --watch",
     "eject": "react-scripts eject"
   },
@@ -44,11 +44,13 @@
     "@babel/preset-env": "^7.4.2",
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
+    "@redux-saga/is": "^1.0.2",
     "babel-core": "^6.26.3",
     "dayjs": "^1.8.12",
     "formik": "^1.5.2",
     "react-linkify": "^0.2.2",
     "reapop": "^2.0.1",
-    "reapop-theme-wybo": "^1.0.2"
+    "reapop-theme-wybo": "^1.0.2",
+    "redux-saga-test-plan": "^4.0.0-beta.3"
   }
 }
