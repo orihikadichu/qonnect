@@ -109,6 +109,7 @@ class QuestionView extends Component {
     return (
       <main className="uk-container uk-container-small">
         <div className="uk-card uk-card-default uk-card-body uk-box-shadow-small">
+          <p className="uk-text-muted">{ question.category.category }</p>
           <p>
             <Linkify properties={{ target: '_blank'}} >{question.dispText}</Linkify>
             <Link to={`/question_translations/${this.qId}`}><span uk-icon="world"></span></Link>

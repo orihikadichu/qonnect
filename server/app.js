@@ -87,9 +87,6 @@ app.post('/api/votes', (req, res) => {
 });
 
 app.post('/api/vote_translations', (req, res) => {
-  console.log("------------------------------");
-  console.log(req.body);
-  console.log("------------------------------"); 
   const {
     user_id,
     question_translation_id,
@@ -199,6 +196,10 @@ app.get('/api/questions', (req, res) => {
         model: db.votes,
         required: false
       },
+      {
+        model: db.categories,
+        required: false
+      }, 
     ],
     order: [
       ['created_at', 'DESC']
@@ -324,6 +325,10 @@ app.get('/api/questions/:id', (req, res) => {
         model: db.votes,
         required: false
       },  
+      {
+        model: db.categories,
+        required: false
+      }, 
     ],
   })
     .then((instanse) => {

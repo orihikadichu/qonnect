@@ -58,6 +58,7 @@ class QuestionListView extends Component {
 
       return (
         <li key={question.id} >
+          <p className="uk-text-muted">{ question.category.category }</p>
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
           <Link to={`/question_translations/${question.id}`}><span uk-icon="world"></span></Link>
           { votebutton }
