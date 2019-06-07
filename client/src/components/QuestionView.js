@@ -78,6 +78,17 @@ class QuestionView extends Component {
     return this.props.handleDeleteVote(data);
   }
 
+  getAnswerForm(currentQuestion, loginUser) {
+    if (currentQuestion.country_id !== loginUser.country_id) {
+      return '';
+    }
+
+    const answerFormInitVals = { content: '', translate_language_id: '' };
+    return (
+      <AnswerForm qId={this.qId} initialValues={answerFormInitVals} onSubmit={this.handleSubmit.bind(this)}/>
+    );
+  }
+
   render() {
     const { currentQuestion } = this.props.state.questions;
     const { translateLanguageId } = this.props.state.intl;
@@ -94,7 +105,8 @@ class QuestionView extends Component {
     const loginUser = this.props.state.auth.user;
     const question = this.getTranslatedQuestion(currentQuestion, translateLanguageId);
     const { user, votes } = currentQuestion;
-    const answerFormInitVals = { content: '', translate_language_id: '' };
+    const answerForm = this.getAnswerForm(currentQuestion, loginUser);
+
     const editLink = user.id === loginUser.id
                    ? <p><Link to={`/questions/edit/${this.qId}`}>{formatMessage({id: 'links.edit'})}</Link></p>
                    : '';
@@ -128,7 +140,7 @@ class QuestionView extends Component {
         <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.answer_list"})}</span></h3>
 
         <div className="uk-margin-bottom">
-          <AnswerForm qId={this.qId} initialValues={answerFormInitVals} onSubmit={this.handleSubmit.bind(this)}/>
+          { answerForm }
         </div>
           <AnswerList qId={this.qId} translateLanguageId={translateLanguageId} />
         <hr className="uk-divider-icon" />
