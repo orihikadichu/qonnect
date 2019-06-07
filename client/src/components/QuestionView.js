@@ -98,7 +98,7 @@ class QuestionView extends Component {
     const editLink = user.id === loginUser.id
                    ? <p><Link to={`/questions/edit/${this.qId}`}>{formatMessage({id: 'links.edit'})}</Link></p>
                    : '';
-  
+
     const myVotes = votes.filter(v => {return v.user_id === loginUser.id});
     const voteState = myVotes.length !== 0;
     const votebutton = voteState

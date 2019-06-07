@@ -8,9 +8,9 @@ import {
     fetchAnswerList
 } from '../actions/Answer';
 //評価するための関数
-import { 
-    postVote, 
-    deleteVote 
+import {
+    postVote,
+    deleteVote
 } from '../actions/Vote';
 
 const mapStateToProps = state => {
