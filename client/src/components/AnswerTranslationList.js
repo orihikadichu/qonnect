@@ -22,7 +22,7 @@ class AnswerTranslationList extends Component {
 
   sendVote(answer){
     const params = {
-      user_id: answer.user_id,
+      user_id: this.props.user.id,
       question_translation_id: null,
       answer_translation_id: answer.id,
       commcomment_translation_id: null,
@@ -37,7 +37,7 @@ class AnswerTranslationList extends Component {
 
   deleteVote(answer) {
     const params = {
-      user_id: answer.user_id,
+      user_id: this.props.user.id,
       key : "answer",
       //他のコンテンツと共通化するためvote_idというkeyにする
       vote_id: answer.id,
@@ -59,9 +59,10 @@ class AnswerTranslationList extends Component {
                           ? <Link to={`/answer_translations/edit/${translation.id}`}>{formatMessage({id: "links.edit"})}</Link>
                           : '';
 
-           const voteState = translation.vote_translations.length;
+           const myVotes = translation.vote_translations.filter(v => {return v.user_id === loginUser.id});
+           const voteState = myVotes.length !== 0;
            const votebutton = voteState
-                           ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this,translation)}></span>
+                           ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, translation)}></span>
                            : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this,translation)}></span>;
 
            return (

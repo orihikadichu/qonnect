@@ -87,6 +87,9 @@ app.post('/api/votes', (req, res) => {
 });
 
 app.post('/api/vote_translations', (req, res) => {
+  console.log("------------------------------");
+  console.log(req.body);
+  console.log("------------------------------"); 
   const {
     user_id,
     question_translation_id,
