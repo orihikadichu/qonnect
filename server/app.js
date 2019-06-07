@@ -85,25 +85,6 @@ const upload = multer({ storage: storage });
 /*
 評価機能
 */
-
-//question_id
-app.get('/api/votes/questions', (req, res) => {
-  const { id } = req.params;
-  db.questions.findOne({
-    where: { id },
-    include: [
-      {
-        model: db.votes,
-        required: false
-      },
-    ],
-  })
-    .then((instanse) => {
-      res.status(200).send(instanse);
-    });
-});
-
-
 app.post('/api/votes', (req, res) => {
   const {
     user_id,
@@ -186,7 +167,6 @@ app.delete('/api/votes/:id', (req, res) => {
 app.delete('/api/vote_translations/:id', (req, res) => {
 
   const { vote_id, key, user_id } = req.query;
-
   let whereContent
   //コンテンツによってidの切り替え
   switch(key){
@@ -217,10 +197,9 @@ app.delete('/api/vote_translations/:id', (req, res) => {
   ;
 });
 
-
 // Questions
 app.get('/api/questions', (req, res) => {
-  //params＝country.id
+  //params={country.id:1}
   const params = req.query;
   db.questions.findAll({
     where: params,
@@ -242,9 +221,7 @@ app.get('/api/questions', (req, res) => {
       ['created_at', 'DESC']
     ]
   })
-    //findAllで取得したデータを撮り終えてからthenを走らせる。
     .then((instanses) => {
-      //ここでクライアント側にデータを渡している。
       res.status(200).send(instanses);
     });
 });
@@ -375,9 +352,6 @@ app.get('/api/questions/:id', (req, res) => {
 });
 
 app.post('/api/questions', (req, res) => {
-  console.log("-----------------------------------------");
-  console.log("res.body",req.body);
-  console.log("-----------------------------------------");
   const {
     user_id,
     content,

@@ -119,7 +119,8 @@ class AnswerList extends Component {
                      ? <Link to={`/answers/edit/${answer.id}`}>{ formatMessage({id: "links.edit"}) }</Link>
                      : '';
 
-      const voteState = answer.votes.length !== 0 ;
+      const myVotes = answer.votes.filter(v => {return v.user_id === loginUser.id});
+      const voteState = myVotes.length !== 0;
       const votebutton = voteState
                     ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, answer.id, this.props.qId)}></span>
                     : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id, this.props.qId)}></span>;

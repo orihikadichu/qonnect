@@ -16,10 +16,10 @@ class CommentList extends Component {
       <ul className="uk-comment-list" >
         { translatedCommentList.map((v, i) => {
             const isOwner = loginUser.id === v.user.id;
-            const voteState = v.votes.length !== 0;
+            const voteState = v.votes;
             return (
               <li className="uk-margin-small-top" key={i} >
-                <Comment id={v.id} user={v.user} content={v.dispText} isOwner={isOwner} voteState={ voteState } />
+                <Comment id={v.id} user={v.user} content={v.dispText} isOwner={isOwner} voteList={ voteState } />
               </li>
             );
         })}
