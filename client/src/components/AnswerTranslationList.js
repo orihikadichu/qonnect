@@ -64,6 +64,7 @@ class AnswerTranslationList extends Component {
            const votebutton = voteState
                            ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, translation)}></span>
                            : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this,translation)}></span>;
+           const voteNumbers = <p className="uk-text-default">{ translation.vote_translations.length }</p>;                   
 
            return (
              <li key={translation.id} >
@@ -73,6 +74,7 @@ class AnswerTranslationList extends Component {
                      <Linkify properties={{ target: '_blank'}} >{translation.content}</Linkify>
                      { editLink }
                      { votebutton }
+                     { voteNumbers }
                    </p>
                    <p className="uk-text-meta">{dayjs(translation.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
                  </div>

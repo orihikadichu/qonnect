@@ -104,6 +104,7 @@ class QuestionView extends Component {
     const votebutton = voteState
                    ?<span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, currentQuestion)}></span>
                    :<span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, currentQuestion)}></span>;
+    const voteNumbers = <p className="uk-text-default">{ votes.length }</p>;
 
     return (
       <main className="uk-container uk-container-small">
@@ -123,6 +124,8 @@ class QuestionView extends Component {
           </div>
           { editLink }
           { votebutton }
+          { voteNumbers }
+
         </div>
 
         <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.answer_list"})}</span></h3>

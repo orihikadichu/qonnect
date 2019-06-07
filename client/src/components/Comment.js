@@ -50,6 +50,7 @@ class Comment extends Component {
     const votebutton = voteState
                    ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, id, currentQuestionId)}></span>
                    : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, id, currentQuestionId)}></span>;
+    const voteNumbers = <p className="uk-text-default">{ voteList.length }</p>;
 
     return (
       <article className="uk-comment uk-comment-primary">
@@ -68,6 +69,8 @@ class Comment extends Component {
           </div>
           { editLink }
           { votebutton }
+          { voteNumbers }
+
         </div>
       </article>
     );

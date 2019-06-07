@@ -124,7 +124,7 @@ class AnswerList extends Component {
       const votebutton = voteState
                     ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, answer.id, this.props.qId)}></span>
                     : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id, this.props.qId)}></span>;
-
+      const voteNumbers = <p className="uk-text-default">{ answer.votes.length }</p>;
       const commentForm = this.getComment(answer.id);
 
       return (
@@ -136,6 +136,7 @@ class AnswerList extends Component {
                 <Link to={`/answer_translations/${answer.id}`}><span uk-icon="world"></span></Link>
                 { editLink }
                 { votebutton }
+                { voteNumbers }
               </p>
               <p className="uk-text-meta">{dayjs(answer.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
 
