@@ -12,6 +12,7 @@ class CommentList extends Component {
     const contentType = 'comment_translations';
     const filteredCommentList = getFilteredContents(commentList, translateLanguageId, contentType);
     const translatedCommentList = getTranslatedContents(filteredCommentList, translateLanguageId, contentType);
+    console.log("translatedCommentList",translatedCommentList);
     return (
       <ul className="uk-comment-list" >
         { translatedCommentList.map((v, i) => {
@@ -19,7 +20,7 @@ class CommentList extends Component {
             const voteState = v.votes;
             return (
               <li className="uk-margin-small-top" key={i} >
-                <Comment id={v.id} user={v.user} content={v.dispText} isOwner={isOwner} voteList={ voteState } />
+                <Comment id={v.id} commentUser={v.user} content={v.dispText} isOwner={isOwner} voteList={ voteState } />
               </li>
             );
         })}

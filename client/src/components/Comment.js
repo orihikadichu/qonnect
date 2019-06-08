@@ -44,19 +44,17 @@ class Comment extends Component {
   }
 
   render() {
-    const { id, user, content, isOwner, voteList, questions } = this.props;
+    const { id, user, content, isOwner, voteList, questions, commentUser } = this.props;
     const currentQuestionId = questions.currentQuestion.id;
     const editLink = isOwner
                    ? <Link to={`/comments/edit/${id}`}>編集</Link>
                    : '';
-
     const myVotes = voteList.filter(v => {return v.user_id === user.id});
     const voteState = myVotes.length !== 0;
     const votebutton = voteState
                    ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, id, currentQuestionId)}></span>
                    : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, id, currentQuestionId)}></span>;
     const voteNumbers = <p className="uk-text-default">{ voteList.length }</p>;
-
     return (
       <article className="uk-comment uk-comment-primary">
         <div className="uk-comment-header uk-comment-body">
@@ -67,10 +65,10 @@ class Comment extends Component {
         </div>
         <div className="uk-grid uk-grid-small uk-flex-middle">
           <div className="uk-width-auto">
-            <img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" />
+            <img className="uk-comment-avatar uk-border-circle" src={commentUser.image_path} width="35" height="35" alt="" />
           </div>
           <div className="uk-width-expand">
-            <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${user.id}`}>{ user.name }</Link></h4>
+            <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${commentUser.id}`}>{ commentUser.name }</Link></h4>
           </div>
           { editLink }
           { votebutton }
