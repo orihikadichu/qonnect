@@ -66,16 +66,16 @@ class QuestionTranslationList extends Component {
       const myVotes = translation.vote_translations.filter(v => {return v.user_id === loginUser.id});
       const voteState = myVotes.length !== 0;
       const votebutton = voteState
-                     ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this,translation)}></span>
-                     : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this,translation)}></span>;
-      const voteNumbers = <p className="uk-text-default">{ translation.vote_translations.length }</p>;
+                     ? <span className="uk-text-danger uk-margin-small-right" uk-icon="star" onClick={this.deleteVote.bind(this,translation)}></span>
+                     : <span className="uk-text-muted uk-margin-small-right" uk-icon="heart" onClick={this.sendVote.bind(this,translation)}></span>;
+      const voteNumbers = <span className="uk-text-default">{ translation.vote_translations.length }</span>;
 
       return (
         <li key={translation.id} >
           <article className="uk-comment">
             <div className="uk-comment-header uk-comment-body">
               <p style={{"whiteSpace": "pre-wrap"}} >
-                <Linkify properties={{ target: '_blank'}} >{translation.content}</Linkify>
+                <Linkify properties={{ target: '_blank'}} >{translation.content}</Linkify><br/>
                 { editLink }
                 { votebutton }
                 { voteNumbers }

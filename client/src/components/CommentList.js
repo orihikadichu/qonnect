@@ -12,7 +12,7 @@ class CommentList extends Component {
     const contentType = 'comment_translations';
     const filteredCommentList = getFilteredContents(commentList, translateLanguageId, contentType);
     const translatedCommentList = getTranslatedContents(filteredCommentList, translateLanguageId, contentType);
-    console.log("translatedCommentList",translatedCommentList);
+
     return (
       <ul className="uk-comment-list" >
         { translatedCommentList.map((v, i) => {

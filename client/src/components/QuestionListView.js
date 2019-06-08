@@ -58,15 +58,15 @@ class QuestionListView extends Component {
       const myVotes = votes.filter(v => {return v.user_id === this.props.user.id});
       const voteState = myVotes.length !== 0;
       const votebutton = voteState
-                   ?<span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, question)}></span>
-                   :<span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, question)}></span>;
-      const voteNumbers = <p className="uk-text-default">{ votes.length }</p>;
+                   ?<span className="uk-text-danger uk-margin-small-right" uk-icon="star" onClick={this.deleteVote.bind(this, question)}></span>
+                   :<span className="uk-text-muted uk-margin-small-right" uk-icon="heart" onClick={this.sendVote.bind(this, question)}></span>;
+      const voteNumbers = <span className="uk-text-default">{ votes.length }</span>;
 
       return (
         <li key={question.id} >
           <p className="uk-text-muted">{ question.category.category }</p>
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
-          <Link to={`/question_translations/${question.id}`}><span uk-icon="world"></span></Link>
+          <Link to={`/question_translations/${question.id}`}><span uk-icon="world"></span></Link><br/>
           { votebutton }
           { voteNumbers }
           
