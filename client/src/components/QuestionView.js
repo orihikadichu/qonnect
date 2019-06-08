@@ -116,10 +116,12 @@ class QuestionView extends Component {
     const votebutton = voteState
                    ?<span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, currentQuestion)}></span>
                    :<span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, currentQuestion)}></span>;
+    const voteNumbers = <p className="uk-text-default">{ votes.length }</p>;
 
     return (
       <main className="uk-container uk-container-small">
         <div className="uk-card uk-card-default uk-card-body uk-box-shadow-small">
+          <p className="uk-text-muted">{ question.category.category }</p>
           <p>
             <Linkify properties={{ target: '_blank'}} >{question.dispText}</Linkify>
             <Link to={`/question_translations/${this.qId}`}><span uk-icon="world"></span></Link>
@@ -135,6 +137,8 @@ class QuestionView extends Component {
           </div>
           { editLink }
           { votebutton }
+          { voteNumbers }
+
         </div>
 
         <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.answer_list"})}</span></h3>

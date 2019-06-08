@@ -167,7 +167,7 @@ app.delete('/api/votes/:id', (req, res) => {
 app.delete('/api/vote_translations/:id', (req, res) => {
 
   const { vote_id, key, user_id } = req.query;
-  let whereContent
+  let whereContent;
   //コンテンツによってidの切り替え
   switch(key){
     case "question":
@@ -214,6 +214,10 @@ app.get('/api/questions', (req, res) => {
       },
       {
         model: db.votes,
+        required: false
+      },
+      {
+        model: db.categories,
         required: false
       },
     ],
@@ -341,6 +345,10 @@ app.get('/api/questions/:id', (req, res) => {
         model: db.votes,
         required: false
       },
+      {
+        model: db.categories,
+        required: false
+      },
     ],
     order: [
       [db.question_translations, 'created_at', 'DESC'],
@@ -420,7 +428,7 @@ app.get('/api/question_translations', (req, res) => {
       },
       {
         model: db.vote_translations,
-        required: false    
+        required: false
       },
   ],
   order: [
@@ -519,7 +527,7 @@ app.get('/api/answer_translations', (req, res) => {
     },
     {
       model: db.vote_translations,
-      required: false    
+      required: false
     },
   ],
   order: [
@@ -613,7 +621,7 @@ app.get('/api/comment_translations', (req, res) => {
     },
     {
       model: db.vote_translations,
-      required: false    
+      required: false
     },
   ],
   order: [
