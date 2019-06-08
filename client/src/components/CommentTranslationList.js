@@ -21,6 +21,9 @@ class CommentTranslationList extends Component {
   }
 
   sendVote(comment){
+    if( this.props.user.id == null){
+      return;
+    }
     const params = {
       user_id: this.props.user.id,
       question_translation_id: null,
@@ -36,6 +39,9 @@ class CommentTranslationList extends Component {
   }
 
   deleteVote(comment) {
+    if( this.props.user.id == null){
+      return;
+    }
     const params = {
       user_id: this.props.user.id,
       key : "comment",

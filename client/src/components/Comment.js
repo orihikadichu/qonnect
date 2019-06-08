@@ -9,6 +9,9 @@ import { postVote, deleteVote } from '../actions/Vote';
 class Comment extends Component {
 
   sendVote(commentId, currentQuestionId){
+    if(this.props.user.id == null ){
+      return;
+    }
     const params = {
       user_id: this.props.user.id,
       question_id: null,
@@ -24,7 +27,9 @@ class Comment extends Component {
   }
 
   deleteVote(commentId, currentQuestionId) {
-  
+    if(this.props.user.id == null ){
+      return;
+    }
     const params = {
       user_id: this.props.user.id,
       key : "comment",

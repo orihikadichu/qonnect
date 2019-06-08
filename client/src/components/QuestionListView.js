@@ -12,6 +12,9 @@ import { postVote, deleteVote } from '../actions/Vote';
 class QuestionListView extends Component {
 
   sendVote(question){
+    if(this.props.user.id == null ){
+      return;
+    }
     const params = {
       user_id: this.props.user.id,
       question_id: question.id,
@@ -26,6 +29,9 @@ class QuestionListView extends Component {
   }
 
   deleteVote(question) {
+    if(this.props.user.id == null ){
+      return;
+    }
     const params = {
       user_id: this.props.user.id,
       key : "question",
