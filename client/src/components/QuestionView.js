@@ -54,6 +54,9 @@ class QuestionView extends Component {
   }
 
   sendVote(question){
+    if(this.props.state.auth.user.id == null ){
+      return;
+    }
     const params = {
       user_id: this.props.state.auth.user.id,
       question_id: question.id,
@@ -67,6 +70,9 @@ class QuestionView extends Component {
   }
 
   deleteVote(question) {
+    if(this.props.state.auth.user.id == null ){
+      return;
+    }
     const params = {
       user_id: this.props.state.auth.user.id,
       key : "question",

@@ -78,6 +78,9 @@ class AnswerList extends Component {
   }
 
   sendVote(answerId, currentQuestionId){
+    if(this.props.state.auth.user.id == null ){
+      return;
+    }
     const params = {
       user_id: this.props.state.auth.user.id,
       question_id: null,
@@ -93,6 +96,9 @@ class AnswerList extends Component {
   }
 
   deleteVote(answerId, currentQuestionId) {
+    if(this.props.state.auth.user.id == null ){
+      return;
+    }
     const params = {
       user_id: this.props.state.auth.user.id,
       key : "answer",
