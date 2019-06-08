@@ -38,22 +38,9 @@ const smtpConfig = {
 
 const transporter = nodemailer.createTransport(smtpConfig);
 
-// console.log({
-//   host            : process.env.MYSQL_HOST,
-//   user            : process.env.MYSQL_USER,
-//   password        : process.env.MYSQL_SECRET,
-//   database        : process.env.MYSQL_DB
-// });
-
-console.log({
-  host            : process.env.MYSQL_HOST,
-  user            : process.env.MYSQL_USER,
-  password        : process.env.MYSQL_SECRET,
-  database        : process.env.MYSQL_DB
-});
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 // body-parserを適用
 app.use(bodyParser.urlencoded({ extended: true }));
