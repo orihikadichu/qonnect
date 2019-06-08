@@ -25,5 +25,7 @@ yarn-error.log*
 /src/image/*
 /public/image/*
 !/public/image/.gitkeep
+!/public/image/profile
+/public/image/profile/*
 !/public/image/profile/.gitkeep
 !/public/image/profile/blank-profile.png
