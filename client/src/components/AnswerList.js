@@ -128,9 +128,9 @@ class AnswerList extends Component {
       const myVotes = answer.votes.filter(v => {return v.user_id === loginUser.id});
       const voteState = myVotes.length !== 0;
       const votebutton = voteState
-                    ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, answer.id, this.props.qId)}></span>
-                    : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id, this.props.qId)}></span>;
-      const voteNumbers = <p className="uk-text-default">{ answer.votes.length }</p>;
+                    ? <span className="uk-text-danger uk-margin-small-right" uk-icon="star" onClick={this.deleteVote.bind(this, answer.id, this.props.qId)}></span>
+                    : <span className="uk-text-muted uk-margin-small-right" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id, this.props.qId)}></span>;
+      const voteNumbers = <span className="uk-text-default">{ answer.votes.length }</span>;
       const commentForm = this.getComment(answer.id);
 
       return (
@@ -139,7 +139,7 @@ class AnswerList extends Component {
             <div className="uk-comment-header uk-comment-body">
               <p style={{"whiteSpace": "pre-wrap"}} >
                 <Linkify properties={{ target: '_blank'}} >{answer.dispText}</Linkify>
-                <Link to={`/answer_translations/${answer.id}`}><span uk-icon="world"></span></Link>
+                <Link to={`/answer_translations/${answer.id}`}><span uk-icon="world"></span></Link><br/>
                 { editLink }
                 { votebutton }
                 { voteNumbers }

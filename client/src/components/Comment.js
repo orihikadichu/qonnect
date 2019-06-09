@@ -54,7 +54,8 @@ class Comment extends Component {
     const votebutton = voteState
                    ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, id, currentQuestionId)}></span>
                    : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, id, currentQuestionId)}></span>;
-    const voteNumbers = <p className="uk-text-default">{ voteList.length }</p>;
+    const voteNumbers = <span className="uk-text-default">{ voteList.length }</span>;
+    
     return (
       <article className="uk-comment uk-comment-primary">
         <div className="uk-comment-header uk-comment-body">
