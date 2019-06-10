@@ -18,6 +18,7 @@ class QuestionList extends Component {
   }
 
   render() {
+
     const { isFetching, questionArray } = this.props.state.questions;
     const { translateLanguageId } = this.props.state.intl;
     if (isFetching) {

@@ -44,10 +44,10 @@ class QuestionListView extends Component {
     return this.props.handleDeleteVote(data);
   }
 
-  getQuestionList(questionArray, translateLanguageId) {
+  getQuestionList(questionArray, translateLanguageId, categoryId) {
     const contentType = 'question_translations';
-    const filteredQuestions = getFilteredContents(questionArray, translateLanguageId, contentType);
-    const translatedQuestions = getTranslatedContents(filteredQuestions, translateLanguageId, contentType);
+    const filteredQuestions = getFilteredContents(questionArray, translateLanguageId, contentType, categoryId);
+    const translatedQuestions = getTranslatedContents(filteredQuestions, translateLanguageId, contentType, categoryId);
 
     return translatedQuestions.map(question => {
       const { user } = question;
@@ -85,8 +85,8 @@ class QuestionListView extends Component {
     });
   }
 
-  getQuestionListView(questionArray, translateLanguageId) {
-    const questionList = this.getQuestionList(questionArray, translateLanguageId);
+  getQuestionListView(questionArray, translateLanguageId, categoryId) {
+    const questionList = this.getQuestionList(questionArray, translateLanguageId, categoryId);
 
     return (
       <div>
@@ -98,9 +98,8 @@ class QuestionListView extends Component {
   }
 
   render() {
-
-    const { questionArray, translateLanguageId } = this.props;
-    const content = this.getQuestionListView(questionArray, translateLanguageId);
+    const { questionArray, translateLanguageId, categoryId } = this.props;
+    const content = this.getQuestionListView(questionArray, translateLanguageId, categoryId);
 
     return (
       <div>
@@ -113,8 +112,11 @@ class QuestionListView extends Component {
 //stateの中からauthだけを取り出す。
 const mapStateToProps = state => {
   const { user } = state.auth;
+  const { categoryId } = state.ctgr;
+
   return {
-    user
+    user, 
+    categoryId
   };
 };
 

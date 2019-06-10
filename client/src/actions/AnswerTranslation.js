@@ -12,7 +12,6 @@ export const RECEIVE_SINGLE_DATA_SUCCESS = Symbol('RECEIVE_SINGLE_DATA_SUCCESS')
 export const RECEIVE_DATA_FAILED = Symbol('RECEIVE_DATA_FAILED');
 export const UPDATED_SINGLE_ANSWER_TRANSLATION = Symbol('UPDATED_SINGLE_ANSWER_TRANSLATION');
 
-
 export const fetchAnswerTranslationList = createAction(FETCH_ANSWER_TRANSLATION_LIST);
 export const fetchAnswerTranslation = createAction(FETCH_ANSWER_TRANSLATION);
 export const postAnswerTranslationData = createAction(POST_ANSWER_TRANSLATION_DATA);
