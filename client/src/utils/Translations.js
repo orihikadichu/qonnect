@@ -6,7 +6,7 @@ export const getFilteredContents = (contentList, translateLanguageId, contentTyp
     if (v.translate_language_id === translateLanguageId) {
       if (categoryId === 0 ) {
         return true;
-      }else if(categoryId === v.category_id){
+      }　else if　(categoryId === v.category_id){
         return true;
       }
     }
@@ -25,7 +25,7 @@ export const getTranslatedContents = (contentList, translateLanguageId, contentT
       if (categoryId === 0 ) {
         v.dispText = v.content;
         return v;
-      }else if(categoryId === v.category_id){
+      }　else if　(categoryId === v.category_id){
         v.dispText = v.content;
         return v;
       }
