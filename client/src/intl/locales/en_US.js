@@ -8,6 +8,7 @@ const en_US = {
   "titles.not_translated_list": 'Not Translated List',
   "messages.empty_answers": 'There is no answer yet. Be the first contributor!',
   "messages.birthplace": 'BirthPlace',
+  "messages.you_are_not_target": 'This question is subject to answers in "%s".',
   "links.to_not_translated_list": 'See not translated lists',
   "links.edit": 'Edit',
   "links.question": 'Question',

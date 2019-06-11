@@ -312,19 +312,6 @@ app.get('/api/questions/:id', (req, res) => {
         required: false
       },
       {
-        model: db.answers,
-        required: false,
-        include: [
-          {
-            model: db.users
-          },
-          {
-            model: db.comments,
-            include: [db.comment_translations]
-          }
-        ]
-      },
-      {
         model: db.question_translations,
         required: false
       },
@@ -334,6 +321,10 @@ app.get('/api/questions/:id', (req, res) => {
       },
       {
         model: db.categories,
+        required: false
+      },
+      {
+        model: db.countries,
         required: false
       },
     ],
@@ -879,7 +870,6 @@ app.put('/api/users/:id', upload.single('image'), (req, res) => {
   console.log('filePath', filePath);
   jimp.read(filePath, function(err, image) {
     if (err) throw err;
-    console.log('soiya');
     image
       .cover(500, 500)
       .write(filePath);
@@ -1107,7 +1097,7 @@ app.post('/api/mail', (req, res) => {
 
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+  res.sendFile(path.join(__dirname + '/../client/build/index.html'));
 });
 
 export default app;

@@ -8,6 +8,7 @@ const ja_JP = {
   "titles.not_translated_list": '未翻訳一覧',
   "messages.empty_answers": 'まだ回答がありません。最初の投稿者になりましょう！',
   "messages.birthplace": '出身地',
+  "messages.you_are_not_target": 'この質問は 「%s」 の方が回答対象者です。',
   "links.to_not_translated_list": '未翻訳の一覧を見る',
   "links.edit": '編集',
   "links.question": '質問',

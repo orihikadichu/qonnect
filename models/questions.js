@@ -6,7 +6,7 @@ function vote_count(models, id){
       .then((record) => {
         // console.log("record",record);
         return resolve(record.count);
-      })
+      });
   });
 }
 
@@ -28,27 +28,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     underscored: true,
-    // hooks: {
-    //   afterFind: instances => {
-    //     if (Array.isArray(instances)) {
-    //       vote_count(votelist, 1)
-    //         .then(data => {
-    //           instances[0].dataValues.voteCount = data;
-    //           return instances;
-    //           // console.log("instances", instances[0]);
-    //         });        
-    //     } else {
-    //       vote_count(votelist, 1)
-    //         .then(data => {
-    //           // instances.dataValues.someNewProp = data.someField
-    //         });        
-    //     }
-    //   }
-    // }  
   });
   questions.associate = function(models) {
     questions.belongsTo(models.users, {foreignKey: 'user_id'});
     questions.belongsTo(models.categories, {foreignKey: 'category_id'});
+    questions.belongsTo(models.countries, {foreignKey: 'country_id'});
     questions.hasMany(models.answers, {foreignKey: 'question_id'});
     questions.hasMany(models.question_translations, {foreignKey: 'question_id'});
     questions.hasMany(models.votes, {foreignKey: 'question_id'});

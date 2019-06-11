@@ -21,6 +21,7 @@
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.2",
     "redux-thunk": "^2.3.0",
+    "sprintf-js": "^1.1.2",
     "uikit": "^3.0.0-rc.25"
   },
   "scripts": {
