@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import Home from '../components/Home';
 import {
   postQuestionData,
+  fetchQuestionList 
 } from '../actions/Question';
 import {
   updateCurrentLanguage,
@@ -18,7 +19,8 @@ const mapDispatchToProps = dispatch => {
   return {
     handleSubmit: (postData) => dispatch(postQuestionData(postData)),
     changeLanguage: (locale) => dispatch(updateCurrentLanguage(locale)),
-    changeCategory: (category) => dispatch(updateCurrentCategory(category))    
+    changeCategory: (category) => dispatch(updateCurrentCategory(category)),
+    handleFetchData: (queryData) => dispatch(fetchQuestionList(queryData))
   };
 };
 

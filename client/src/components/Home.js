@@ -19,10 +19,34 @@ class Home extends React.Component {
     }
   }
 
+  selectedCategory(value){
+    switch( value ){
+      case "all" :
+        return 0;
+      case "subculture":
+        return 1;
+      case "culture":
+        return 2;
+      case "tourism":
+        return 3;
+    }
+  }
+
+  changeCateogryfunction(value){
+     this.props.changeCategory(value)
+     const categoryId = this.selectedCategory(value);
+     let params 
+     params = {};
+     if (categoryId !== 0){
+       params = { category_id: categoryId };
+     }
+     this.props.handleFetchData(params);
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
     const { locale, translateLanguageId } = this.props.state.intl;
-    const { category, categoryId } = this.props.state.ctgr;
+    const { category } = this.props.state.ctgr;
     const questionFormInitVals = {
       content: '',
       country_id: '',
@@ -33,8 +57,6 @@ class Home extends React.Component {
     return (
       <main className="uk-container uk-container-small">
         <QuestionForm initialValues={questionFormInitVals} onSubmit={this.submitQuestionForm.bind(this)} />
-        {/*未編集の質問一覧表示するサイト*/}
-        <p><Link to={`/not_translated`}>{ formatMessage({id: "links.to_not_translated_list"}) }</Link></p>
         {/* 言語切り替え */}
         <h3 className="uk-heading-line"><span>{ formatMessage({id: "titles.question_list" })}</span></h3>
         <div className="uk-margin">
@@ -45,7 +67,7 @@ class Home extends React.Component {
         </div>
         {/* カテゴリー切り替え */}
         <div className="uk-margin">
-          <select className="uk-select" value={category} onChange={e => this.props.changeCategory(e.target.value)} >
+          <select className="uk-select" value={category} onChange={e => this.changeCateogryfunction( e.target.value )} >
             <option value="all" >{ formatMessage({id: "categories.all" })}</option>
             <option value="subculture" >{ formatMessage({id: "categories.subculture" })}</option>
             <option value="culture" >{ formatMessage({id: "categories.culture" })}</option>

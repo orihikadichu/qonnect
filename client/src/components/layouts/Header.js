@@ -57,6 +57,11 @@ class Header extends React.Component {
           to: '/users/profile_edit',
           icon: "pencil",
         },
+        {
+          text: formatMessage({id: "links.to_not_translated_list"}),
+          to: `/not_translated`,
+          icon: "album"
+        },
       ];
       return menuList.map((v, i) => (
         <MenuItem key={i} onClick={handleClose}>
