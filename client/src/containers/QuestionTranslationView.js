@@ -46,6 +46,15 @@ class QuestionTranslationView extends Component {
     }
   }
 
+  selectedNationalFlag(countryId){
+    switch(countryId){
+      case 1:
+        return <img src="/image/flag/japan.png" width="25" height="25" alt=""/>;
+      case 2:
+        return <img className="uk-border" src="/image/flag/america.png" width="25" height="25" alt=""/>;
+    }
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
     const { currentQuestion } = this.props.state.questions;
@@ -58,6 +67,7 @@ class QuestionTranslationView extends Component {
     }
 
     const { user } = currentQuestion;
+    const nationalFlag = this.selectedNationalFlag(user.country_id);
 
     return (
       <main className="uk-container uk-container-small">
@@ -68,8 +78,11 @@ class QuestionTranslationView extends Component {
             <div className="uk-width-auto">
               <img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" />
             </div>
-            <div className="uk-width-expand">
+            <div>
               <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${user.id}`}>{ user.name }</Link></h4>
+            </div>
+            <div className="uk-width-expand" >
+              { nationalFlag }
             </div>
           </div>
         </div>
