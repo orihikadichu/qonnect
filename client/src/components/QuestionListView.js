@@ -44,10 +44,19 @@ class QuestionListView extends Component {
     return this.props.handleDeleteVote(data);
   }
 
-  getQuestionList(questionArray, translateLanguageId) {
+  selectedNationalFlag(countryId){
+    switch(countryId){
+      case 1:
+        return <img src="/image/flag/japan.png" width="25" height="25" alt=""/>;
+      case 2:
+        return <img className="uk-border" src="/image/flag/america.png" width="25" height="25" alt=""/>;
+    }
+  }
+
+  getQuestionList(questionArray, translateLanguageId, categoryId) {
     const contentType = 'question_translations';
-    const filteredQuestions = getFilteredContents(questionArray, translateLanguageId, contentType);
-    const translatedQuestions = getTranslatedContents(filteredQuestions, translateLanguageId, contentType);
+    const filteredQuestions = getFilteredContents(questionArray, translateLanguageId, contentType, categoryId);
+    const translatedQuestions = getTranslatedContents(filteredQuestions, translateLanguageId, contentType, categoryId);
 
     return translatedQuestions.map(question => {
       const { user } = question;
@@ -61,6 +70,7 @@ class QuestionListView extends Component {
                    ?<span className="uk-text-danger uk-margin-small-right" uk-icon="star" onClick={this.deleteVote.bind(this, question)}></span>
                    :<span className="uk-text-muted uk-margin-small-right" uk-icon="heart" onClick={this.sendVote.bind(this, question)}></span>;
       const voteNumbers = <span className="uk-text-default">{ votes.length }</span>;
+      const nationalFlag = this.selectedNationalFlag(user.country_id);
 
       return (
         <li key={question.id} >
@@ -76,8 +86,11 @@ class QuestionListView extends Component {
               {/* <img className="uk-comment-avatar uk-border-circle" src='/image/blank-profile.png' width="35" height="35" alt="" /> */}
               <Link to={profileLink}><img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" /></Link>
             </div>
-            <div className="uk-width-expand">
-              <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={profileLink}>{ userName }</Link></h4>
+            <div>
+              <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={profileLink}>{ userName }</Link></h4>  
+            </div>
+            <div className="uk-width-expand" >
+                { nationalFlag }
             </div>
           </div>
         </li>
@@ -85,8 +98,8 @@ class QuestionListView extends Component {
     });
   }
 
-  getQuestionListView(questionArray, translateLanguageId) {
-    const questionList = this.getQuestionList(questionArray, translateLanguageId);
+  getQuestionListView(questionArray, translateLanguageId, categoryId) {
+    const questionList = this.getQuestionList(questionArray, translateLanguageId, categoryId);
 
     return (
       <div>
@@ -98,9 +111,8 @@ class QuestionListView extends Component {
   }
 
   render() {
-
-    const { questionArray, translateLanguageId } = this.props;
-    const content = this.getQuestionListView(questionArray, translateLanguageId);
+    const { questionArray, translateLanguageId, categoryId } = this.props;
+    const content = this.getQuestionListView(questionArray, translateLanguageId, categoryId);
 
     return (
       <div>
@@ -113,8 +125,11 @@ class QuestionListView extends Component {
 //stateの中からauthだけを取り出す。
 const mapStateToProps = state => {
   const { user } = state.auth;
+  const { categoryId } = state.ctgr;
+
   return {
-    user
+    user, 
+    categoryId
   };
 };
 

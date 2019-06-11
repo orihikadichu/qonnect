@@ -55,6 +55,15 @@ class CommentTranslationList extends Component {
     return this.props.handleDeleteVote(data);
   }
 
+  selectedNationalFlag(countryId){
+    switch(countryId){
+      case 1:
+        return <img src="/image/flag/japan.png" width="25" height="25" alt=""/>;
+      case 2:
+        return <img className="uk-border" src="/image/flag/america.png" width="25" height="25" alt=""/>;
+    }
+  }
+
   getTranslationList(translationList, loginUser) {
     const { formatMessage } = this.props.intl;
 
@@ -71,7 +80,8 @@ class CommentTranslationList extends Component {
                           ? <span className="uk-text-danger uk-margin-small-right" uk-icon="star" onClick={this.deleteVote.bind(this,translation)}></span>
                           : <span className="uk-text-muted uk-margin-small-right" uk-icon="heart" onClick={this.sendVote.bind(this,translation)}></span>;
            const voteNumbers = <span className="uk-text-default">{ translation.vote_translations.length }</span>;
-           
+           const nationalFlag = this.selectedNationalFlag(translation.user.country_id);
+
            return (
              <li key={translation.id} >
                <article className="uk-comment">
@@ -88,8 +98,11 @@ class CommentTranslationList extends Component {
                    <div className="uk-width-auto">
                      <img className="uk-comment-avatar uk-border-circle" src={translation.user.image_path} width="35" height="35" alt="" />
                    </div>
-                   <div className="uk-width-expand">
+                   <div>
                      <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${translation.user.id}`}>{ translation.user.name }</Link></h4>
+                   </div>
+                   <div className="uk-width-expand" >
+                       { nationalFlag }
                    </div>
                  </div>
                </article>

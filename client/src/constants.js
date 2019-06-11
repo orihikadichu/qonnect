@@ -1,11 +1,13 @@
-import { locales } from './intl';
+import { locales, categories } from './intl';
 
 const savedLocale = localStorage.getItem('locale');
 const currentLocale = savedLocale ? savedLocale : 'ja';
-
+const savedCategory = localStorage.getItem('category');
+const currentCategory = savedCategory ? savedCategory : 'all';
 
 export const initialState = {
   intl: locales[currentLocale],
+  ctgr: categories[currentCategory],
   signUp: {
     mail: '',
     password: '',

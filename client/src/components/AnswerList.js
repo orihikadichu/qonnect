@@ -112,6 +112,15 @@ class AnswerList extends Component {
     return this.props.handleDeleteVote(data);
   }
 
+  selectedNationalFlag(countryId){
+    switch(countryId){
+      case 1:
+        return <img src="/image/flag/japan.png" width="25" height="25" alt=""/>;
+      case 2:
+        return <img className="uk-border" src="/image/flag/america.png" width="25" height="25" alt=""/>;
+    }
+  }
+
   getAnswerList(answerArray, translateLanguageId) {
     const { formatMessage } = this.props.intl;
     const loginUser = this.props.state.auth.user;
@@ -132,6 +141,7 @@ class AnswerList extends Component {
                     : <span className="uk-text-muted uk-margin-small-right" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id, this.props.qId)}></span>;
       const voteNumbers = <span className="uk-text-default">{ answer.votes.length }</span>;
       const commentForm = this.getComment(answer.id);
+      const nationalFlag = this.selectedNationalFlag(answer.user.country_id);
 
       return (
         <li key={answer.id} >
@@ -151,8 +161,11 @@ class AnswerList extends Component {
               <div className="uk-width-auto">
                 <img className="uk-comment-avatar uk-border-circle" src={answer.user.image_path} width="35" height="35" alt="" />
               </div>
-              <div className="uk-width-expand">
+              <div>
                 <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${answer.user.id}`}>{ answer.user.name }</Link></h4>
+              </div>
+              <div className="uk-width-expand" >
+                { nationalFlag }
               </div>
             </div>
           </article>

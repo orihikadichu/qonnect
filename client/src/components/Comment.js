@@ -43,6 +43,15 @@ class Comment extends Component {
     return this.props.handleDeleteVote(data);
   }
 
+  selectedNationalFlag(countryId){
+    switch(countryId){
+      case 1:
+        return <img src="/image/flag/japan.png" width="25" height="25" alt=""/>;
+      case 2:
+        return <img className="uk-border" src="/image/flag/america.png" width="25" height="25" alt=""/>;
+    }
+  }
+
   render() {
     const { id, user, content, isOwner, voteList, questions, commentUser } = this.props;
     const currentQuestionId = questions.currentQuestion.id;
@@ -55,7 +64,8 @@ class Comment extends Component {
                    ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, id, currentQuestionId)}></span>
                    : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, id, currentQuestionId)}></span>;
     const voteNumbers = <span className="uk-text-default">{ voteList.length }</span>;
-    
+    const nationalFlag = this.selectedNationalFlag(user.country_id);
+
     return (
       <article className="uk-comment uk-comment-primary">
         <div className="uk-comment-header uk-comment-body">
@@ -68,8 +78,11 @@ class Comment extends Component {
           <div className="uk-width-auto">
             <img className="uk-comment-avatar uk-border-circle" src={commentUser.image_path} width="35" height="35" alt="" />
           </div>
-          <div className="uk-width-expand">
+          <div>
             <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${commentUser.id}`}>{ commentUser.name }</Link></h4>
+          </div>
+          <div className="uk-width-expand" >
+                { nationalFlag }
           </div>
           { editLink }
           { votebutton }

@@ -11,9 +11,12 @@ import * as notTranslated from './reducers/NotTranslated';
 import * as votes from './reducers/Votes';
 import * as voteTranslations from './reducers/VoteTranslation';
 import { intl } from './reducers/Intl';
+import { ctgr } from './reducers/Category';
+import { addLocaleData } from 'react-intl';
 
 const reducer = combineReducers({
   intl: intl,
+  ctgr: ctgr,
   answers: answers.list,
   questions: questions.list,
   questionTranslations: questionTranslations.list,

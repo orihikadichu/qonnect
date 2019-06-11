@@ -13,3 +13,22 @@ export const locales = {
     translateLanguageId: 2,
   }
 };
+
+export const categories = {
+  all: {
+      category: 'all',
+      categoryId: 0,
+  },
+  subculture: {
+      category: 'subculture',
+      categoryId: 1,
+  },
+  culture: {
+      category: 'culture',
+      categoryId: 2,
+  },
+  tourism: {
+      category: 'tourism',
+      categoryId: 3,
+  },
+};

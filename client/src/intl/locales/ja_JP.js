@@ -22,6 +22,7 @@ const ja_JP = {
   "links.to_question_view": '質問ページへ',
   "languages.japanese": '日本語',
   "languages.english": '英語',
+  "categories.all": 'すべて',
   "categories.subculture": '漫画・アニメ',
   "categories.culture": '文化',
   "categories.tourism": '観光',
