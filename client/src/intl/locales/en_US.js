@@ -22,6 +22,8 @@ const en_US = {
   "links.to_question_view": 'to question page',
   "languages.japanese": 'Japanese',
   "languages.english": 'English',
+  "countries.japan": 'Japan',
+  "countries.usa": 'USA',
   "categories.all": 'All',
   "categories.subculture": 'Comic・Anime',
   "categories.culture": 'Culture',

@@ -55,7 +55,11 @@ class QuestionForm extends Component {
               </div>
               <div className="uk-margin uk-grid uk-grid-small uk-child-width-expand@s" >
                 <div className="uk-grid-margin" >
-                  <LanguageFormSelect name="country_id" placeholder={formatMessage({id: 'placeholders.questions.country_id'})} />
+                  <Field name="country_id" component="select" className={'form-control uk-select'}>
+                    <option value="">{formatMessage({id: "placeholders.questions.country_id"})}</option>
+                    <option value="1" >{ formatMessage({id: "countries.japan" })}</option>
+                    <option value="2" >{ formatMessage({id: "countries.usa" })}</option>
+                  </Field>
                   {touched.country_id && errors.country_id && <div className="uk-text-warning">{errors.country_id}</div>}
                 </div>
                 <div className="uk-grid-margin" >
