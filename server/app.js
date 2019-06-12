@@ -718,6 +718,9 @@ app.get('/api/answers', (req, res) => {
       {
         model: db.answer_translations,
         required: false,
+        include: [
+          db.users,
+        ]
       },
       //回答のいいねデータを取得
       {
