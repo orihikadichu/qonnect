@@ -5,7 +5,7 @@ import sequelize from 'sequelize';
 import path from 'path';
 import db from '../models/index';
 import Mnemonic from 'bitcore-mnemonic';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
