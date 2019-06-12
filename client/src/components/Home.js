@@ -47,6 +47,7 @@ class Home extends React.Component {
     const { formatMessage } = this.props.intl;
     const { locale, translateLanguageId } = this.props.state.intl;
     const { category } = this.props.state.ctgr;
+    const { auth } = this.props.state;
     const questionFormInitVals = {
       content: '',
       country_id: '',
@@ -56,7 +57,7 @@ class Home extends React.Component {
 
     return (
       <main className="uk-container uk-container-small">
-        <QuestionForm initialValues={questionFormInitVals} onSubmit={this.submitQuestionForm.bind(this)} />
+        <QuestionForm initialValues={questionFormInitVals} loginUser={auth} onSubmit={this.submitQuestionForm.bind(this)} />
         {/* 言語切り替え */}
         <h3 className="uk-heading-line"><span>{ formatMessage({id: "titles.question_list" })}</span></h3>
         <div className="uk-margin">
@@ -74,7 +75,7 @@ class Home extends React.Component {
             <option value="tourism" >{ formatMessage({id: "categories.tourism" })}</option>
           </select>
         </div>
-        <QuestionList translate_language_id={translateLanguageId}/>
+        <QuestionList translate_language_id={translateLanguageId}/>  
       </main>
     );
   }

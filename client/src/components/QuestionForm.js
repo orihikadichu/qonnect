@@ -3,6 +3,7 @@ import { Field, Formik } from 'formik';
 import LanguageFormSelect from './LanguageFormSelect';
 import CategoryFormSelect from './CategoryFormSelect';
 import { injectIntl } from 'react-intl';
+import { Persist } from 'formik-persist'
 
 class QuestionForm extends Component {
 
@@ -25,8 +26,12 @@ class QuestionForm extends Component {
   }
 
   render() {
-    const { initialValues } = this.props;
+    const { initialValues, loginUser } = this.props;
     const { formatMessage } = this.props.intl;
+    const postButton = loginUser.isLoggedIn
+                     ? <button type="submit" className="uk-button uk-button-default" >{formatMessage({id: "placeholders.questions.submit_btn"})}</button>
+                     : <a class="uk-button uk-button-default" href='/users/login'>{formatMessage({id: "placeholders.questions.submit_btn"})}</a>;
+
     return (
       <Formik
         initialValues={initialValues}
@@ -52,6 +57,7 @@ class QuestionForm extends Component {
                      className={'form-control uk-textarea'}
                 />
                 {touched.content && errors.content && <div className="uk-text-warning">{errors.content}</div>}
+                <Persist name="question-form"/>
               </div>
               <div className="uk-margin uk-grid uk-grid-small uk-child-width-expand@s" >
                 <div className="uk-grid-margin" >
@@ -73,7 +79,7 @@ class QuestionForm extends Component {
                 </div>
               </div>
               <div className="uk-margin">
-                <button type="submit" className="uk-button uk-button-default" >{formatMessage({id: "placeholders.questions.submit_btn"})}</button>
+                {postButton}
               </div>
             </fieldset>
           </form>
