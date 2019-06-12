@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Field, Formik } from 'formik';
 import { connect } from 'react-redux';
 import LanguageFormSelect from './LanguageFormSelect';
+import { Persist } from 'formik-persist';
 
 class CommentForm extends Component {
 
@@ -17,7 +18,11 @@ class CommentForm extends Component {
   }
 
   render() {
-    const { initialValues } = this.props;
+    const { initialValues, state } = this.props;
+    const postButton = state.auth.isLoggedIn
+                     ? <div className="uk-margin"><button className="uk-button uk-button-default" >投稿</button></div>
+                     : <a class="uk-button uk-button-default" href='/users/login'>投稿</a>;
+
     return (
       <Formik
         initialValues={initialValues}
@@ -41,15 +46,17 @@ class CommentForm extends Component {
                      rows="3"
                      className={'form-control uk-textarea'}
                 />
+                <Persist name="comment-form"/>
                 {touched.content && errors.content && <div className="uk-text-warning">{errors.content}</div>}
               </div>
               <div className="uk-margin">
                 <LanguageFormSelect name="translate_language_id" placeholder="投稿言語" />
                 {touched.translate_language_id && errors.translate_language_id && <div className="uk-text-warning">{errors.translate_language_id}</div>}
               </div>
-              <div className="uk-margin">
+              {/* <div className="uk-margin">
                 <button className="uk-button uk-button-default" >投稿</button>
-              </div>
+              </div> */}
+              {postButton}
             </fieldset>
           </form>
         )}

@@ -3,7 +3,7 @@ import { Field, Formik } from 'formik';
 import LanguageFormSelect from './LanguageFormSelect';
 import CategoryFormSelect from './CategoryFormSelect';
 import { injectIntl } from 'react-intl';
-import { Persist } from 'formik-persist'
+import { Persist } from 'formik-persist';
 
 class QuestionForm extends Component {
 
