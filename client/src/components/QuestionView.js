@@ -5,6 +5,7 @@ import Linkify from 'react-linkify';
 import AnswerForm from './AnswerForm';
 import AnswerList from '../containers/AnswerList';
 import dayjs from 'dayjs';
+import { sprintf } from 'sprintf-js';
 import { injectIntl } from 'react-intl';
 import { isEmptyObject } from '../utils';
 
@@ -54,7 +55,7 @@ class QuestionView extends Component {
   }
 
   sendVote(question){
-    if(this.props.state.auth.user.id == null ){
+    if (this.props.state.auth.user.id == null) {
       return;
     }
     const params = {
@@ -70,7 +71,7 @@ class QuestionView extends Component {
   }
 
   deleteVote(question) {
-    if(this.props.state.auth.user.id == null ){
+    if (this.props.state.auth.user.id == null) {
       return;
     }
     const params = {
@@ -85,8 +86,16 @@ class QuestionView extends Component {
   }
 
   getAnswerForm(currentQuestion, loginUser) {
+    const { formatMessage } = this.props.intl;
     if (currentQuestion.country_id !== loginUser.country_id) {
-      return '';
+      const temp = formatMessage({id: "messages.you_are_not_target"})
+      const mesasge = sprintf(temp, currentQuestion.country.name);
+      return (
+        <div>
+          <p className="uk-text-meta">{mesasge}</p>
+        </div>
+
+      );
     }
 
     const answerFormInitVals = { content: '', translate_language_id: '' };
@@ -95,12 +104,14 @@ class QuestionView extends Component {
     );
   }
 
-  selectedNationalFlag(countryId){
-    switch(countryId){
+  selectedNationalFlag(countryId) {
+    switch(countryId) {
       case 1:
         return <img src="/image/flag/japan.png" width="25" height="25" alt=""/>;
       case 2:
         return <img className="uk-border" src="/image/flag/america.png" width="25" height="25" alt=""/>;
+      default:
+        return '';
     }
   }
 
