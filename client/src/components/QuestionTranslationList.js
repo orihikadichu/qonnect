@@ -101,7 +101,7 @@ class QuestionTranslationList extends Component {
                 <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${translation.user.id}`}>{ translation.user.name }</Link></h4>
               </div>
               <div className="uk-width-expand" >
-                       { nationalFlag }
+                { nationalFlag }
               </div>
             </div>
           </article>

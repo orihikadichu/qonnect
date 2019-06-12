@@ -6,7 +6,6 @@ import { injectIntl } from 'react-intl';
 
 class Login extends React.Component {
 
-
   onClickSubmit(formData) {
     const { mail, password } = formData;
     const { history } = this.props;
