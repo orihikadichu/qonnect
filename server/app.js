@@ -54,7 +54,7 @@ const storage = multer.diskStorage({
   // ファイルの保存先を指定
   destination: (req, file, cb) => {
     const { id } = req.params;
-    const dirPath = './client/public' + getProfileImageDir(id);
+    const dirPath = './client/build' + getProfileImageDir(id);
     if (!fs.existsSync(dirPath)){
       fs.mkdirSync(dirPath);
     }
