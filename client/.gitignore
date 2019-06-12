@@ -29,3 +29,10 @@ yarn-error.log*
 /public/image/profile/*
 !/public/image/profile/.gitkeep
 !/public/image/profile/blank-profile.png
+
+/build/image/*
+!/build/image/.gitkeep
+!/build/image/profile
+/build/image/profile/*
+!/build/image/profile/.gitkeep
+!/build/image/profile/blank-profile.png
