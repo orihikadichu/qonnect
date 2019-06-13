@@ -120,6 +120,19 @@ class AnswerList extends Component {
         return <img className="uk-border" src="/image/flag/america.png" width="25" height="25" alt=""/>;
     }
   }
+  
+  TranslateUser(img, name){
+    return (
+      <div>
+        <div className="uk-text-right">
+          <img className="uk-comment-avatar uk-border-circle uk-text-right" src={img} width="35" height="35" alt="" />
+        </div>
+        <div>
+          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ name }さんが翻訳済</h4>
+        </div>
+      </div>
+    )
+  }
 
   getAnswerList(answerArray, translateLanguageId) {
     const { formatMessage } = this.props.intl;
@@ -142,6 +155,16 @@ class AnswerList extends Component {
       const voteNumbers = <span className="uk-text-default">{ answer.votes.length }</span>;
       const commentForm = this.getComment(answer.id);
       const nationalFlag = this.selectedNationalFlag(answer.user.country_id);
+
+      const { answer_translations } = answer;
+
+      let translator;
+      translator = "";
+      if( answer_translations.length !== 0 ){
+        const img = answer_translations[0].user.image_path;
+        const name = answer_translations[0].user.name;
+        translator = this.TranslateUser(img, name);
+      }
 
       return (
         <li key={answer.id} >
@@ -166,6 +189,9 @@ class AnswerList extends Component {
               </div>
               <div className="uk-width-expand" >
                 { nationalFlag }
+              </div>
+              <div className="uk-width-expand" >
+                { translator }
               </div>
             </div>
           </article>
