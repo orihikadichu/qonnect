@@ -866,7 +866,7 @@ app.put('/api/users/:id', upload.single('image'), (req, res) => {
   const { id } = req.params;
   const params = req.body;
   const imagePath = getProfileImageFilePath(id);
-  const filePath = __dirname + '/../client/public' + imagePath;
+  const filePath = __dirname + '/../client/build' + imagePath;
   console.log('filePath', filePath);
   jimp.read(filePath, function(err, image) {
     if (err) throw err;
