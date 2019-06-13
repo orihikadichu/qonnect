@@ -141,7 +141,7 @@ class Header extends React.Component {
               </Link>
             */}
           <a href="/" className="uk-display-inline-block" >
-            <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Logo" height="70px"/>
+            <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Logo" style={{ height: "70px" }} />
           </a>
         </div>
         <div className="uk-margin-small-right">

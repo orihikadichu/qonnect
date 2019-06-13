@@ -38,6 +38,9 @@ const smtpConfig = {
 
 const transporter = nodemailer.createTransport(smtpConfig);
 
+// const STATIC_PATH = process.env.NODE_ENV === 'production'
+//       ? '../client/build'
+//       : '../client/public';
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../client/build')));
