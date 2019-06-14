@@ -22,7 +22,7 @@ class CommentForm extends Component {
     const postButton = state.auth.isLoggedIn
                      ? <div className="uk-margin"><button className="uk-button uk-button-default" >投稿</button></div>
                      : <a class="uk-button uk-button-default" href='/users/login'>投稿</a>;
-
+    
     return (
       <Formik
         initialValues={initialValues}
@@ -46,16 +46,13 @@ class CommentForm extends Component {
                      rows="3"
                      className={'form-control uk-textarea'}
                 />
-                <Persist name="comment-form"/>
+                <Persist name={`"comment-form"${values.answer_id}`}/>
                 {touched.content && errors.content && <div className="uk-text-warning">{errors.content}</div>}
               </div>
               <div className="uk-margin">
                 <LanguageFormSelect name="translate_language_id" placeholder="投稿言語" />
                 {touched.translate_language_id && errors.translate_language_id && <div className="uk-text-warning">{errors.translate_language_id}</div>}
               </div>
-              {/* <div className="uk-margin">
-                <button className="uk-button uk-button-default" >投稿</button>
-              </div> */}
               {postButton}
             </fieldset>
           </form>

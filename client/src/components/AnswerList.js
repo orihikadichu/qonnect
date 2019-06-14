@@ -28,15 +28,17 @@ class AnswerList extends Component {
   onClickCommentForm(formData) {
     const { user } = this.props.state.auth;
     const { answer_id, translate_language_id, content } = formData;
+    const answerIds = this.props.state.answers.answerArray.map((v) =>{ return v.id })
     const postData = {
       user_id: user.id,
       answer_id,
       translate_language_id,
       content,
       question_id: this.qId,
-      current_translate_language_id: this.translateLanguageId
+      current_translate_language_id: this.translateLanguageId,
+      //翻訳済みコメントのリストを取得するためのAnswer_idリスト
+      answerIdList: answerIds,
     };
-    console.log('formData', formData);
     return this.props.handlePostComment(postData);
   }
 
@@ -53,7 +55,6 @@ class AnswerList extends Component {
       content: "",
       translate_language_id: "",
     };
-
     return (
       <div className="uk-margin-bottom" style={{"paddingLeft": "30px"}} >
           {/*commentFormはコメントを投稿する場所*/}
