@@ -1,10 +1,13 @@
 'use strict';
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 import path from 'path';
 import fs from 'fs';
+import jwt from 'jsonwebtoken';
 
 const PROFILE_PREFIX = 'profile_';
 export const PROFILE_IMAGE_DIR = '/image/profile/';
+export const SECRET_KEY = 'Eg2fTPSp6attfKcC6bsNbWkwsn6R4v';
 
 export const getProfileImageName = (userId) => {
   const profileImageName = PROFILE_PREFIX + String(userId);
@@ -25,4 +28,13 @@ export const getHashName = (name) => {
 export const getProfileImageDir = (userId) => {
   const userIdHash = getHashName(userId);
   return PROFILE_IMAGE_DIR + userIdHash + '/';
+};
+
+export const getPasswordHash = (plainPassword) => {
+  const saltRounds = 10;
+  return bcrypt.hashSync(plainPassword, saltRounds);
+};
+
+export const getJwt = (params) => {
+  return jwt.sign(params, SECRET_KEY);
 };

@@ -1,6 +1,7 @@
 import {
   CLICK_SUBMIT,
   REQUEST_DATA,
+  RECEIVE_DATA_FAILED,
   REMOVE_USER_DATA,
   UPDATED_USER_DATA,
   UPDATED_PROFILE_DATA,
@@ -51,6 +52,11 @@ export const auth = (state = initialState.auth, action) => {
     return {
       ...state,
       isFetching: true
+    };
+  case RECEIVE_DATA_FAILED:
+    return {
+      ...state,
+      isFetching: false
     };
   case UPDATED_USER_DATA:
     return {

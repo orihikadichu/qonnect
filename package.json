@@ -22,6 +22,7 @@
     "bitcore-mnemonic": "^1.7.0",
     "body-parser": "^1.18.3",
     "crypto": "^1.0.1",
+    "dayjs": "^1.8.14",
     "express": "^4.16.4",
     "jimp": "^0.6.4",
     "jsonwebtoken": "^8.4.0",

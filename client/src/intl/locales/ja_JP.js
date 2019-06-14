@@ -1,6 +1,7 @@
 const ja_JP = {
   "titles.sign_up": '新規登録',
   "titles.login": 'ログイン',
+  "titles.password_reset": 'パスワード再設定',
   "titles.question_list": '質問一覧',
   "titles.answer_list": '回答一覧',
   "titles.post_list": '投稿一覧',
@@ -9,6 +10,8 @@ const ja_JP = {
   "messages.empty_answers": 'まだ回答がありません。最初の投稿者になりましょう！',
   "messages.birthplace": '出身地',
   "messages.you_are_not_target": 'この質問は 「%s」 の方が回答対象者です。',
+  "messages.enter_mail": 'メールアドレスを入力してください',
+  "messages.enter_new_password": '新しいパスワードを入力してください',
   "links.to_not_translated_list": '未翻訳の一覧を見る',
   "links.edit": '編集',
   "links.question": '質問',
@@ -64,5 +67,6 @@ const ja_JP = {
   "buttons.title.post": '投稿',
   "buttons.title.sign_up": '新規登録',
   "buttons.title.login": 'ログイン',
+  "buttons.title.send": '送信',
 };
 export default ja_JP;
