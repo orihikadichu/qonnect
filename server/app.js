@@ -1111,8 +1111,8 @@ app.get('/api/comments_with_user', (req, res) => {
       //answer_idに対するコメントの取得
       const result ={};
       for( let i = 0 ; i < 2 ; i ++ ){
-        result[answerIdList[i]] = instanses.filter( 
-          v => v.dataValues.answer_id === parseInt(answerIdList[i]) 
+        result[answerIdList[i]] = instanses.filter(
+          v => v.dataValues.answer_id === parseInt(answerIdList[i])
         );
       };
       res.status(200).send(result);
