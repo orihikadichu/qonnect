@@ -199,9 +199,9 @@ class AnswerList extends Component {
           <div className="uk-margin-bottom" >
             {/*CommentListはすでに投稿されたコメントの一覧を表示する*/}
             <CommentList list={answer.comments} loginUser={loginUser} translateLanguageId={translateLanguageId} />
-            <button className="uk-button uk-button-default" onClick={this.onClickReply.bind(this,answer.id)}>
-              {formatMessage({id: "buttons.title.reply"})}
-            </button>
+            <div className="uk-text-right uk-margin-top">
+              <p uk-icon="icon: commenting; ratio: 2" onClick={this.onClickReply.bind(this,answer.id)}></p>
+            </div>
           </div>
 
           {commentForm}
