@@ -56,7 +56,7 @@ export const list = (state = initialState.answers, action) => {
         return {
             ...state,
             isFetching: false,
-            answerArray: action.payload.data
+            answerArray: action.payload.data,         
         };
     case RECEIVE_SINGLE_DATA_SUCCESS:
         return {

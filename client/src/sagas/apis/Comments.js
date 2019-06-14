@@ -1,6 +1,11 @@
 import axios from 'axios';
-
 const apiUrl = '/api/comments';
+
+export const fetchCommentWithUserList = (params) => {
+  return axios.get(`/api/comments_with_User`, {
+    params
+  });
+}
 
 export const fetchCommentsList = (params) => {
     return axios.get(apiUrl, {

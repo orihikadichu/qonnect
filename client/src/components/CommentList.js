@@ -18,9 +18,10 @@ class CommentList extends Component {
         { translatedCommentList.map((v, i) => {
             const isOwner = loginUser.id === v.user.id;
             const voteState = v.votes;
+
             return (
               <li className="uk-margin-small-top" key={i} >
-                <Comment id={v.id} commentUser={v.user} content={v.dispText} isOwner={isOwner} voteList={ voteState } />
+                <Comment id={v.id} answerId={v.answer_id} commentUser={v.user} content={v.dispText} isOwner={isOwner} voteList={ voteState } />
               </li>
             );
         })}

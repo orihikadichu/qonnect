@@ -8,7 +8,7 @@ import {
   SAVE_COMMENT_DATA,
   DELETE_COMMENT,
 } from '../actions/Comment';
-import * as answerSaga from './Answer';
+import * as answerSaga from './Answer'; 
 import { notifySuccess, notifyError } from './Util';
 
 export function* fetchSingleComment(action) {
