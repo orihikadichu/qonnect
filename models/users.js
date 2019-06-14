@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       get: function() {
         const imagePath = getProfileImageFilePath(this.get('id'));
         try {
-          fs.statSync(__dirname + '/../client/public' + imagePath);
+          fs.statSync(__dirname + '/../client/build' + imagePath);
           return imagePath;
         } catch (e) {
           return PROFILE_IMAGE_DIR + 'blank-profile.png';
