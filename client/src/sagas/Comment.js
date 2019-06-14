@@ -8,8 +8,11 @@ import {
   SAVE_COMMENT_DATA,
   DELETE_COMMENT,
 } from '../actions/Comment';
-import * as answerSaga from './Answer';
+import * as answerSaga from './Answer'; 
 import { notifySuccess, notifyError } from './Util';
+
+import { fetchCommentWithUserList }from './apis/Comments';
+import * as act2 from '../actions/Comment';
 
 export function* fetchSingleComment(action) {
   try {
@@ -27,9 +30,15 @@ export function* fetchSingleComment(action) {
 export function* postComment(action) {
   try {
     yield put(act.requestData());
-    const { answer_id, question_id, current_translate_language_id } = action.payload;
+    console.log("action.payloadファイルの中",action.payload);
+    const { answer_id, question_id, current_translate_language_id, answerIdList } = action.payload;
     yield call(api.postCommentData, action.payload);
-    const commentPayload = yield call(api.fetchCommentsList, { answer_id });
+    const commentPayload = yield call(api.fetchCommentsList, { answer_id });    
+    const answerId = answerIdList;
+    console.log("postcommentsagaファイルの中",answerId);
+    const commentList = yield call(fetchCommentWithUserList, answerId);
+    yield put(act2.receiveCommentDataSuccess(commentList));
+
     const message = 'コメントを投稿しました。';
     yield put(notifySuccess(message));
     const data = { payload: {

@@ -53,6 +53,19 @@ class QuestionListView extends Component {
     }
   }
 
+  TranslateUser(img, name){
+    return (
+      <div>
+        <div className="uk-text-right">
+          <img className="uk-comment-avatar uk-border-circle uk-text-right" src={img} width="35" height="35" alt="" />
+        </div>
+        <div>
+          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ name }さんが翻訳済</h4>
+        </div>
+      </div>
+    )
+  }
+
   getQuestionList(questionArray, translateLanguageId, categoryId) {
     const contentType = 'question_translations';
     const filteredQuestions = getFilteredContents(questionArray, translateLanguageId, contentType, categoryId);
@@ -71,6 +84,15 @@ class QuestionListView extends Component {
                    :<span className="uk-text-muted uk-margin-small-right" uk-icon="heart" onClick={this.sendVote.bind(this, question)}></span>;
       const voteNumbers = <span className="uk-text-default">{ votes.length }</span>;
       const nationalFlag = this.selectedNationalFlag(user.country_id);
+
+      const { question_translations } = question;
+      let translator;
+      translator = <h4 className="uk-comment-meta uk-text-right">まだ翻訳されてません</h4>;
+      if( question_translations.length !== 0 ){
+        const img = question_translations[0].user.image_path;
+        const name = question_translations[0].user.name;
+        translator = this.TranslateUser(img, name);
+      }
 
       return (
         <li key={question.id} >
@@ -91,6 +113,9 @@ class QuestionListView extends Component {
             </div>
             <div className="uk-width-expand" >
                 { nationalFlag }
+            </div>
+            <div className="uk-width-expand" >
+                { translator }
             </div>
           </div>
         </li>

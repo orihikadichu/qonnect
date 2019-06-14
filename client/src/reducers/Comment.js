@@ -1,5 +1,6 @@
 import {
   REQUEST_DATA,
+  RECEIVE_COMMENT_DATA_SUCCESS,
   POST_COMMENT,
   UPDATED_COMMENT_DATA,
   UPDATED_SINGLE_COMMENT_DATA
@@ -12,6 +13,12 @@ export const list = (state = initialState.comments, action) => {
     return {
       ...state,
       isFetching: true
+    };
+  case RECEIVE_COMMENT_DATA_SUCCESS:
+    return {
+      ...state,
+      isFetching: false,
+      commentArray: action.payload.data
     };
   case UPDATED_COMMENT_DATA:
     return {

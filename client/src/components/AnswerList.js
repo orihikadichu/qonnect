@@ -28,15 +28,17 @@ class AnswerList extends Component {
   onClickCommentForm(formData) {
     const { user } = this.props.state.auth;
     const { answer_id, translate_language_id, content } = formData;
+    const answerIds = this.props.state.answers.answerArray.map((v) =>{ return v.id })
     const postData = {
       user_id: user.id,
       answer_id,
       translate_language_id,
       content,
       question_id: this.qId,
-      current_translate_language_id: this.translateLanguageId
+      current_translate_language_id: this.translateLanguageId,
+      //翻訳済みコメントのリストを取得するためのAnswer_idリスト
+      answerIdList: answerIds,
     };
-    console.log('formData', formData);
     return this.props.handlePostComment(postData);
   }
 
@@ -53,7 +55,6 @@ class AnswerList extends Component {
       content: "",
       translate_language_id: "",
     };
-
     return (
       <div className="uk-margin-bottom" style={{"paddingLeft": "30px"}} >
           {/*commentFormはコメントを投稿する場所*/}
@@ -159,7 +160,7 @@ class AnswerList extends Component {
       const { answer_translations } = answer;
 
       let translator;
-      translator = "";
+      translator = <h4 className="uk-comment-meta uk-text-right">まだ翻訳されてません</h4>;
       if( answer_translations.length !== 0 ){
         const img = answer_translations[0].user.image_path;
         const name = answer_translations[0].user.name;
@@ -199,9 +200,9 @@ class AnswerList extends Component {
           <div className="uk-margin-bottom" >
             {/*CommentListはすでに投稿されたコメントの一覧を表示する*/}
             <CommentList list={answer.comments} loginUser={loginUser} translateLanguageId={translateLanguageId} />
-            <button className="uk-button uk-button-default" onClick={this.onClickReply.bind(this,answer.id)}>
-              {formatMessage({id: "buttons.title.reply"})}
-            </button>
+            <div className="uk-text-right uk-margin-top">
+              <p uk-icon="icon: commenting; ratio: 2" onClick={this.onClickReply.bind(this,answer.id)}></p>
+            </div>
           </div>
 
           {commentForm}

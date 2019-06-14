@@ -52,8 +52,21 @@ class Comment extends Component {
     }
   }
 
+  TranslateUser(img, name){
+    return (
+      <div>
+        <div className="uk-text-right">
+          <img className="uk-comment-avatar uk-border-circle uk-text-right" src={img} width="35" height="35" alt="" />
+        </div>
+        <div>
+          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ name }さんが翻訳済</h4>
+        </div>
+      </div>
+    )
+  }
+
   render() {
-    const { id, user, content, isOwner, voteList, questions, commentUser } = this.props;
+    const { id, user, content, isOwner, voteList, questions, commentUser, comments, answerId } = this.props;
     const currentQuestionId = questions.currentQuestion.id;
     const editLink = isOwner
                    ? <Link to={`/comments/edit/${id}`}>編集</Link>
@@ -65,6 +78,20 @@ class Comment extends Component {
                    : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, id, currentQuestionId)}></span>;
     const voteNumbers = <span className="uk-text-default">{ voteList.length }</span>;
     const nationalFlag = this.selectedNationalFlag(user.country_id);
+
+    const { commentArray } = comments;
+    let translator;
+    translator = <h4 className="uk-comment-meta uk-text-right">まだ翻訳されてません</h4>;
+    if(typeof commentArray !== 'undefined'){
+      const thisAnswerCommentList = commentArray[answerId] ;
+      const thisCommentData = thisAnswerCommentList.filter( v => v.id === id) ;
+      const commentTranslated = thisCommentData[0].comment_translations;
+      if( commentTranslated.length !== 0 ){
+        const img = commentTranslated[0].user.image_path;
+        const name = commentTranslated[0].user.name;
+        translator = this.TranslateUser(img, name);
+      }
+    }
 
     return (
       <article className="uk-comment uk-comment-primary">
@@ -84,6 +111,9 @@ class Comment extends Component {
           <div className="uk-width-expand" >
                 { nationalFlag }
           </div>
+          <div className="uk-width-expand" >
+                { translator }
+          </div>
           { editLink }
           { votebutton }
           { voteNumbers }
@@ -96,11 +126,12 @@ class Comment extends Component {
 
 //stateの中からauthだけを取り出す。
 const mapStateToProps = state => {
-  const { questions } = state;
+  const { questions, comments } = state;
   const { user } = state.auth;
   return {
     user,
-    questions
+    questions,
+    comments,
   };
 };
 

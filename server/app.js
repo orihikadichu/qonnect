@@ -200,7 +200,10 @@ app.get('/api/questions', (req, res) => {
       },
       {
         model: db.question_translations,
-        required: false
+        required: false,
+        include: [
+          db.users,
+        ]
       },
       {
         model: db.votes,
@@ -316,7 +319,10 @@ app.get('/api/questions/:id', (req, res) => {
       },
       {
         model: db.question_translations,
-        required: false
+        required: false,
+        include: [
+          db.users,
+        ]
       },
       {
         model: db.votes,
@@ -705,7 +711,6 @@ app.get('/api/answers', (req, res) => {
         include: [
           db.users,
           db.comment_translations,
-          //コメントのいいねデータを取得
           db.votes
         ]
       },
@@ -716,7 +721,6 @@ app.get('/api/answers', (req, res) => {
           db.users,
         ]
       },
-      //回答のいいねデータを取得
       {
         model: db.votes,
         required: false,
@@ -1082,6 +1086,36 @@ app.get('/api/comments', (req, res) => {
   })
     .then((instanses) => {
       res.status(200).send(instanses);
+    });
+});
+
+//answer_idに紐づいたコメントと、その翻訳文を取得
+app.get('/api/comments_with_user', (req, res) => {
+  const  answerIdList = req.query;
+  db.comments.findAll({
+    where: {},
+    include: [
+      {
+        model: db.comment_translations,
+        required: false,
+        include: [
+          db.users,
+        ]
+      },
+    ],
+    order: [
+      ['created_at', 'ASC'],
+    ],
+  })
+    .then((instanses) => {
+      //answer_idに対するコメントの取得
+      const result ={};
+      for( let i = 0 ; i < 2 ; i ++ ){
+        result[answerIdList[i]] = instanses.filter( 
+          v => v.dataValues.answer_id === parseInt(answerIdList[i]) 
+        );
+      };
+      res.status(200).send(result);
     });
 });
 

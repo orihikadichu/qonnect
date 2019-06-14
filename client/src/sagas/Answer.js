@@ -12,14 +12,18 @@ import {
   DELETE_ANSWER,
 } from '../actions/Answer';
 import * as api from './apis/Answers';
+import * as act from '../actions/Comment';
 import { notifySuccess, notifyError } from './Util';
-
+import { fetchCommentWithUserList }from './apis/Comments';
 
 export function* handleFetchAnswerData(action) {
   try {
     yield put(requestData());
-    const payload = yield call(api.fetchAnswerList, action.payload);
-    yield put(receiveDataSuccess(payload));
+    const answerList = yield call(api.fetchAnswerList, action.payload);
+    const answerId = answerList.data.map(v =>{ return v.id });
+    const commentList = yield call(fetchCommentWithUserList, answerId);
+    yield put(receiveDataSuccess(answerList));
+    yield put(act.receiveCommentDataSuccess(commentList));
   } catch (e) {
     yield put(receiveDataFailed());
   }
