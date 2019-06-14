@@ -87,7 +87,7 @@ class QuestionListView extends Component {
 
       const { question_translations } = question;
       let translator;
-      translator = "";
+      translator = <h4 className="uk-comment-meta uk-text-right">まだ翻訳されてません</h4>;
       if( question_translations.length !== 0 ){
         const img = question_translations[0].user.image_path;
         const name = question_translations[0].user.name;

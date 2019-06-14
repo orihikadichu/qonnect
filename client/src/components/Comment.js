@@ -81,7 +81,7 @@ class Comment extends Component {
 
     const { commentArray } = comments;
     let translator;
-    translator = "";
+    translator = <h4 className="uk-comment-meta uk-text-right">まだ翻訳されてません</h4>;
     if(typeof commentArray !== 'undefined'){
       const thisAnswerCommentList = commentArray[answerId] ;
       const thisCommentData = thisAnswerCommentList.filter( v => v.id === id) ;

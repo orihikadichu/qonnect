@@ -159,7 +159,7 @@ class AnswerList extends Component {
       const { answer_translations } = answer;
 
       let translator;
-      translator = "";
+      translator = <h4 className="uk-comment-meta uk-text-right">まだ翻訳されてません</h4>;
       if( answer_translations.length !== 0 ){
         const img = answer_translations[0].user.image_path;
         const name = answer_translations[0].user.name;
