@@ -22,6 +22,7 @@ const ja_JP = {
   "links.sign_up": '新規登録',
   "links.login": 'ログイン',
   "links.logout": 'ログアウト',
+  "links.password_reset": 'パスワードを忘れた',
   "links.to_question_view": '質問ページへ',
   "languages.japanese": '日本語',
   "languages.english": '英語',

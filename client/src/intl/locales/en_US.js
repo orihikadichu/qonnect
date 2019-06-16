@@ -21,6 +21,7 @@ const en_US = {
   "links.profile_edit": 'Profile Edit',
   "links.sign_up": 'Sign Up',
   "links.login": 'Login',
+  "links.password_reset": 'Forgot password',
   "links.logout": 'Logout',
   "links.to_question_view": 'to question page',
   "languages.japanese": 'Japanese',

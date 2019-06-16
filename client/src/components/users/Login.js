@@ -19,6 +19,7 @@ class Login extends React.Component {
         <h2 className="uk-h3" >{formatMessage({id: "titles.login"})}</h2>
 
         <LoginForm onSubmit={this.onClickSubmit.bind(this)} />
+        <p><Link to="/users/password_reset" >{formatMessage({id: "links.password_reset"})}</Link></p>
 
         <div className="uk-margin">
           <p><Link to="/" >Top</Link></p>
