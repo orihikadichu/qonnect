@@ -32,6 +32,7 @@ const en_US = {
   "categories.subculture": 'Comic・Anime',
   "categories.culture": 'Culture',
   "categories.tourism": 'Tourism',
+  "categories.music": 'Music',
   "errors.questions.content": 'Please write a question text.',
   "errors.questions.country_id": 'Please select target country.',
   "errors.questions.translate_language_id": 'Please select the language.',

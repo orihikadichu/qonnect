@@ -31,4 +31,8 @@ export const categories = {
       category: 'tourism',
       categoryId: 3,
   },
+  music: {
+    category: 'music',
+    categoryId: 3,
+},
 };

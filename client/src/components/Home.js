@@ -35,6 +35,8 @@ class Home extends React.Component {
         return 2;
       case "tourism":
         return 3;
+      case "music":
+        return 4;
     }
   }
 
@@ -79,6 +81,7 @@ class Home extends React.Component {
             <option value="subculture" >{ formatMessage({id: "categories.subculture" })}</option>
             <option value="culture" >{ formatMessage({id: "categories.culture" })}</option>
             <option value="tourism" >{ formatMessage({id: "categories.tourism" })}</option>
+            <option value="music" >{ formatMessage({id: "categories.music" })}</option>
           </select>
         </div>
         <QuestionList translate_language_id={translateLanguageId}/>  
