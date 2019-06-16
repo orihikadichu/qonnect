@@ -9,6 +9,7 @@ class Home extends React.Component {
   submitQuestionForm(formData) {
     try {
       const { user, isLoggedIn } = this.props.state.auth;
+      console.log("this.props",this.props);
       if (!isLoggedIn) {
         const { history } = this.props;
         this.props.alertMessage("ログインしてください。");
