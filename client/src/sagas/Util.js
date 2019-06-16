@@ -17,3 +17,12 @@ export function notifyError(message) {
     dismissAfter: 2000
   });
 }
+
+export function notifyAlert(message) {
+  return notify({
+    message,
+    position: 'tc',
+    status: 'error',
+    dismissAfter: 2000
+  });
+}

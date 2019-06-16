@@ -8,8 +8,13 @@ class Home extends React.Component {
 
   submitQuestionForm(formData) {
     try {
+      const { user, isLoggedIn } = this.props.state.auth;
+      if (!isLoggedIn) {
+        const { history } = this.props;
+        this.props.alertMessage("ログインしてください。");
+        return history.push("/users/login");
+      }
       const { content, translate_language_id, country_id, category_id } = formData;
-      const { user } = this.props.state.auth;
       const user_id = user.id;
       const postData = { content, user_id, translate_language_id, country_id, category_id };
       return this.props.handleSubmit(postData);

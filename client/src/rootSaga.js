@@ -8,7 +8,8 @@ import commentSagas from './sagas/Comment';
 import commentTranslationSagas from './sagas/CommentTranslation';
 import NotTranslatedSagas from './sagas/NotTranslated';     
 import voteSagas from './sagas/Votes';
-import voteTranslationSagas from './sagas/VoteTranslation';              
+import voteTranslationSagas from './sagas/VoteTranslation';  
+import notificationSagas from './sagas/Notification';            
 
 export default function* rootSaga() {
   yield all([
@@ -22,5 +23,6 @@ export default function* rootSaga() {
     ...NotTranslatedSagas,
     ...voteSagas,
     ...voteTranslationSagas,
+    ...notificationSagas,
   ]);
 }
