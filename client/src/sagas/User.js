@@ -8,8 +8,11 @@ import {
 } from '../actions/User';
 import {
   CREATE_USER_ACCOUNT,
-  SAVE_USER_PROFILE,
+  SAVE_USER_DATA,
+  SAVE_USER_PASSWORD,
+  SEND_RESET_PASSWORD_MAIL,
   GET_USER_PROFILE,
+  GET_USER_BY_TOKEN,
   LOGIN_USER,
   LOGIN_USER_JWT,
   LOGOUT_USER
@@ -84,7 +87,7 @@ export function* logoutUserAccount(action) {
   }
 }
 
-export function* saveUserProfile(action) {
+export function* saveUserData(action) {
   try {
     yield put(requestData());
     const payload = yield call(api.saveUserProfile, action.payload);
@@ -93,6 +96,37 @@ export function* saveUserProfile(action) {
     yield put(updatedUserData(payload));
   } catch (e) {
     const message = 'プロフィールの更新に失敗しました';
+    yield put(notifyError(message));
+    yield put(receiveDataFailed());
+  }
+}
+
+export function* saveUserPassword(action) {
+  try {
+    const { history } = action.payload;
+    yield put(requestData());
+    const payload = yield call(api.saveUserPassword, action.payload);
+    yield put(loginSuccess(payload));
+    const { jwt } = payload.data;
+    localStorage.setItem('jwt', jwt);
+    const message = 'パスワードを更新しました';
+    yield put(notifySuccess(message));
+    yield call(history.push, '/');
+  } catch (e) {
+    const message = 'パスワードの更新に失敗しました';
+    yield put(notifyError(message));
+    yield put(receiveDataFailed());
+  }
+}
+
+export function *resetPassword(action) {
+  try {
+    yield put(requestData());
+    const payload = yield call(api.resetPassword, action.payload);
+    const message = 'メールを送信しました';
+    yield put(notifySuccess(message));
+  } catch (e) {
+    const message = 'メール送信に失敗しました';
     yield put(notifyError(message));
     yield put(receiveDataFailed());
   }
@@ -119,13 +153,27 @@ export function* getUserProfile(action) {
   }
 }
 
+export function* getUserByToken(action) {
+  try {
+    yield put(requestData());
+    const payload = yield call(api.getUserByToken, action.payload);
+    yield put(updatedUserData(payload));
+  } catch (e) {
+    console.log('receiveDataFailed');
+    yield put(receiveDataFailed());
+  }
+}
+
 const userSagas = [
   takeEvery(CREATE_USER_ACCOUNT, createUserAccount),
   takeEvery(LOGIN_USER, loginUserAccount),
   takeEvery(LOGIN_USER_JWT, loginUserAccountJwt),
   takeEvery(LOGOUT_USER, logoutUserAccount),
-  takeEvery(SAVE_USER_PROFILE, saveUserProfile),
+  takeEvery(SAVE_USER_DATA, saveUserData),
+  takeEvery(SAVE_USER_PASSWORD, saveUserPassword),
   takeEvery(GET_USER_PROFILE, getUserProfile),
+  takeEvery(GET_USER_BY_TOKEN, getUserByToken),
+  takeEvery(SEND_RESET_PASSWORD_MAIL, resetPassword),
 ];
 
 export default userSagas;

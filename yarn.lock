@@ -1336,13 +1336,10 @@ base@^0.11.1:
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
 
-bcrypt@^3.0.5:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/bcrypt/-/bcrypt-3.0.6.tgz#f607846df62d27e60d5e795612c4f67d70206eb2"
-  integrity sha512-taA5bCTfXe7FUjKroKky9EXpdhkVvhE5owfxfLYodbrAR1Ul3juLmIQmIQBK4L9a5BuUcE6cqmwT+Da20lF9tg==
-  dependencies:
-    nan "2.13.2"
-    node-pre-gyp "0.12.0"
+bcryptjs@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/bcryptjs/-/bcryptjs-2.4.3.tgz#9ab5627b93e60621ff7cdac5da9733027df1d0cb"
+  integrity sha1-mrVie5PmBiH/fNrF2pczAn3x0Ms=
 
 bignumber.js@7.2.1:
   version "7.2.1"
@@ -1839,6 +1836,11 @@ d@1:
   integrity sha1-dUu1v+VUUdpppYuU1F9MWwRi1Y8=
   dependencies:
     es5-ext "^0.10.9"
+
+dayjs@^1.8.14:
+  version "1.8.14"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.14.tgz#43e4f62830c2c3342c3fcd25934dc9162dbe6f38"
+  integrity sha512-AVhDmRTe541iWirnoeFSSDDGvCT6HWaNQ4z2WmmzXMGZj6ph6ydao2teKq/eUtR43GPJXlYFD+C/SotG1P9wUQ==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
@@ -3628,7 +3630,7 @@ named-placeholders@^1.1.2:
   dependencies:
     lru-cache "^4.1.3"
 
-nan@2.13.2, nan@^2.12.1:
+nan@^2.12.1:
   version "2.13.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.13.2.tgz#f51dc7ae66ba7d5d55e1e6d4d8092e802c9aefe7"
   integrity sha512-TghvYc72wlMGMVMluVo9WRJc0mB8KxxF/gZ4YYFy7V2ZQX9l7rgbPg7vjS9mt6U5HXODVFVI2bOduCzwOMv/lw==
@@ -3679,7 +3681,7 @@ node-modules-regexp@^1.0.0:
   resolved "https://registry.yarnpkg.com/node-modules-regexp/-/node-modules-regexp-1.0.0.tgz#8d9dbe28964a4ac5712e9131642107c71e90ec40"
   integrity sha1-jZ2+KJZKSsVxLpExZCEHxx6Q7EA=
 
-node-pre-gyp@0.12.0, node-pre-gyp@^0.12.0:
+node-pre-gyp@^0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.12.0.tgz#39ba4bb1439da030295f899e3b520b7785766149"
   integrity sha512-4KghwV8vH5k+g2ylT+sLTjy5wmUOb9vPhnM8NHvRf9dHmnW/CndrFXy2aRPaPST6dugXSdHXfeaHQm77PIz/1A==
@@ -4563,10 +4565,10 @@ sequelize-cli@^5.4.0:
     umzug "^2.1.0"
     yargs "^12.0.5"
 
-sequelize@^4.41.2:
-  version "4.43.2"
-  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-4.43.2.tgz#688e2579c64eb7e8de348941544ff2893db8eed6"
-  integrity sha512-EA3V1AsxVjf2EtGbdEoa9Fe5rSAqy5g4OsX0VwtU6iMezTjIYTCXV8o6mG7i6u3lu4Zc7JWZ6XwhS0k79pT/EQ==
+sequelize@^4.44.0:
+  version "4.44.0"
+  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-4.44.0.tgz#b7371355c07ee8c2cc62d88cf0b34ac97b39908d"
+  integrity sha512-2XhS+koWZT9odyPVmq1xKiWMOIAYGgpUSlUJ6EbWjJCjXbkTKKfde0w5axJQcDjbPYCBvX5UOgID7xmPHL2xTw==
   dependencies:
     bluebird "^3.5.0"
     cls-bluebird "^2.1.0"

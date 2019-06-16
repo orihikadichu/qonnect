@@ -10,33 +10,33 @@ import crypto from 'crypto';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import jimp from 'jimp';
 import fs from 'fs';
-import nodemailer from 'nodemailer';
+import dayjs from 'dayjs';
 import {
+  getHashName,
+  getPasswordHash,
+  getJwt,
   getProfileImageName,
   getProfileImageFilePath,
   getProfileImageDir,
   PROFILE_IMAGE_DIR,
+  SECRET_KEY,
 } from './users/util';
+import { sendMailFromAdmin } from './mails';
 
 const app = express();
-const secretKey = 'Eg2fTPSp6attfKcC6bsNbWkwsn6R4v';
 
-// メール送信関連
-const smtpConfig = {
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true, // SSL
-  auth: {
-    user: 'qonnect.2019@gmail.com',
-    pass: 'Qonnect0607'
-  }
-};
 
-const transporter = nodemailer.createTransport(smtpConfig);
+const host = process.env.NODE_ENV === 'production'
+      ? 'https://'
+      : 'http://';
+
+const domain = process.env.NODE_ENV === 'production'
+      ? 'qonnect.world'
+      : 'localhost:3000';
+
 
 // const STATIC_PATH = process.env.NODE_ENV === 'production'
 //       ? '../client/build'
@@ -73,7 +73,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 /*
-評価機能
+  評価機能
 */
 app.post('/api/votes', (req, res) => {
   const {
@@ -125,18 +125,18 @@ app.delete('/api/votes/:id', (req, res) => {
   let whereContent;
   //コンテンツによってidの切り替え
   switch(key){
-    case "question":
-        const question_id = vote_id;
-        whereContent = { user_id, question_id } ;
-        break;
-    case "answer":
-        const answer_id = vote_id;
-        whereContent = { user_id, answer_id } ;
-        break;
-    case "comment":
-        const comment_id = vote_id;
-        whereContent = { user_id, comment_id } ;
-        break;
+  case "question":
+    const question_id = vote_id;
+    whereContent = { user_id, question_id } ;
+    break;
+  case "answer":
+    const answer_id = vote_id;
+    whereContent = { user_id, answer_id } ;
+    break;
+  case "comment":
+    const comment_id = vote_id;
+    whereContent = { user_id, comment_id } ;
+    break;
   }
 
   const filter = {
@@ -160,18 +160,18 @@ app.delete('/api/vote_translations/:id', (req, res) => {
   let whereContent;
   //コンテンツによってidの切り替え
   switch(key){
-    case "question":
-        const question_translation_id = vote_id;
-        whereContent = { user_id, question_translation_id } ;
-        break;
-    case "answer":
-        const answer_translation_id = vote_id;
-        whereContent = { user_id, answer_translation_id } ;
-        break;
-    case "comment":
-        const comment_translation_id = vote_id;
-        whereContent = { user_id, comment_translation_id } ;
-        break;
+  case "question":
+    const question_translation_id = vote_id;
+    whereContent = { user_id, question_translation_id } ;
+    break;
+  case "answer":
+    const answer_translation_id = vote_id;
+    whereContent = { user_id, answer_translation_id } ;
+    break;
+  case "comment":
+    const comment_translation_id = vote_id;
+    whereContent = { user_id, comment_translation_id } ;
+    break;
   }
   const filter = {
     where: whereContent,
@@ -244,10 +244,10 @@ app.get('/api/not_translated_questions', (req, res) => {
     ]
   })
   //findAllで取得したデータを撮り終えてからthenを走らせる。
-  .then((instanses) => {
-    //ここでクライアント側にデータを渡している。
-    res.status(200).send(instanses);
-  });
+    .then((instanses) => {
+      //ここでクライアント側にデータを渡している。
+      res.status(200).send(instanses);
+    });
 });
 
 // 未翻訳の回答を取得する
@@ -271,10 +271,10 @@ app.get('/api/not_translated_answers', (req, res) => {
     ]
   })
   //findAllで取得したデータを撮り終えてからthenを走らせる。
-  .then((instanses) => {
-    //ここでクライアント側にデータを渡している。
-    res.status(200).send(instanses);
-  });
+    .then((instanses) => {
+      //ここでクライアント側にデータを渡している。
+      res.status(200).send(instanses);
+    });
 });
 
 // 未翻訳のコメントを取得する
@@ -302,10 +302,10 @@ app.get('/api/not_translated_comments', (req, res) => {
     ]
   })
   //findAllで取得したデータを撮り終えてからthenを走らせる。
-  .then((instanses) => {
-    //ここでクライアント側にデータを渡している。
-    res.status(200).send(instanses);
-  });
+    .then((instanses) => {
+      //ここでクライアント側にデータを渡している。
+      res.status(200).send(instanses);
+    });
 });
 
 app.get('/api/questions/:id', (req, res) => {
@@ -417,10 +417,10 @@ app.get('/api/question_translations', (req, res) => {
         model: db.vote_translations,
         required: false
       },
-  ],
-  order: [
-    ['created_at', 'DESC']
-  ]
+    ],
+    order: [
+      ['created_at', 'DESC']
+    ]
   })
     .then((instanses) => {
       res.status(200).send(instanses);
@@ -508,18 +508,18 @@ app.get('/api/answer_translations', (req, res) => {
   db.answer_translations.findAll({
     where: { answer_id },
     include: [
-    {
-      model: db.users,
-      required: false
-    },
-    {
-      model: db.vote_translations,
-      required: false
-    },
-  ],
-  order: [
-    ['created_at', 'DESC']
-  ]
+      {
+        model: db.users,
+        required: false
+      },
+      {
+        model: db.vote_translations,
+        required: false
+      },
+    ],
+    order: [
+      ['created_at', 'DESC']
+    ]
   })
     .then((instanses) => {
       res.status(200).send(instanses);
@@ -606,14 +606,14 @@ app.get('/api/comment_translations', (req, res) => {
       model: db.users,
       required: false
     },
-    {
-      model: db.vote_translations,
-      required: false
-    },
-  ],
-  order: [
-    ['created_at', 'DESC']
-  ]
+              {
+                model: db.vote_translations,
+                required: false
+              },
+             ],
+    order: [
+      ['created_at', 'DESC']
+    ]
   })
     .then((instanses) => {
       res.status(200).send(instanses);
@@ -851,7 +851,7 @@ app.get('/api/users/:id', (req, res) => {
   })
     .then((instance) => {
       if (!instance) {
-        return res.status(500);
+        return res.status(500).send('存在しないユーザーです');
       }
       const user = instance.get();
       delete user.wallet_address;
@@ -860,10 +860,31 @@ app.get('/api/users/:id', (req, res) => {
     });
 });
 
+app.get('/api/users/password_reset/:token', (req, res) => {
+  const { token } = req.params;
+  db.auth_tokens.findOne({
+    where: { token },
+    include: [
+      {
+        model: db.users,
+        required: false
+      }
+    ]
+  })
+    .then((instance) => {
+      if (!instance) {
+        return res.status(500).send('存在しないユーザーです');
+      }
+      const authToken = instance.get();
+      const { user } = authToken;
+      return res.status(200).send(user);
+    });
+});
+
 
 app.post('/api/users', (req, res) => {
   const { name, mail } = req.body;
-  const password = bcrypt.hashSync(req.body.password, saltRounds);
+  const password = getPasswordHash(req.body.password);
   db.users.create({ name, mail, password })
     .then((createdData) => {
       res.status(200).send(createdData);
@@ -899,6 +920,60 @@ app.put('/api/users/:id', upload.single('image'), (req, res) => {
   ;
 });
 
+// パスワード変更処理
+app.put('/api/users/update_password/:token', (req, res) => {
+  const { token } = req.params;
+  const params = req.body;
+  const { id, password } = params;
+  db.auth_tokens.findOne({ user_id: id, token })
+    .then((instance) => {
+      console.log('afterAuthTokenFindOne');
+      if (!instance) {
+        return res.status(500).send('対象のトークンが存在しません。');
+      }
+      const authToken = instance.get();
+      const { user } = authToken;
+      const filter = {
+        where: { id }
+      };
+      const passwordHash = getPasswordHash(password);
+      const updateData = { password: passwordHash };
+      return db.users.update(updateData, filter);
+    })
+    .then((instance) => {
+      if (!instance) {
+        return res.status(500).send('パスワードの更新に失敗しました。');
+      }
+      return db.users.findOne({ where: { id }});
+    })
+    .then((instance) => {
+      if (!instance) {
+        return res.status(500).send('対象のユーザーが存在しません。');
+      }
+      const user = instance.get();
+      user.jwt = getJwt({
+        id: user.id,
+        mail: user.mail
+      });
+      delete user.wallet_address;
+      delete user.password;
+      return user;
+    })
+    .then((user) => {
+      const filter = {
+        where: { user_id: id, token }
+      };
+      db.auth_tokens.destroy(filter)
+        .then((result) => {
+          if (!result) {
+            return res.status(500).send('トークンの削除に失敗しました。');
+          }
+          return res.status(200).send(user);
+        });
+    });
+  ;
+});
+
 // ログイン共通処理
 const callbackUserLogin = (findOpt, done, password = null) => {
   return db.users.findOne(findOpt)
@@ -910,11 +985,10 @@ const callbackUserLogin = (findOpt, done, password = null) => {
       if (password && !bcrypt.compareSync(password, user.password)) {
         return done(null, false, {message: "パスワードが間違っています。"});
       }
-      const jsonWebToken = jwt.sign({
+      user.jwt = getJwt({
         id: user.id,
-        name: user.name
-      }, secretKey);
-      user.jwt = jsonWebToken;
+        mail: user.mail
+      });
       delete user.wallet_address;
       delete user.password;
       return done(null, user);
@@ -936,7 +1010,7 @@ passport.use(new LocalStrategy(function(mail, password, done){
 // ログイン処理 with JWT
 passport.use(new JwtStrategy({
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: secretKey,
+  secretOrKey: SECRET_KEY,
 }, function(payload, done) {
   if (!payload) {
     return done(null, false);
@@ -953,6 +1027,46 @@ app.post('/api/users/login', passport.authenticate('local', { session: false }),
 app.post('/api/users/login_jwt', passport.authenticate('jwt', { session: false }), function(req, res) {
   res.status(200).send(req.user);
 });
+
+app.post('/api/users/password_reset', (req, res) => {
+  const { mail } = req.body;
+  db.users.findOne({ where: { mail }})
+    .then((instance) => {
+      if (!instance) {
+        return res.status(500).send('登録されていないメールアドレスです。');
+      }
+      const user = instance.get();
+      const token = getHashName(user.id);
+      const resetUrl = `${host}${domain}/users/password_reset/${token}`;
+      const text = resetUrl;
+      const message = {
+        to: user.mail,
+        subject: 'パスワード再設定',
+        text
+      };
+      const expired_datetime = dayjs()
+            .add(1, 'day')
+            .format('YYYY-MM-DD HH:mm:ss');
+
+      const authTokenData = {
+        user_id: user.id,
+        token,
+        expired_datetime
+      };
+
+      return db.auth_tokens.create(authTokenData)
+        .then((instance) => {
+          sendMailFromAdmin(message, (err, response) => {
+            if (err) {
+              console.log(err || response);
+              return res.status(500).send('メールの送信に失敗しました');
+            }
+            return res.status(200).send('sent!');
+          });
+        });
+    });
+});
+
 
 /**
  * Comments
@@ -997,8 +1111,8 @@ app.get('/api/comments_with_user', (req, res) => {
       //answer_idに対するコメントの取得
       const result ={};
       for( let i = 0 ; i < 2 ; i ++ ){
-        result[answerIdList[i]] = instanses.filter( 
-          v => v.dataValues.answer_id === parseInt(answerIdList[i]) 
+        result[answerIdList[i]] = instanses.filter(
+          v => v.dataValues.answer_id === parseInt(answerIdList[i])
         );
       };
       res.status(200).send(result);
@@ -1124,7 +1238,7 @@ app.post('/api/mail', (req, res) => {
 
   const message = { from, to, subject, text };
 
-  transporter.sendMail(message, (err, response) => {
+  sendMailFromAdmin(message, (err, response) => {
     if (err) {
       console.log(err || response);
       return res.status(500).send('メールの送信に失敗しました');

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import Profile from '../../components/users/Profile';
 import {
     loginUser,
-    saveUserProfile
+    saveUserData
 } from '../../actions/User';
 
 const mapStateToProps = state => {
@@ -11,7 +11,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        clickedSaveButton: (postData) => dispatch(saveUserProfile(postData)),
+        clickedSaveButton: (postData) => dispatch(saveUserData(postData)),
     };
 };
 

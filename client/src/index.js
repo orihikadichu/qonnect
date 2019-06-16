@@ -23,6 +23,8 @@ import App from './containers/App';
 import ScrollToTop from './components/layouts/ScrollToTop';
 import SignUp from './containers/users/SignUp';
 import Login from './containers/users/Login';
+import PasswordReset from './containers/users/PasswordReset';
+import NewPassword from './containers/users/NewPassword';
 import Profile from './containers/users/Profile';
 import ProfileEdit from './containers/users/ProfileEdit';
 import UserOnly from './containers/auth/UserOnly';
@@ -63,9 +65,11 @@ const render = () => {
                 <Route exact path='/question_translations/:question_id' component={QuestionTranslationView} />
                 <Route exact path='/answer_translations/:answer_id' component={AnswerTranslationView} />
                 <Route exact path='/comment_translations/:comment_id' component={CommentTranslationView} />
-                <Route path='/users/profile/:id' component={Profile} />
-                <Route path='/users/login' component={Login} />
-                <Route path='/users/signup' component={SignUp} />
+                <Route exact path='/users/profile/:id' component={Profile} />
+                <Route exact path='/users/login' component={Login} />
+                <Route exact path='/users/signup' component={SignUp} />
+                <Route exact path='/users/password_reset' component={PasswordReset} />
+                <Route exact path='/users/password_reset/:token' component={NewPassword} />
                 <UserOnly>
                   <Switch>
                     <Route exact path='/questions/edit/:id' component={QuestionEdit} />

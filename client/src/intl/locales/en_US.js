@@ -1,6 +1,7 @@
 const en_US = {
   "titles.sign_up": 'Sign Up',
   "titles.login": 'Login',
+  "titles.password_reset": 'Password Reset',
   "titles.question_list": 'Questions',
   "titles.answer_list": 'Answers',
   "titles.post_list": 'Posts',
@@ -9,6 +10,8 @@ const en_US = {
   "messages.empty_answers": 'There is no answer yet. Be the first contributor!',
   "messages.birthplace": 'BirthPlace',
   "messages.you_are_not_target": 'This question is subject to answers in "%s".',
+  "messages.enter_mail": 'Enter your email address.',
+  "messages.enter_new_password": 'Enter new password.',
   "links.to_not_translated_list": 'See not translated lists',
   "links.edit": 'Edit',
   "links.question": 'Question',
@@ -18,6 +21,7 @@ const en_US = {
   "links.profile_edit": 'Profile Edit',
   "links.sign_up": 'Sign Up',
   "links.login": 'Login',
+  "links.password_reset": 'Forgot password',
   "links.logout": 'Logout',
   "links.to_question_view": 'to question page',
   "languages.japanese": 'Japanese',
@@ -62,5 +66,6 @@ const en_US = {
   "buttons.title.post": 'Post',
   "buttons.title.sign_up": 'Sign Up',
   "buttons.title.login": 'Login',
+  "buttons.title.send": 'Send',
 };
 export default en_US;

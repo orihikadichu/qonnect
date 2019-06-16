@@ -23,6 +23,18 @@ export const loginUserJwt = (postData) => {
     return axios.post('/api/users/login_jwt', {}, { headers });
 };
 
+export const resetPassword = (mail) => {
+  return axios.post(`/api/users/password_reset`, { mail });
+};
+
+export const saveUserPassword = (postData) => {
+  const { token } = postData;
+  return axios.put(
+    `/api/users/update_password/${token}`,
+    postData
+  );
+};
+
 export const saveUserProfile = (postData) => {
     const { user_id, name, profile, country_id, image } = postData;
     let data = new FormData();
@@ -43,4 +55,8 @@ export const saveUserProfile = (postData) => {
 
 export const getUser = (user_id) => {
     return axios.get(`/api/users/${user_id}`);
+};
+
+export const getUserByToken = (token) => {
+  return axios.get(`/api/users/password_reset/${token}`);
 };
