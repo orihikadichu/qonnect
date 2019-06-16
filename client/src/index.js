@@ -68,6 +68,7 @@ const render = () => {
                 <Route exact path='/users/profile/:id' component={Profile} />
                 <Route exact path='/users/login' component={Login} />
                 <Route exact path='/users/signup' component={SignUp} />
+                <Route exact path='/users/activate/:token' component={NewPassword} />
                 <Route exact path='/users/password_reset' component={PasswordReset} />
                 <Route exact path='/users/password_reset/:token' component={NewPassword} />
                 <UserOnly>

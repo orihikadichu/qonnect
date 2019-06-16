@@ -24,6 +24,7 @@ import {
   PROFILE_IMAGE_DIR,
   SECRET_KEY,
 } from './users/util';
+import { getTokenData } from './auth_tokens';
 import { sendMailFromAdmin } from './mails';
 
 const app = express();
@@ -886,8 +887,28 @@ app.post('/api/users', (req, res) => {
   const { name, mail } = req.body;
   const password = getPasswordHash(req.body.password);
   db.users.create({ name, mail, password })
-    .then((createdData) => {
-      res.status(200).send(createdData);
+    .then((instance) => {
+      if (!instance) {
+        return res.status(500).send('ユーザーの作成に失敗しました。');
+      }
+      const user = instance.get();
+      const authTokenData = getTokenData(user.id);
+      return db.auth_tokens.create(authTokenData)
+        .then((instance) => {
+          if (!instance) {
+            return res.status(500).send('ユーザーの作成に失敗しました。');
+          }
+          const authToken = instance.get();
+          const activationUrl = `${host}${domain}/users/activate/${authToken.token}`;
+          const text = activationUrl;
+          const mailParams = {
+            to: user.mail,
+            subject: 'Qonnect 仮登録完了',
+            text
+          };
+          sendMailFromAdmin(mailParams);
+          return res.status(200).send(user);
+        });
     })
   ;
 });
@@ -1036,33 +1057,23 @@ app.post('/api/users/password_reset', (req, res) => {
         return res.status(500).send('登録されていないメールアドレスです。');
       }
       const user = instance.get();
-      const token = getHashName(user.id);
+      const authTokenData = getTokenData(user.id);
+      const { token } = authTokenData;
       const resetUrl = `${host}${domain}/users/password_reset/${token}`;
       const text = resetUrl;
-      const message = {
+      const mailParams = {
         to: user.mail,
         subject: 'パスワード再設定',
         text
       };
-      const expired_datetime = dayjs()
-            .add(1, 'day')
-            .format('YYYY-MM-DD HH:mm:ss');
-
-      const authTokenData = {
-        user_id: user.id,
-        token,
-        expired_datetime
-      };
 
       return db.auth_tokens.create(authTokenData)
         .then((instance) => {
-          sendMailFromAdmin(message, (err, response) => {
-            if (err) {
-              console.log(err || response);
-              return res.status(500).send('メールの送信に失敗しました');
-            }
-            return res.status(200).send('sent!');
-          });
+          if (!instance) {
+            return res.status(500).send('登録されていないメールアドレスです。');
+          }
+          sendMailFromAdmin(mailParams);
+          return res.status(200).send('sent!');
         });
     });
 });
