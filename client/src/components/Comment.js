@@ -74,8 +74,8 @@ class Comment extends Component {
     const myVotes = voteList.filter(v => {return v.user_id === user.id});
     const voteState = myVotes.length !== 0;
     const votebutton = voteState
-                   ? <span className="uk-text-danger" uk-icon="star" onClick={this.deleteVote.bind(this, id, currentQuestionId)}></span>
-                   : <span className="uk-text-muted" uk-icon="heart" onClick={this.sendVote.bind(this, id, currentQuestionId)}></span>;
+    　　　　　　　　  ?<a onClick={this.deleteVote.bind(this,  id, currentQuestionId)}><i class="fas fa-heart fa-lg" style={{color:"red"}}></i></a>
+    　　　　　　　　  :<a onClick={this.sendVote.bind(this,  id, currentQuestionId)}><i className="far fa-heart fa-lg" style={{color:"gray"}}></i></a>;
     const voteNumbers = <span className="uk-text-default">{ voteList.length }</span>;
     const nationalFlag = this.selectedNationalFlag(user.country_id);
 
