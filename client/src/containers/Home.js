@@ -10,6 +10,9 @@ import {
 import {
   updateCurrentCategory,
 } from '../actions/Category';
+import {
+  actionAlertMessage,
+} from '../actions/Notification';
 
 const mapStateToProps = state => {
   return {state};
@@ -20,7 +23,8 @@ const mapDispatchToProps = dispatch => {
     handleSubmit: (postData) => dispatch(postQuestionData(postData)),
     changeLanguage: (locale) => dispatch(updateCurrentLanguage(locale)),
     changeCategory: (category) => dispatch(updateCurrentCategory(category)),
-    handleFetchData: (queryData) => dispatch(fetchQuestionList(queryData))
+    handleFetchData: (queryData) => dispatch(fetchQuestionList(queryData)),
+    alertMessage: (message) => dispatch(actionAlertMessage(message)),
   };
 };
 

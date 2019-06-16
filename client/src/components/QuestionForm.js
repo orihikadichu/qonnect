@@ -26,11 +26,8 @@ class QuestionForm extends Component {
   }
 
   render() {
-    const { initialValues, loginUser } = this.props;
+    const { initialValues } = this.props;
     const { formatMessage } = this.props.intl;
-    const postButton = loginUser.isLoggedIn
-                     ? <button type="submit" className="uk-button uk-button-default" >{formatMessage({id: "placeholders.questions.submit_btn"})}</button>
-                     : <a class="uk-button uk-button-default" href='/users/login'>{formatMessage({id: "placeholders.questions.submit_btn"})}</a>;
 
     return (
       <Formik
@@ -79,7 +76,7 @@ class QuestionForm extends Component {
                 </div>
               </div>
               <div className="uk-margin">
-                {postButton}
+                <button type="submit" className="uk-button uk-button-default" >{formatMessage({id: "placeholders.questions.submit_btn"})}</button>
               </div>
             </fieldset>
           </form>

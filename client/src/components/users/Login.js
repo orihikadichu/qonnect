@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import { injectIntl } from 'react-intl';
 
+
 class Login extends React.Component {
 
   onClickSubmit(formData) {
