@@ -3,6 +3,7 @@ import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { getFilteredContents, getTranslatedContents } from '../utils/Translations';
+import { injectIntl } from 'react-intl';
 
 //componentの中でdispatchするための設定
 import { connect } from 'react-redux';
@@ -10,6 +11,12 @@ import { connect } from 'react-redux';
 import { postVote, deleteVote } from '../actions/Vote';
 
 class QuestionListView extends Component {
+  constructor(props) {
+    super(props);
+    const {formatMessage } = this.props.intl;
+  }
+
+
 
   sendVote(question){
     if(this.props.user.id == null ){
@@ -54,13 +61,15 @@ class QuestionListView extends Component {
   }
 
   TranslateUser(img, name){
+    const {formatMessage } = this.props.intl;
+
     return (
       <div>
         <div className="uk-text-right">
           <img className="uk-comment-avatar uk-border-circle uk-text-right" src={img} width="35" height="35" alt="" />
         </div>
         <div>
-          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ name }さんが翻訳済</h4>
+          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ formatMessage({id: "translated.name" })}{ name }</h4>
         </div>
       </div>
     )
@@ -75,6 +84,7 @@ class QuestionListView extends Component {
       const { user } = question;
       const userName = user ? user.name : '不明なユーザー';
       const profileLink = `/users/profile/${user.id}`;
+      const { formatMessage } = this.props.intl
 
       const { votes } = question;
       const myVotes = votes.filter(v => {return v.user_id === this.props.user.id});
@@ -88,7 +98,7 @@ class QuestionListView extends Component {
 
       const { question_translations } = question;
       let translator;
-      translator = <h4 className="uk-comment-meta uk-text-right">まだ翻訳されてません</h4>;
+      translator = <h4 className="uk-comment-meta uk-text-right">{ formatMessage({id: "translated.state" })}</h4>;
       if( question_translations.length !== 0 ){
         const img = question_translations[0].user.image_path;
         const name = question_translations[0].user.name;
@@ -97,7 +107,8 @@ class QuestionListView extends Component {
 
       return (
         <li key={question.id} >
-          <p className="uk-text-muted">{ question.category.category }</p>
+          <p className="uk-text-muted">{ formatMessage({id: question.category.intl_key })}</p>
+          {/* <p className="uk-text-muted">{ question.category.category }</p> */}
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
           <Link to={`/question_translations/${question.id}`}><span uk-icon="world"></span></Link><br/>
           { votebutton }
@@ -152,10 +163,12 @@ class QuestionListView extends Component {
 const mapStateToProps = state => {
   const { user } = state.auth;
   const { categoryId } = state.ctgr;
+  const { intl } = state;
 
   return {
     user, 
-    categoryId
+    categoryId,
+    intl
   };
 };
 
@@ -168,4 +181,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 //root（全部の状態を持っているオブジェクト）に持っているstateをAnswerListに対して適用する
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionListView);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(QuestionListView));

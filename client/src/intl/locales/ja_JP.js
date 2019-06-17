@@ -38,7 +38,7 @@ const ja_JP = {
   "errors.questions.translate_language_id": '投稿言語を指定してください',
   "errors.questions.category_id": 'カテゴリーを指定してください',
   "errors.answers.content": '回答文を入力してください',
-  "errors.answers.translate_language_id": '投稿言語を指定してください',
+  "errors.answers.translate_language_id": '投稿言語を指定してください', 
   "errors.translations.content": '翻訳を入力してください',
   "errors.translations.translate_language_id": '投稿言語を指定してください',
   "errors.sign_ups.name": 'ユーザー名を入力してください',
@@ -70,5 +70,12 @@ const ja_JP = {
   "buttons.title.sign_up": '新規登録',
   "buttons.title.login": 'ログイン',
   "buttons.title.send": '送信',
+  "translated.name": '翻訳者',
+  "translated.state": '未翻訳', 
+  "categories.comic_anime": '漫画・アニメ',
+  "categories.culture": '文化', 
+  "categories.tourism": '観光',  
+  "categories.music": '音楽',  
+
 };
 export default ja_JP;

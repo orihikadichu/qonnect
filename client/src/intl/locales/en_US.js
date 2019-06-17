@@ -36,6 +36,7 @@ const en_US = {
   "errors.questions.content": 'Please write a question text.',
   "errors.questions.country_id": 'Please select target country.',
   "errors.questions.translate_language_id": 'Please select the language.',
+  "errors.questions.category_id": 'Please select the cateogry.',
   "errors.answers.content": 'Please write an answer text.',
   "errors.answers.translate_language_id": 'Please select the language.',
   "errors.translations.content": 'Please write a translated text.',
@@ -57,6 +58,7 @@ const en_US = {
   "placeholders.questions.content": 'Write your question!!',
   "placeholders.questions.country_id": 'Target User Country',
   "placeholders.questions.translate_language_id": 'Language',
+  "placeholders.questions.category_id": 'Category',
   "placeholders.questions.submit_btn": 'POST',
   "placeholders.answers.content": 'Write your answer!!',
   "placeholders.answers.translate_language_id": 'Language',
@@ -68,5 +70,11 @@ const en_US = {
   "buttons.title.sign_up": 'Sign Up',
   "buttons.title.login": 'Login',
   "buttons.title.send": 'Send',
+  "translated.name": 'Translated by',
+  "translated.state": 'Untranslated', 
+  "categories.comic_anime": 'Comic・Anime',
+  "categories.culture": 'culture', 
+  "categories.tourism": 'tourism',  
+  "categories.music": 'music',  
 };
 export default en_US;

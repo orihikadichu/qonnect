@@ -32,7 +32,7 @@ export const categories = {
       categoryId: 3,
   },
   music: {
-    category: 'music',
-    categoryId: 3,
-},
+      category: 'music',
+      categoryId: 4,
+  },
 };
