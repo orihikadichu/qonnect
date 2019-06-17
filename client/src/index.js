@@ -25,6 +25,7 @@ import SignUp from './containers/users/SignUp';
 import Login from './containers/users/Login';
 import PasswordReset from './containers/users/PasswordReset';
 import NewPassword from './containers/users/NewPassword';
+import Activate from './containers/users/Activate';
 import Profile from './containers/users/Profile';
 import ProfileEdit from './containers/users/ProfileEdit';
 import UserOnly from './containers/auth/UserOnly';
@@ -47,7 +48,6 @@ const { intl } = store.getState();
 const { locale, messages } = intl;
 addLocaleData([...ja, ...en]);
 
-console.log('intl', intl);
 
 // JS
 UIkit.use(Icons);
@@ -68,6 +68,7 @@ const render = () => {
                 <Route exact path='/users/profile/:id' component={Profile} />
                 <Route exact path='/users/login' component={Login} />
                 <Route exact path='/users/signup' component={SignUp} />
+                <Route exact path='/users/activate/:token' component={Activate} />
                 <Route exact path='/users/password_reset' component={PasswordReset} />
                 <Route exact path='/users/password_reset/:token' component={NewPassword} />
                 <UserOnly>

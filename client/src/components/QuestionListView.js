@@ -90,9 +90,9 @@ class QuestionListView extends Component {
       const myVotes = votes.filter(v => {return v.user_id === this.props.user.id});
       const voteState = myVotes.length !== 0;
       const votebutton = voteState
-                   ?<a onClick={this.deleteVote.bind(this, question)}><i class="fas fa-heart fa-lg" style={{color:"red"}}></i></a>
-                   :<a onClick={this.sendVote.bind(this, question)}><i className="far fa-heart fa-lg" style={{color:"gray"}}></i></a>;
-                  
+                   ? <a onClick={this.deleteVote.bind(this, question)}><i className="fas fa-heart fa-lg" style={{color:"red"}}></i></a>
+                   : <a onClick={this.sendVote.bind(this, question)}><i className="far fa-heart fa-lg" style={{color:"gray"}}></i></a>;
+
       const voteNumbers = <span className="uk-text-default">{ votes.length }</span>;
       const nationalFlag = this.selectedNationalFlag(user.country_id);
 

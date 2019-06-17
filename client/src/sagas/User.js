@@ -4,12 +4,13 @@ import {
   updateUserData, requestData, receiveDataSuccess, receiveDataFailed,
   loginSuccess, loginFailed, removeUserData, updatedUserData,
   updatedProfileData, preparedAuth, updatedProfileQuestionData,
-  updatedProfileAnswerData, updatedProfileCommentData
+  updatedProfileAnswerData, updatedProfileCommentData,
 } from '../actions/User';
 import {
   CREATE_USER_ACCOUNT,
   SAVE_USER_DATA,
   SAVE_USER_PASSWORD,
+  ACTIVATE_USER,
   SEND_RESET_PASSWORD_MAIL,
   GET_USER_PROFILE,
   GET_USER_BY_TOKEN,
@@ -164,6 +165,24 @@ export function* getUserByToken(action) {
   }
 }
 
+export function* activateUser(action) {
+  try {
+    const { history } = action.payload;
+    console.log('history', history);
+    yield put(requestData());
+    const payload = yield call(api.activateUser, action.payload);
+    yield put(loginSuccess(payload));
+    const { jwt } = payload.data;
+    localStorage.setItem('jwt', jwt);
+    const message = '認証が完了しました。';
+    yield put(notifySuccess(message));
+    yield call(history.push, '/');
+  } catch (e) {
+    console.log('receiveDataFailed');
+    yield put(receiveDataFailed());
+  }
+}
+
 const userSagas = [
   takeEvery(CREATE_USER_ACCOUNT, createUserAccount),
   takeEvery(LOGIN_USER, loginUserAccount),
@@ -174,6 +193,7 @@ const userSagas = [
   takeEvery(GET_USER_PROFILE, getUserProfile),
   takeEvery(GET_USER_BY_TOKEN, getUserByToken),
   takeEvery(SEND_RESET_PASSWORD_MAIL, resetPassword),
+  takeEvery(ACTIVATE_USER, activateUser),
 ];
 
 export default userSagas;

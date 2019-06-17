@@ -24,6 +24,7 @@ import {
   PROFILE_IMAGE_DIR,
   SECRET_KEY,
 } from './users/util';
+import { getTokenData } from './auth_tokens';
 import { sendMailFromAdmin } from './mails';
 
 const app = express();
@@ -886,8 +887,28 @@ app.post('/api/users', (req, res) => {
   const { name, mail } = req.body;
   const password = getPasswordHash(req.body.password);
   db.users.create({ name, mail, password })
-    .then((createdData) => {
-      res.status(200).send(createdData);
+    .then((instance) => {
+      if (!instance) {
+        return res.status(500).send('ユーザーの作成に失敗しました。');
+      }
+      const user = instance.get();
+      const authTokenData = getTokenData(user.id);
+      return db.auth_tokens.create(authTokenData)
+        .then((instance) => {
+          if (!instance) {
+            return res.status(500).send('ユーザーの作成に失敗しました。');
+          }
+          const authToken = instance.get();
+          const activationUrl = `${host}${domain}/users/activate/${authToken.token}`;
+          const text = activationUrl;
+          const mailParams = {
+            to: user.mail,
+            subject: 'Qonnect 仮登録完了',
+            text
+          };
+          sendMailFromAdmin(mailParams);
+          return res.status(200).send(user);
+        });
     })
   ;
 });
@@ -974,6 +995,40 @@ app.put('/api/users/update_password/:token', (req, res) => {
   ;
 });
 
+// アクティベーション処理
+app.post('/api/users/activate/:token', (req, res) => {
+  const { token } = req.params;
+  db.auth_tokens.findOne({
+    where: { token },
+    include: [
+      {
+        model: db.users,
+        required: false
+      }
+    ]
+  })
+    .then((instance) => {
+      if (!instance) {
+        return res.status(500).send('不正なアクセスです');
+      }
+      const authToken = instance.get();
+      if (dayjs().isAfter(dayjs(authToken.expired_datetime))) {
+        return res.status(500).send('期限切れのトークンです。');
+      }
+      const { user } = authToken;
+      user.jwt = getJwt({
+        id: user.id,
+        mail: user.mail
+      });
+      const filter = {
+        where: { user_id: user.id, token }
+      };
+      db.auth_tokens.destroy(filter);
+      return res.status(200).send(user);
+    });
+});
+
+
 // ログイン共通処理
 const callbackUserLogin = (findOpt, done, password = null) => {
   return db.users.findOne(findOpt)
@@ -1036,33 +1091,23 @@ app.post('/api/users/password_reset', (req, res) => {
         return res.status(500).send('登録されていないメールアドレスです。');
       }
       const user = instance.get();
-      const token = getHashName(user.id);
+      const authTokenData = getTokenData(user.id);
+      const { token } = authTokenData;
       const resetUrl = `${host}${domain}/users/password_reset/${token}`;
       const text = resetUrl;
-      const message = {
+      const mailParams = {
         to: user.mail,
         subject: 'パスワード再設定',
         text
       };
-      const expired_datetime = dayjs()
-            .add(1, 'day')
-            .format('YYYY-MM-DD HH:mm:ss');
-
-      const authTokenData = {
-        user_id: user.id,
-        token,
-        expired_datetime
-      };
 
       return db.auth_tokens.create(authTokenData)
         .then((instance) => {
-          sendMailFromAdmin(message, (err, response) => {
-            if (err) {
-              console.log(err || response);
-              return res.status(500).send('メールの送信に失敗しました');
-            }
-            return res.status(200).send('sent!');
-          });
+          if (!instance) {
+            return res.status(500).send('登録されていないメールアドレスです。');
+          }
+          sendMailFromAdmin(mailParams);
+          return res.status(200).send('sent!');
         });
     });
 });
