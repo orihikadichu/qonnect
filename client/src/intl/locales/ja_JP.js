@@ -1,6 +1,7 @@
 const ja_JP = {
   "titles.sign_up": '新規登録',
   "titles.login": 'ログイン',
+  "titles.activate": '認証',
   "titles.password_reset": 'パスワード再設定',
   "titles.question_list": '質問一覧',
   "titles.answer_list": '回答一覧',
@@ -12,6 +13,7 @@ const ja_JP = {
   "messages.you_are_not_target": 'この質問は 「%s」 の方が回答対象者です。',
   "messages.enter_mail": 'メールアドレスを入力してください',
   "messages.enter_new_password": '新しいパスワードを入力してください',
+  "messages.activate_completed": '認証処理が完了しました。',
   "links.to_not_translated_list": '未翻訳の一覧を見る',
   "links.edit": '編集',
   "links.question": '質問',

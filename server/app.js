@@ -995,6 +995,40 @@ app.put('/api/users/update_password/:token', (req, res) => {
   ;
 });
 
+// アクティベーション処理
+app.post('/api/users/activate/:token', (req, res) => {
+  const { token } = req.params;
+  db.auth_tokens.findOne({
+    where: { token },
+    include: [
+      {
+        model: db.users,
+        required: false
+      }
+    ]
+  })
+    .then((instance) => {
+      if (!instance) {
+        return res.status(500).send('不正なアクセスです');
+      }
+      const authToken = instance.get();
+      if (dayjs().isAfter(dayjs(authToken.expired_datetime))) {
+        return res.status(500).send('期限切れのトークンです。');
+      }
+      const { user } = authToken;
+      user.jwt = getJwt({
+        id: user.id,
+        mail: user.mail
+      });
+      const filter = {
+        where: { user_id: user.id, token }
+      };
+      db.auth_tokens.destroy(filter);
+      return res.status(200).send(user);
+    });
+});
+
+
 // ログイン共通処理
 const callbackUserLogin = (findOpt, done, password = null) => {
   return db.users.findOne(findOpt)

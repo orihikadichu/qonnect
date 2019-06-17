@@ -23,6 +23,11 @@ export const loginUserJwt = (postData) => {
     return axios.post('/api/users/login_jwt', {}, { headers });
 };
 
+export const activateUser = (postData) => {
+  const { token } = postData;
+  return axios.post(`/api/users/activate/${token}`, postData);
+};
+
 export const resetPassword = (mail) => {
   return axios.post(`/api/users/password_reset`, { mail });
 };

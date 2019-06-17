@@ -26,6 +26,7 @@ export const UPDATED_PROFILE_ANSWER_DATA = Symbol('UPDATED_PROFILE_ANSWER_DATA')
 export const UPDATED_PROFILE_COMMENT_DATA = Symbol('UPDATED_PROFILE_COMMENT_DATA');
 export const SEND_RESET_PASSWORD_MAIL = Symbol('SEND_RESET_PASSWORD_MAIL');
 export const RESET_PASSWORD = Symbol('RESET_PASSWORD');
+export const ACTIVATE_USER = Symbol('ACTIVATE_USER');
 
 
 export const createUserAccount = createAction(CREATE_USER_ACCOUNT);
@@ -53,3 +54,4 @@ export const updatedProfileAnswerData = createAction(UPDATED_PROFILE_ANSWER_DATA
 export const updatedProfileCommentData = createAction(UPDATED_PROFILE_COMMENT_DATA);
 export const sendResetPasswordMail = createAction(SEND_RESET_PASSWORD_MAIL);
 export const resetPassword = createAction(RESET_PASSWORD);
+export const activateUser = createAction(ACTIVATE_USER);

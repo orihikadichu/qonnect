@@ -1,6 +1,7 @@
 const en_US = {
   "titles.sign_up": 'Sign Up',
   "titles.login": 'Login',
+  "titles.activate": 'Activation',
   "titles.password_reset": 'Password Reset',
   "titles.question_list": 'Questions',
   "titles.answer_list": 'Answers',
@@ -12,6 +13,7 @@ const en_US = {
   "messages.you_are_not_target": 'This question is subject to answers in "%s".',
   "messages.enter_mail": 'Enter your email address.',
   "messages.enter_new_password": 'Enter new password.',
+  "messages.activate_completed": 'Activation is completed.',
   "links.to_not_translated_list": 'See not translated lists',
   "links.edit": 'Edit',
   "links.question": 'Question',
