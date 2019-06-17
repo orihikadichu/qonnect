@@ -34,6 +34,7 @@ const ja_JP = {
   "categories.subculture": '漫画・アニメ',
   "categories.culture": '文化',
   "categories.tourism": '観光',
+  "categories.music": '音楽', 
   "errors.questions.content": '質問文を入力してください',
   "errors.questions.country_id": '回答対象国を指定してください',
   "errors.questions.translate_language_id": '投稿言語を指定してください',

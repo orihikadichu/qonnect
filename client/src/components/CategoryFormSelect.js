@@ -13,6 +13,7 @@ class CategoryFormSelect extends Component {
         <option value="1" >{ formatMessage({id: "categories.subculture" })}</option>
         <option value="2" >{ formatMessage({id: "categories.culture" })}</option>
         <option value="3" >{ formatMessage({id: "categories.tourism" })}</option>
+        <option value="4" >{ formatMessage({id: "categories.music" })}</option>
       </Field>
     );
   }

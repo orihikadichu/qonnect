@@ -151,8 +151,8 @@ class AnswerList extends Component {
       const myVotes = answer.votes.filter(v => {return v.user_id === loginUser.id});
       const voteState = myVotes.length !== 0;
       const votebutton = voteState
-                    ? <span className="uk-text-danger uk-margin-small-right" uk-icon="star" onClick={this.deleteVote.bind(this, answer.id, this.props.qId)}></span>
-                    : <span className="uk-text-muted uk-margin-small-right" uk-icon="heart" onClick={this.sendVote.bind(this, answer.id, this.props.qId)}></span>;
+                     ?<a onClick={this.deleteVote.bind(this,  answer.id, this.props.qId)}><i class="fas fa-heart fa-lg" style={{color:"red"}}></i></a>
+                     :<a onClick={this.sendVote.bind(this,  answer.id, this.props.qId)}><i className="far fa-heart fa-lg" style={{color:"gray"}}></i></a>;
       const voteNumbers = <span className="uk-text-default">{ answer.votes.length }</span>;
       const commentForm = this.getComment(answer.id);
       const nationalFlag = this.selectedNationalFlag(answer.user.country_id);

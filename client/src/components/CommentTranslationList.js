@@ -77,8 +77,8 @@ class CommentTranslationList extends Component {
            const myVotes = translation.vote_translations.filter(v => {return v.user_id === loginUser.id});
            const voteState = myVotes.length !== 0;
            const votebutton = voteState
-                          ? <span className="uk-text-danger uk-margin-small-right" uk-icon="star" onClick={this.deleteVote.bind(this,translation)}></span>
-                          : <span className="uk-text-muted uk-margin-small-right" uk-icon="heart" onClick={this.sendVote.bind(this,translation)}></span>;
+                          ?<a onClick={this.deleteVote.bind(this, translation)}><i class="fas fa-heart fa-lg" style={{color:"red"}}></i></a>
+                          :<a onClick={this.sendVote.bind(this,  translation)}><i className="far fa-heart fa-lg" style={{color:"gray"}}></i></a>;
            const voteNumbers = <span className="uk-text-default">{ translation.vote_translations.length }</span>;
            const nationalFlag = this.selectedNationalFlag(translation.user.country_id);
 

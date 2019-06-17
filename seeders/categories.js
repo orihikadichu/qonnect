@@ -18,6 +18,11 @@ module.exports = {
       created_at: '2019-06-01 00:00:00', 
       updated_at: '2019-06-01 00:00:00'
     },
+    {
+      category: '音楽',
+      created_at: '2019-06-01 00:00:00', 
+      updated_at: '2019-06-01 00:00:00'
+    },
     ]
     );
   },
