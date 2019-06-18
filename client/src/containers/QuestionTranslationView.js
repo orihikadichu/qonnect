@@ -47,12 +47,16 @@ class QuestionTranslationView extends Component {
   }
 
   selectedNationalFlag(countryId){
+    let src;
     switch(countryId){
       case 1:
-        return <img src="/image/flag/japan.png" width="25" height="25" alt=""/>;
+        src = "japan";
+        break;
       case 2:
-        return <img className="uk-border" src="/image/flag/america.png" width="25" height="25" alt=""/>;
+        src = "america";
+        break;
     }
+    return <img className="uk-box-shadow-medium" src={`/image/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
   }
 
   render() {
