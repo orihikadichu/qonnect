@@ -4,6 +4,8 @@
   "script":    "npm",
   "args": "start",
   "exec_mode": "cluster_mode",
+  "wait_ready": true,
+  "listen_timeout": 3000,
   "env": {
     "NODE_ENV": "production"
   }
