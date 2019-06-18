@@ -135,13 +135,9 @@ class Header extends React.Component {
 
     return (
       <header className="uk-margin-bottom uk-heading-divider uk-grid" >
-        <div className="uk-width-expand@s uk-margin-small-left" >
-          {/*
-              <Link to="/" className="uk-display-inline-block" >
-              </Link>
-            */}
+        <div className="uk-width-expand uk-margin-small-left" >
           <a href="/" className="uk-display-inline-block" >
-            <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Logo" style={{ height: "70px" }} />
+            <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Logo" style={{ "max-height": "70px" }} />
           </a>
         </div>
         <div className="uk-margin-small-right">
