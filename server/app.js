@@ -1,6 +1,5 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import mysql from 'mysql2';
 import sequelize from 'sequelize';
 import path from 'path';
 import db from '../models/index';
