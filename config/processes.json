@@ -1,0 +1,10 @@
+[{
+  "name":      "qonnect",
+  "instances": 0,
+  "script":    "npm",
+  "args": "start",
+  "exec_mode": "cluster_mode",
+  "env": {
+    "NODE_ENV": "production"
+  }
+}]

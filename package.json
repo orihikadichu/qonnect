@@ -24,6 +24,7 @@
     "crypto": "^1.0.1",
     "dayjs": "^1.8.14",
     "express": "^4.16.4",
+    "http": "0.0.0",
     "jimp": "^0.6.4",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.3.15",
