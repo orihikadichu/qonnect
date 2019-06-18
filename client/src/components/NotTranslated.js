@@ -3,6 +3,7 @@ import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { injectIntl } from 'react-intl';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class NotTranslated extends Component {
 
@@ -40,7 +41,7 @@ class NotTranslated extends Component {
           {/* 未翻訳の質問を表示する */}
           <p className="uk-text-lead uk-text-truncate" >
             <Link to={`/questions/${id}`}>{`${v.content}`}</Link>
-            <Link to={`${url}${v.id}`}><span uk-icon="world"></span></Link>
+            <Link to={`${url}${v.id}`}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link>
           </p>
           {/* 作成時間を表示する */}
           <p className="uk-text-meta">{dayjs(v.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>

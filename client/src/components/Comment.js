@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 //評価するための関数
 import { postVote, deleteVote } from '../actions/Vote';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class Comment extends Component {
 
@@ -74,8 +75,8 @@ class Comment extends Component {
     const myVotes = voteList.filter(v => {return v.user_id === user.id});
     const voteState = myVotes.length !== 0;
     const votebutton = voteState
-    　　　　　　　　  ?<a onClick={this.deleteVote.bind(this,  id, currentQuestionId)}><i class="fas fa-heart fa-lg" style={{color:"red"}}></i></a>
-    　　　　　　　　  :<a onClick={this.sendVote.bind(this,  id, currentQuestionId)}><i className="far fa-heart fa-lg" style={{color:"gray"}}></i></a>;
+    　　　　　　　　  ?<a onClick={this.deleteVote.bind(this,  id, currentQuestionId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
+    　　　　　　　　  :<a onClick={this.sendVote.bind(this,  id, currentQuestionId)}><FontAwesomeIcon icon="heart" color="gray" size="lg"/></a>;
     const voteNumbers = <span className="uk-text-default">{ voteList.length }</span>;
     const nationalFlag = this.selectedNationalFlag(user.country_id);
 
@@ -98,7 +99,7 @@ class Comment extends Component {
         <div className="uk-comment-header uk-comment-body">
           <p style={{"whiteSpace": "pre-wrap"}} >
             {content}
-            <Link to={`/comment_translations/${id}`}><span uk-icon="world"></span></Link>
+            <Link to={`/comment_translations/${id}`}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link>
           </p>
         </div>
         <div className="uk-grid uk-grid-small uk-flex-middle">

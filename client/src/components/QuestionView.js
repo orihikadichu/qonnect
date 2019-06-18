@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { sprintf } from 'sprintf-js';
 import { injectIntl } from 'react-intl';
 import { isEmptyObject } from '../utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class QuestionView extends Component {
   constructor(props) {
@@ -153,8 +154,8 @@ class QuestionView extends Component {
     const myVotes = votes.filter(v => {return v.user_id === loginUser.id});
     const voteState = myVotes.length !== 0;
     const votebutton = voteState
-                  　?<a onClick={this.deleteVote.bind(this, currentQuestion)}><i class="fas fa-heart fa-lg" style={{color:"red"}}></i></a>
-                  　:<a onClick={this.sendVote.bind(this, currentQuestion)}><i className="far fa-heart fa-lg" style={{color:"gray"}}></i></a>;
+                  　?<a onClick={this.deleteVote.bind(this, currentQuestion)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
+                  　:<a onClick={this.sendVote.bind(this, currentQuestion)}><FontAwesomeIcon icon="heart" color="gray" size="lg"/></a>;
     const voteNumbers = <span className="uk-text-default">{ votes.length }</span>;
     const nationalFlag = this.selectedNationalFlag(user.country_id);
 
@@ -173,7 +174,7 @@ class QuestionView extends Component {
           <p className="uk-text-muted">{ question.category.category }</p>
           <p>
             <Linkify properties={{ target: '_blank'}} >{question.dispText}</Linkify>
-            <Link to={`/question_translations/${this.qId}`}><span uk-icon="world"></span></Link>
+            <Link to={`/question_translations/${this.qId}`}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link>
           </p>
           <p className="uk-text-meta">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
           <div className="uk-grid uk-grid-small uk-flex-middle" >

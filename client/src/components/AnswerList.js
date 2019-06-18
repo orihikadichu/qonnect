@@ -7,6 +7,7 @@ import CommentForm from './CommentForm';
 import dayjs from 'dayjs';
 import { getFilteredContents, getTranslatedContents } from '../utils/Translations';
 import { injectIntl } from 'react-intl';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class AnswerList extends Component {
   constructor(props) {
@@ -151,8 +152,8 @@ class AnswerList extends Component {
       const myVotes = answer.votes.filter(v => {return v.user_id === loginUser.id});
       const voteState = myVotes.length !== 0;
       const votebutton = voteState
-                     ?<a onClick={this.deleteVote.bind(this,  answer.id, this.props.qId)}><i class="fas fa-heart fa-lg" style={{color:"red"}}></i></a>
-                     :<a onClick={this.sendVote.bind(this,  answer.id, this.props.qId)}><i className="far fa-heart fa-lg" style={{color:"gray"}}></i></a>;
+                     ?<a onClick={this.deleteVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
+                     :<a onClick={this.sendVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon="heart" color="gray" size="lg"/></a>;
       const voteNumbers = <span className="uk-text-default">{ answer.votes.length }</span>;
       const commentForm = this.getComment(answer.id);
       const nationalFlag = this.selectedNationalFlag(answer.user.country_id);
@@ -173,7 +174,7 @@ class AnswerList extends Component {
             <div className="uk-comment-header uk-comment-body">
               <p style={{"whiteSpace": "pre-wrap"}} >
                 <Linkify properties={{ target: '_blank'}} >{answer.dispText}</Linkify>
-                <Link to={`/answer_translations/${answer.id}`}><span uk-icon="world"></span></Link><br/>
+                <Link to={`/answer_translations/${answer.id}`}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link><br/>
                 { editLink }
                 { votebutton }
                 { voteNumbers }

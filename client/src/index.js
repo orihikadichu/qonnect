@@ -33,7 +33,9 @@ import GuestOnly from './containers/auth/GuestOnly';
 import { Provider } from 'react-redux';
 import store from './store';
 import UIkit from 'uikit';
-import Icons from 'uikit/dist/js/uikit-icons';
+// import Icons from 'uikit/dist/js/uikit-icons';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 
 // Styles
 import './css/normalize.css';
@@ -48,9 +50,10 @@ const { intl } = store.getState();
 const { locale, messages } = intl;
 addLocaleData([...ja, ...en]);
 
+library.add( fas )//あらかじめ使用するアイコンを追加しておく
 
 // JS
-UIkit.use(Icons);
+// UIkit.use(Icons);
 
 const render = () => {
   ReactDOM.render(

@@ -9,6 +9,7 @@ import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 //評価するための関数
 import { postVote, deleteVote } from '../actions/VoteTranslation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class QuestionTranslationList extends Component {
   constructor(props) {
@@ -75,8 +76,8 @@ class QuestionTranslationList extends Component {
       const myVotes = translation.vote_translations.filter(v => {return v.user_id === loginUser.id});
       const voteState = myVotes.length !== 0;
       const votebutton = voteState
-                     ?<a onClick={this.deleteVote.bind(this, translation)}><i class="fas fa-heart fa-lg" style={{color:"red"}}></i></a>
-                     :<a onClick={this.sendVote.bind(this,  translation)}><i className="far fa-heart fa-lg" style={{color:"gray"}}></i></a>;
+                     ?<a onClick={this.deleteVote.bind(this, translation)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
+                     :<a onClick={this.sendVote.bind(this,  translation)}><FontAwesomeIcon icon="heart" color="gray" size="lg"/></a>;
       const voteNumbers = <span className="uk-text-default">{ translation.vote_translations.length }</span>;
       const nationalFlag = this.selectedNationalFlag(translation.user.country_id);
 
