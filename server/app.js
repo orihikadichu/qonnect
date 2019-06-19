@@ -31,7 +31,7 @@ const app = express();
 // 環境変数の読み込み
 config();
 
-const host = process.env.HOST;
+const HOST = process.env.HOST;
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -891,8 +891,14 @@ app.post('/api/users', (req, res) => {
             return res.status(500).send('ユーザーの作成に失敗しました。');
           }
           const authToken = instance.get();
-          const activationUrl = `${host}${domain}/users/activate/${authToken.token}`;
-          const text = activationUrl;
+          const activationUrl = `${HOST}/users/activate/${authToken.token}`;
+          const text = `
+ご登録ありがとうございます。
+
+以下のURLにアクセスし、認証処理を完了させていただければ幸いです。
+
+${activationUrl}
+`;
           const mailParams = {
             to: user.mail,
             subject: 'Qonnect 仮登録完了',
@@ -1085,11 +1091,15 @@ app.post('/api/users/password_reset', (req, res) => {
       const user = instance.get();
       const authTokenData = getTokenData(user.id);
       const { token } = authTokenData;
-      const resetUrl = `${host}${domain}/users/password_reset/${token}`;
-      const text = resetUrl;
+      const resetUrl = `${HOST}/users/password_reset/${token}`;
+      const text = `
+以下のURLにアクセスし、新しいパスワードを設定してください。
+
+${resetUrl}
+`;
       const mailParams = {
         to: user.mail,
-        subject: 'パスワード再設定',
+        subject: 'Qonnect パスワード再設定',
         text
       };
 
