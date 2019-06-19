@@ -2,11 +2,13 @@
 import crypto from 'crypto';
 import path from 'path';
 import fs from 'fs';
+import { config } from 'dotenv';
 import {
   getProfileImageName,
   getProfileImageFilePath,
   PROFILE_IMAGE_DIR,
 } from '../server/users/util';
+config();
 
 module.exports = (sequelize, DataTypes) => {
   const users = sequelize.define('users', {
@@ -40,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       get: function() {
         const imagePath = getProfileImageFilePath(this.get('id'));
         try {
-          fs.statSync(__dirname + '/../client/build' + imagePath);
+          fs.statSync(process.env.PUBLIC_URL + imagePath);
           return imagePath;
         } catch (e) {
           return PROFILE_IMAGE_DIR + 'blank-profile.png';

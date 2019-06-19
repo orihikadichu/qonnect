@@ -4,7 +4,9 @@ import bcrypt from 'bcryptjs';
 import path from 'path';
 import fs from 'fs';
 import jwt from 'jsonwebtoken';
+import { config } from 'dotenv';
 
+config();
 const PROFILE_PREFIX = 'profile_';
 export const PROFILE_IMAGE_DIR = '/image/profile/';
 export const SECRET_KEY = 'Eg2fTPSp6attfKcC6bsNbWkwsn6R4v';
