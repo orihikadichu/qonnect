@@ -58,20 +58,24 @@ class Comment extends Component {
   }
 
   TranslateUser(img, name){
+    const { formatMessage } = this.props.intl;
+    const temp = formatMessage({id: "translated.name"})
+    const msg = sprintf(temp, name);
+
     return (
       <div>
         <div className="uk-text-right">
           <img className="uk-comment-avatar uk-border-circle uk-text-right" src={img} width="35" height="35" alt="" />
         </div>
         <div>
-          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ name }さんが翻訳済</h4>
+          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ msg }</h4>
         </div>
       </div>
     )
   }
 
   render() {
-    const { id, user, content, isOwner, voteList, questions, commentUser, comments, answerId } = this.props;
+    const { id, user, content, isOwner, voteList, questions, commentUser, comments, answerId, intl} = this.props;
     const currentQuestionId = questions.currentQuestion.id;
     const editLink = isOwner
                    ? <Link to={`/comments/edit/${id}`}>編集</Link>
@@ -83,10 +87,11 @@ class Comment extends Component {
     　　　　　　　　  :<a onClick={this.sendVote.bind(this,  id, currentQuestionId)}><FontAwesomeIcon icon="heart" color="gray" size="lg"/></a>;
     const voteNumbers = <span className="uk-text-default">{ voteList.length }</span>;
     const nationalFlag = this.selectedNationalFlag(user.country_id);
+    const { formatMessage } = intl;
 
     const { commentArray } = comments;
     let translator;
-    translator = <h4 className="uk-comment-meta uk-text-right">まだ翻訳されてません</h4>;
+    translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
     if(typeof commentArray !== 'undefined'){
       const thisAnswerCommentList = commentArray[answerId] ;
       const thisCommentData = thisAnswerCommentList.filter( v => v.id === id) ;
@@ -133,10 +138,12 @@ class Comment extends Component {
 const mapStateToProps = state => {
   const { questions, comments } = state;
   const { user } = state.auth;
+  const { intl } = state;
   return {
     user,
     questions,
     comments,
+    intl,
   };
 };
 

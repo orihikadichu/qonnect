@@ -11,16 +11,20 @@ class QuestionForm extends Component {
     const { formatMessage } = this.props.intl;
     let errors = {};
     if (!values.content) {
-      errors.content = formatMessage({id: "errors.questions.content"});
+      // errors.content = formatMessage({id: "errors.questions.content"});
+      errors.content = "errors.questions.content";
     }
     if (!values.country_id) {
-      errors.country_id = formatMessage({id: "errors.questions.country_id"});
+      // errors.country_id = formatMessage({id: "errors.questions.country_id"});
+      errors.country_id  = "errors.questions.country_id";
     }
     if (!values.translate_language_id) {
-      errors.translate_language_id = formatMessage({id: "errors.questions.translate_language_id"});
+      // errors.translate_language_id = formatMessage({id: "errors.questions.translate_language_id"});
+      errors.translate_language_id = "errors.questions.translate_language_id";
     }
     if (!values.category_id) {
-      errors.category_id = formatMessage({id: "errors.questions.category_id"});
+      // errors.category_id = formatMessage({id: "errors.questions.category_id"});
+      errors.category_id = "errors.questions.category_id";
     }
     return errors;
   }
@@ -53,7 +57,8 @@ class QuestionForm extends Component {
                      rows="5"
                      className={'form-control uk-textarea'}
                 />
-                {touched.content && errors.content && <div className="uk-text-warning">{errors.content}</div>}
+                {touched.content && errors.content && <div className="uk-text-warning">{ formatMessage({id: errors.content}) }</div>}
+                {/* {touched.content && errors.content && <div className="uk-text-warning">{errors.content}</div>} */}
                 <Persist name="question-form"/>
               </div>
               <div className="uk-margin uk-grid uk-grid-small uk-child-width-expand@s" >
@@ -63,16 +68,19 @@ class QuestionForm extends Component {
                     <option value="1" >{ formatMessage({id: "countries.japan" })}</option>
                     <option value="2" >{ formatMessage({id: "countries.usa" })}</option>
                   </Field>
-                  {touched.country_id && errors.country_id && <div className="uk-text-warning">{errors.country_id}</div>}
+                  {touched.country_id && errors.country_id && <div className="uk-text-warning">{ formatMessage({id: errors.country_id}) }</div>}
+                  {/* {touched.country_id && errors.country_id && <div className="uk-text-warning">{errors.country_id}</div>} */}
                 </div>
                 <div className="uk-grid-margin" >
                   <LanguageFormSelect name="translate_language_id" placeholder={formatMessage({id: "placeholders.questions.translate_language_id"})} />
-                  {touched.translate_language_id && errors.translate_language_id && <div className="uk-text-warning">{errors.translate_language_id}</div>}
+                  {touched.translate_language_id && errors.translate_language_id && <div className="uk-text-warning">{ formatMessage({id: errors.translate_language_id}) }</div>}
+                  {/* {touched.translate_language_id && errors.translate_language_id && <div className="uk-text-warning">{errors.translate_language_id}</div>} */}
                 </div>
                 {/* カテゴリー指定 */}
                 <div className="uk-grid-margin" >
                   <CategoryFormSelect name="category_id" placeholder={formatMessage({id: "placeholders.questions.category_id"})} />
-                  {touched.category_id && errors.category_id && <div className="uk-text-warning">{errors.category_id}</div>}
+                  {touched.category_id && errors.category_id && <div className="uk-text-warning">{ formatMessage({id: errors.category_id}) }</div>}
+                  {/* {touched.category_id && errors.category_id && <div className="uk-text-warning">{errors.category_id}</div>} */}
                 </div>
               </div>
               <div className="uk-margin">

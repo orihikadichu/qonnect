@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { getFilteredContents, getTranslatedContents } from '../utils/Translations';
 import { injectIntl } from 'react-intl';
+import { sprintf } from 'sprintf-js';
 
 //componentの中でdispatchするための設定
 import { connect } from 'react-redux';
@@ -13,10 +14,6 @@ import { postVote, deleteVote } from '../actions/Vote';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class QuestionListView extends Component {
-  constructor(props) {
-    super(props);
-    const {formatMessage } = this.props.intl;
-  }
 
   sendVote(question){
     if(this.props.user.id == null ){
@@ -66,6 +63,8 @@ class QuestionListView extends Component {
 
   TranslateUser(img, name){
     const {formatMessage } = this.props.intl;
+    const temp = formatMessage({id: "translated.name"})
+    const msg = sprintf(temp, name);
 
     return (
       <div>
@@ -73,7 +72,7 @@ class QuestionListView extends Component {
           <img className="uk-comment-avatar uk-border-circle uk-text-right" src={img} width="35" height="35" alt="" />
         </div>
         <div>
-          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ formatMessage({id: "translated.name" })}{ name }</h4>
+          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ msg }</h4>
         </div>
       </div>
     )

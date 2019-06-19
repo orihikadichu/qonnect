@@ -128,13 +128,17 @@ class AnswerList extends Component {
   }
   
   TranslateUser(img, name){
+    const { formatMessage } = this.props.intl;
+    const temp = formatMessage({id: "translated.name"})
+    const msg = sprintf(temp, name);
+
     return (
       <div>
         <div className="uk-text-right">
           <img className="uk-comment-avatar uk-border-circle uk-text-right" src={img} width="35" height="35" alt="" />
         </div>
         <div>
-          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ name }さんが翻訳済</h4>
+          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ msg }</h4>
         </div>
       </div>
     )
@@ -165,7 +169,7 @@ class AnswerList extends Component {
       const { answer_translations } = answer;
 
       let translator;
-      translator = <h4 className="uk-comment-meta uk-text-right">まだ翻訳されてません</h4>;
+      translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
       if( answer_translations.length !== 0 ){
         const img = answer_translations[0].user.image_path;
         const name = answer_translations[0].user.name;
