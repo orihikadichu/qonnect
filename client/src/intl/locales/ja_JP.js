@@ -78,6 +78,5 @@ const ja_JP = {
   "categories.culture": '文化', 
   "categories.tourism": '観光',  
   "categories.music": '音楽',  
-
 };
 export default ja_JP;

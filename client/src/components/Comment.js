@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { postVote, deleteVote } from '../actions/Vote';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { sprintf } from 'sprintf-js';
+import { injectIntl } from 'react-intl';
 
 class Comment extends Component {
 
@@ -91,6 +92,7 @@ class Comment extends Component {
     const { formatMessage } = intl;
 
     const { commentArray } = comments;
+
     let translator;
     translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
     if(typeof commentArray !== 'undefined'){
@@ -157,4 +159,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 //root（全部の状態を持っているオブジェクト）に持っているstateをAnswerListに対して適用する
-export default connect(mapStateToProps, mapDispatchToProps)(Comment);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Comment))

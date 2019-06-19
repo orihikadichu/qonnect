@@ -13,10 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 class QuestionView extends Component {
   constructor(props) {
     super(props);
-    //props.matchはURLクエリーで:idが
-    //props.matchの中にあるparamsというkeyのvalueを取得している。
     const {params} = props.match;
-    //idを１０進法の数値に変換する
     this.qId = parseInt(params.id, 10);
   }
 

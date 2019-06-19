@@ -169,6 +169,9 @@ class AnswerList extends Component {
 
       const { answer_translations } = answer;
 
+      console.log("------検証-----",answer);
+      console.log("---formatMessage--",formatMessage);
+
       let translator;
       translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
       if( answer_translations.length !== 0 ){
