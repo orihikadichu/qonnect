@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { getFilteredContents, getTranslatedContents } from '../utils/Translations';
 import { injectIntl } from 'react-intl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { sprintf } from 'sprintf-js';
 
 class AnswerList extends Component {
   constructor(props) {

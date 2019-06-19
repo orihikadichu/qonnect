@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 //評価するための関数
 import { postVote, deleteVote } from '../actions/Vote';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { sprintf } from 'sprintf-js';
 
 class Comment extends Component {
 
