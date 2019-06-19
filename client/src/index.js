@@ -52,6 +52,11 @@ addLocaleData([...ja, ...en]);
 
 library.add( fas )//あらかじめ使用するアイコンを追加しておく
 
+
+// 取り急ぎの質問フォーム初期化処理
+localStorage.setItem('question-form', '');
+
+
 // JS
 // UIkit.use(Icons);
 
