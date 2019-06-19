@@ -50,7 +50,7 @@ const storage = multer.diskStorage({
   // ファイルの保存先を指定
   destination: (req, file, cb) => {
     const { id } = req.params;
-    const dirPath = path.join(PUBLIC_URL, getProfileImageDir(id));
+    const dirPath = PUBLIC_URL + getProfileImageDir(id);
     if (!fs.existsSync(dirPath)){
       fs.mkdirSync(dirPath);
     }
@@ -1288,7 +1288,7 @@ app.post('/api/mail', (req, res) => {
 
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(PUBLIC_URL, '/index.html'));
+  res.sendFile(PUBLIC_URL + '/index.html');
 });
 
 export default app;
