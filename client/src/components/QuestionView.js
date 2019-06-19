@@ -108,9 +108,9 @@ class QuestionView extends Component {
   selectedNationalFlag(countryId) {
     switch(countryId) {
       case 1:
-        return <img src="/image/flag/japan.png" width="25" height="25" alt=""/>;
+        return <img src="/image/common/flag/japan.png" width="25" height="25" alt=""/>;
       case 2:
-        return <img className="uk-border" src="/image/flag/america.png" width="25" height="25" alt=""/>;
+        return <img className="uk-border" src="/image/common/flag/america.png" width="25" height="25" alt=""/>;
       default:
         return '';
     }
