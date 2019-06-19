@@ -85,7 +85,7 @@ class Comment extends Component {
     const voteState = myVotes.length !== 0;
     const votebutton = voteState
     　　　　　　　　  ?<a onClick={this.deleteVote.bind(this,  id, currentQuestionId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-    　　　　　　　　  :<a onClick={this.sendVote.bind(this,  id, currentQuestionId)}><FontAwesomeIcon icon="heart" color="gray" size="lg"/></a>;
+    　　　　　　　　  :<a onClick={this.sendVote.bind(this,  id, currentQuestionId)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
     const voteNumbers = <span className="uk-text-default">{ voteList.length }</span>;
     const nationalFlag = this.selectedNationalFlag(user.country_id);
     const { formatMessage } = intl;

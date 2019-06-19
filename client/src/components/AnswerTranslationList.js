@@ -83,7 +83,7 @@ class AnswerTranslationList extends Component {
            const voteState = myVotes.length !== 0;
            const votebutton = voteState
                           ?<a onClick={this.deleteVote.bind(this, translation)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-                          :<a onClick={this.sendVote.bind(this,  translation)}><FontAwesomeIcon icon="heart" color="gray" size="lg"/></a>;
+                          :<a onClick={this.sendVote.bind(this,  translation)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
            const voteNumbers = <span className="uk-text-default">{ translation.vote_translations.length }</span>;                   
            const nationalFlag = this.selectedNationalFlag(translation.user.country_id);
 

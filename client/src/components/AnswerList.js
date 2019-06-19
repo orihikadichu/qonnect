@@ -162,7 +162,7 @@ class AnswerList extends Component {
       const voteState = myVotes.length !== 0;
       const votebutton = voteState
                      ?<a onClick={this.deleteVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-                     :<a onClick={this.sendVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon="heart" color="gray" size="lg"/></a>;
+                     :<a onClick={this.sendVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
       const voteNumbers = <span className="uk-text-default">{ answer.votes.length }</span>;
       const commentForm = this.getComment(answer.id);
       const nationalFlag = this.selectedNationalFlag(answer.user.country_id);
