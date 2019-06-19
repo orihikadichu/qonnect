@@ -128,6 +128,7 @@ class Header extends React.Component {
   }
 
   render() {
+    console.log('`${process.env.PUBLIC_URL}/logo.png`', `${process.env.PUBLIC_URL}/logo.png`);
     const { user } = this.props.state.auth;
     const imagePath = user.image_path ? user.image_path : '/image/profile/blank-profile.png';
     const displayMenuElem = <img src={imagePath} className="uk-border-circle" width="50" height="50" alt="" />;

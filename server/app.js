@@ -13,6 +13,7 @@ import multer from 'multer';
 import jimp from 'jimp';
 import fs from 'fs';
 import dayjs from 'dayjs';
+import { config } from 'dotenv';
 import {
   getHashName,
   getPasswordHash,
@@ -27,23 +28,15 @@ import { getTokenData } from './auth_tokens';
 import { sendMailFromAdmin } from './mails';
 
 const app = express();
+// 環境変数の読み込み
+config();
 
+const host = process.env.HOST;
 
-const host = process.env.NODE_ENV === 'production'
-      ? 'https://'
-      : 'http://';
-
-const domain = process.env.NODE_ENV === 'production'
-      ? 'qonnect.world'
-      : 'localhost:3000';
-
-
-// const STATIC_PATH = process.env.NODE_ENV === 'production'
-//       ? '../client/build'
-//       : '../client/public';
+const PUBLIC_URL = process.env.PUBLIC_URL;
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(PUBLIC_URL));
 
 // body-parserを適用
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -57,7 +50,7 @@ const storage = multer.diskStorage({
   // ファイルの保存先を指定
   destination: (req, file, cb) => {
     const { id } = req.params;
-    const dirPath = path.join(__dirname, '../client/build' + getProfileImageDir(id));
+    const dirPath = path.join(PUBLIC_URL, getProfileImageDir(id));
     if (!fs.existsSync(dirPath)){
       fs.mkdirSync(dirPath);
     }
@@ -917,7 +910,7 @@ app.put('/api/users/:id', upload.single('image'), (req, res) => {
   const { id } = req.params;
   const params = req.body;
   const imagePath = getProfileImageFilePath(id);
-  const filePath = __dirname + '/../client/build' + imagePath;
+  const filePath = PUBLIC_URL + imagePath;
   console.log('filePath', filePath);
   jimp.read(filePath, function(err, image) {
     if (err) throw err;
@@ -1295,7 +1288,7 @@ app.post('/api/mail', (req, res) => {
 
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../client/build/index.html'));
+  res.sendFile(path.join(PUBLIC_URL, '/index.html'));
 });
 
 export default app;

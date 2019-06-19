@@ -1,9 +1,9 @@
 [{
-  "name":      "qonnect",
+  "name": "qonnect",
   "instances": 0,
-  "script":    "npm",
+  "script": "npm",
   "args": "start",
-  "exec_mode": "cluster_mode",
+  "exec_mode": "fork_mode",
   "wait_ready": true,
   "listen_timeout": 3000,
   "env": {
