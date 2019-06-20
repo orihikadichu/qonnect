@@ -86,6 +86,9 @@ app.post('/api/votes', (req, res) => {
     .then((createdData) => {
       res.status(200).send(createdData);
     })
+    .catch(function(err) {
+      res.status(500).send(err);
+    })
   ;
 });
 
@@ -106,6 +109,9 @@ app.post('/api/vote_translations', (req, res) => {
   })
     .then((createdData) => {
       res.status(200).send(createdData);
+    })
+    .catch(function(err) {
+      res.status(500).send(err);
     })
   ;
 });
