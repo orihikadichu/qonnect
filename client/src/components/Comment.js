@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 //評価するための関数
 import { postVote, deleteVote } from '../actions/Vote';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { sprintf } from 'sprintf-js';
+import { injectIntl } from 'react-intl';
 
 class Comment extends Component {
 
@@ -45,29 +47,37 @@ class Comment extends Component {
   }
 
   selectedNationalFlag(countryId){
+    let src;
     switch(countryId){
       case 1:
-        return <img src="/image/common/flag/japan.png" width="25" height="25" alt=""/>;
+        src = "japan";
+        break;
       case 2:
-        return <img className="uk-border" src="/image/common/flag/america.png" width="25" height="25" alt=""/>;
+        src = "america";
+        break;
     }
+    return <img className="uk-box-shadow-medium" src={`/image/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
   }
 
   TranslateUser(img, name){
+    const { formatMessage } = this.props.intl;
+    const temp = formatMessage({id: "translated.name"})
+    const msg = sprintf(temp, name);
+
     return (
       <div>
         <div className="uk-text-right">
           <img className="uk-comment-avatar uk-border-circle uk-text-right" src={img} width="35" height="35" alt="" />
         </div>
         <div>
-          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ name }さんが翻訳済</h4>
+          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ msg }</h4>
         </div>
       </div>
     )
   }
 
   render() {
-    const { id, user, content, isOwner, voteList, questions, commentUser, comments, answerId } = this.props;
+    const { id, user, content, isOwner, voteList, questions, commentUser, comments, answerId, intl} = this.props;
     const currentQuestionId = questions.currentQuestion.id;
     const editLink = isOwner
                    ? <Link to={`/comments/edit/${id}`}>編集</Link>
@@ -76,13 +86,15 @@ class Comment extends Component {
     const voteState = myVotes.length !== 0;
     const votebutton = voteState
     　　　　　　　　  ?<a onClick={this.deleteVote.bind(this,  id, currentQuestionId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-    　　　　　　　　  :<a onClick={this.sendVote.bind(this,  id, currentQuestionId)}><FontAwesomeIcon icon="heart" color="gray" size="lg"/></a>;
+    　　　　　　　　  :<a onClick={this.sendVote.bind(this,  id, currentQuestionId)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
     const voteNumbers = <span className="uk-text-default">{ voteList.length }</span>;
     const nationalFlag = this.selectedNationalFlag(user.country_id);
+    const { formatMessage } = intl;
 
     const { commentArray } = comments;
+
     let translator;
-    translator = <h4 className="uk-comment-meta uk-text-right">まだ翻訳されてません</h4>;
+    translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
     if(typeof commentArray !== 'undefined'){
       const thisAnswerCommentList = commentArray[answerId] ;
       const thisCommentData = thisAnswerCommentList.filter( v => v.id === id) ;
@@ -129,10 +141,12 @@ class Comment extends Component {
 const mapStateToProps = state => {
   const { questions, comments } = state;
   const { user } = state.auth;
+  const { intl } = state;
   return {
     user,
     questions,
     comments,
+    intl,
   };
 };
 
@@ -145,4 +159,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 //root（全部の状態を持っているオブジェクト）に持っているstateをAnswerListに対して適用する
-export default connect(mapStateToProps, mapDispatchToProps)(Comment);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Comment))

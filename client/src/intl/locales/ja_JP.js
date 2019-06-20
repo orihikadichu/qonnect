@@ -72,12 +72,11 @@ const ja_JP = {
   "buttons.title.sign_up": '新規登録',
   "buttons.title.login": 'ログイン',
   "buttons.title.send": '送信',
-  "translated.name": '翻訳者',
+  "translated.name": '%sさんが翻訳',
   "translated.state": '未翻訳', 
   "categories.comic_anime": '漫画・アニメ',
   "categories.culture": '文化', 
   "categories.tourism": '観光',  
   "categories.music": '音楽',  
-
 };
 export default ja_JP;

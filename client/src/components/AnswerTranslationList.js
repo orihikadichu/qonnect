@@ -57,12 +57,16 @@ class AnswerTranslationList extends Component {
   }
 
   selectedNationalFlag(countryId){
+    let src;
     switch(countryId){
       case 1:
-        return <img src="/image/common/flag/japan.png" width="25" height="25" alt=""/>;
+        src = "japan";
+        break;
       case 2:
-        return <img className="uk-border" src="/image/common/flag/america.png" width="25" height="25" alt=""/>;
+        src = "america";
+        break;
     }
+    return <img className="uk-box-shadow-medium" src={`/image/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
   }
 
   getTranslationList(translationList, loginUser) {
@@ -79,7 +83,7 @@ class AnswerTranslationList extends Component {
            const voteState = myVotes.length !== 0;
            const votebutton = voteState
                           ?<a onClick={this.deleteVote.bind(this, translation)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-                          :<a onClick={this.sendVote.bind(this,  translation)}><FontAwesomeIcon icon="heart" color="gray" size="lg"/></a>;
+                          :<a onClick={this.sendVote.bind(this,  translation)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
            const voteNumbers = <span className="uk-text-default">{ translation.vote_translations.length }</span>;                   
            const nationalFlag = this.selectedNationalFlag(translation.user.country_id);
 

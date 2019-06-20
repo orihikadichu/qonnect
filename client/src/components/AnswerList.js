@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { getFilteredContents, getTranslatedContents } from '../utils/Translations';
 import { injectIntl } from 'react-intl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { sprintf } from 'sprintf-js';
 
 class AnswerList extends Component {
   constructor(props) {
@@ -113,24 +114,32 @@ class AnswerList extends Component {
     const data = { params, key };
     return this.props.handleDeleteVote(data);
   }
-
+  
   selectedNationalFlag(countryId){
+    let src;
     switch(countryId){
       case 1:
-        return <img src="/image/common/flag/japan.png" width="25" height="25" alt=""/>;
+        src = "japan";
+        break;
       case 2:
-        return <img className="uk-border" src="/image/common/flag/america.png" width="25" height="25" alt=""/>;
+        src = "america";
+        break;
     }
+    return <img className="uk-box-shadow-medium" src={`/image/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
   }
   
   TranslateUser(img, name){
+    const { formatMessage } = this.props.intl;
+    const temp = formatMessage({id: "translated.name"})
+    const msg = sprintf(temp, name);
+
     return (
       <div>
         <div className="uk-text-right">
           <img className="uk-comment-avatar uk-border-circle uk-text-right" src={img} width="35" height="35" alt="" />
         </div>
         <div>
-          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ name }さんが翻訳済</h4>
+          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ msg }</h4>
         </div>
       </div>
     )
@@ -153,15 +162,18 @@ class AnswerList extends Component {
       const voteState = myVotes.length !== 0;
       const votebutton = voteState
                      ?<a onClick={this.deleteVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-                     :<a onClick={this.sendVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon="heart" color="gray" size="lg"/></a>;
+                     :<a onClick={this.sendVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
       const voteNumbers = <span className="uk-text-default">{ answer.votes.length }</span>;
       const commentForm = this.getComment(answer.id);
       const nationalFlag = this.selectedNationalFlag(answer.user.country_id);
 
       const { answer_translations } = answer;
 
+      console.log("------検証-----",answer);
+      console.log("---formatMessage--",formatMessage);
+
       let translator;
-      translator = <h4 className="uk-comment-meta uk-text-right">まだ翻訳されてません</h4>;
+      translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
       if( answer_translations.length !== 0 ){
         const img = answer_translations[0].user.image_path;
         const name = answer_translations[0].user.name;

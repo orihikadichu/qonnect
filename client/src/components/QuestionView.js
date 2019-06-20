@@ -13,10 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 class QuestionView extends Component {
   constructor(props) {
     super(props);
-    //props.matchはURLクエリーで:idが
-    //props.matchの中にあるparamsというkeyのvalueを取得している。
     const {params} = props.match;
-    //idを１０進法の数値に変換する
     this.qId = parseInt(params.id, 10);
   }
 
@@ -105,25 +102,31 @@ class QuestionView extends Component {
     );
   }
 
-  selectedNationalFlag(countryId) {
-    switch(countryId) {
+  selectedNationalFlag(countryId){
+    let src;
+    switch(countryId){
       case 1:
-        return <img src="/image/common/flag/japan.png" width="25" height="25" alt=""/>;
+        src = "japan";
+        break;
       case 2:
-        return <img className="uk-border" src="/image/common/flag/america.png" width="25" height="25" alt=""/>;
-      default:
-        return '';
+        src = "america";
+        break;
     }
+    return <img className="uk-box-shadow-medium" src={`/image/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
   }
 
   TranslateUser(img, name){
+    const { formatMessage } = this.props.intl;
+    const temp = formatMessage({id: "translated.name"})
+    const msg = sprintf(temp, name);
+
     return (
       <div>
         <div className="uk-text-right">
           <img className="uk-comment-avatar uk-border-circle uk-text-right" src={img} width="35" height="35" alt="" />
         </div>
         <div>
-          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ name }さんが翻訳済</h4>
+          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ msg }</h4>
         </div>
       </div>
     )
@@ -155,13 +158,13 @@ class QuestionView extends Component {
     const voteState = myVotes.length !== 0;
     const votebutton = voteState
                   　?<a onClick={this.deleteVote.bind(this, currentQuestion)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-                  　:<a onClick={this.sendVote.bind(this, currentQuestion)}><FontAwesomeIcon icon="heart" color="gray" size="lg"/></a>;
+                  　:<a onClick={this.sendVote.bind(this, currentQuestion)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
     const voteNumbers = <span className="uk-text-default">{ votes.length }</span>;
     const nationalFlag = this.selectedNationalFlag(user.country_id);
 
     const { question_translations } = question;
     let translator;
-    translator = <h4 className="uk-comment-meta uk-text-right">まだ翻訳されてません</h4>;
+    translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
     if( question_translations.length !== 0 ){
       const img = question_translations[0].user.image_path;
       const name = question_translations[0].user.name;
