@@ -8,6 +8,20 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.INTEGER
   }, {
     underscored: true,
+    indexes: [ 
+      { 
+       unique: true, 
+       fields: ['user_id', 'question_id'] 
+      },
+      { 
+        unique: true, 
+        fields: ['user_id', 'answer_id'] 
+       },
+       { 
+        unique: true, 
+        fields: ['user_id', 'comment_id'] 
+       },
+     ]
   });
   votes.associate = function(models) {
     votes.belongsTo(models.users, {foreignKey: 'user_id'});
@@ -17,4 +31,3 @@ module.exports = (sequelize, DataTypes) => {
   };
   return votes;
 };
-

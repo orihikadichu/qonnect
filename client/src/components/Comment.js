@@ -97,6 +97,9 @@ class Comment extends Component {
     translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
     if(typeof commentArray !== 'undefined'){
       const thisAnswerCommentList = commentArray[answerId] ;
+      if(typeof thisAnswerCommentList === 'undefined'){
+        return;
+      }
       const thisCommentData = thisAnswerCommentList.filter( v => v.id === id) ;
       const commentTranslated = thisCommentData[0].comment_translations;
       if( commentTranslated.length !== 0 ){
