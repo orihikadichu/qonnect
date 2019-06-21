@@ -111,7 +111,6 @@ class QuestionListView extends Component {
       return (
         <li key={question.id} >
           <p className="uk-text-muted">{ formatMessage({id: question.category.intl_key })}</p>
-          {/* <p className="uk-text-muted">{ question.category.category }</p> */}
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
           <Link to={`/question_translations/${question.id}`}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link><br/>
           { votebutton }
@@ -120,7 +119,6 @@ class QuestionListView extends Component {
           <p className="uk-text-meta">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
           <div className="uk-grid uk-grid-small uk-flex-middle" >
             <div className="uk-width-auto">
-              {/* <img className="uk-comment-avatar uk-border-circle" src='/image/blank-profile.png' width="35" height="35" alt="" /> */}
               <Link to={profileLink}><img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" /></Link>
             </div>
             <div>

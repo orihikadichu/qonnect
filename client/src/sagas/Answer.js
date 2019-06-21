@@ -24,6 +24,7 @@ export function* handleFetchAnswerData(action) {
     const commentList = yield call(fetchCommentWithUserList, answerId);
     yield put(receiveDataSuccess(answerList));
     yield put(act.receiveCommentDataSuccess(commentList));
+    yield put(act.updatedCommentArray(action.payload));   
   } catch (e) {
     yield put(receiveDataFailed());
   }

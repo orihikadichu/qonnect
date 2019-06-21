@@ -211,7 +211,7 @@ class AnswerList extends Component {
             {/*CommentListはすでに投稿されたコメントの一覧を表示する*/}
             <CommentList list={answer.comments} loginUser={loginUser} translateLanguageId={translateLanguageId} />
             <div className="uk-text-right uk-margin-top">
-              <p uk-icon="icon: commenting; ratio: 2" onClick={this.onClickReply.bind(this,answer.id)}></p>
+              <p onClick={this.onClickReply.bind(this,answer.id)}><FontAwesomeIcon icon={['far','comment-dots']} color="black" size="3x"/></p>
             </div>
           </div>
 

@@ -22,7 +22,7 @@ class CommentForm extends Component {
     const postButton = state.auth.isLoggedIn
                      ? <div className="uk-margin"><button className="uk-button uk-button-default" >投稿</button></div>
                      : <a class="uk-button uk-button-default" href='/users/login'>投稿</a>;
-    
+                     
     return (
       <Formik
         initialValues={initialValues}

@@ -3,7 +3,8 @@ import {
   RECEIVE_COMMENT_DATA_SUCCESS,
   POST_COMMENT,
   UPDATED_COMMENT_DATA,
-  UPDATED_SINGLE_COMMENT_DATA
+  UPDATED_SINGLE_COMMENT_DATA,
+  UPDATED_COMMENT_ARRAY
 } from '../actions/Comment';
 import { initialState } from '../constants';
 
@@ -19,6 +20,12 @@ export const list = (state = initialState.comments, action) => {
       ...state,
       isFetching: false,
       commentArray: action.payload.data
+    };
+  case UPDATED_COMMENT_ARRAY:
+    return {
+      ...state,
+      isFetching: false,
+      commentArray: action.payload.data,
     };
   case UPDATED_COMMENT_DATA:
     return {
