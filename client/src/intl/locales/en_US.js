@@ -72,11 +72,11 @@ const en_US = {
   "buttons.title.sign_up": 'Sign Up',
   "buttons.title.login": 'Login',
   "buttons.title.send": 'Send',
-  "translated.name": 'Translated by %s',
-  "translated.state": 'Untranslated', 
+  "translated.name": 'Translator',
+  "translated.state": 'Untranslated',
   "categories.comic_anime": 'Comic・Anime',
-  "categories.culture": 'culture', 
-  "categories.tourism": 'tourism',  
-  "categories.music": 'music',  
+  "categories.culture": 'culture',
+  "categories.tourism": 'tourism',
+  "categories.music": 'music',
 };
 export default en_US;

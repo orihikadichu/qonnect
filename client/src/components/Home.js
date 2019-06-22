@@ -25,8 +25,8 @@ class Home extends React.Component {
     }
   }
 
-  selectedCategory(value){
-    switch( value ){
+  selectedCategory(value) {
+    switch(value) {
       case "all" :
         return 0;
       case "subculture":
@@ -37,15 +37,17 @@ class Home extends React.Component {
         return 3;
       case "music":
         return 4;
+      default:
+        return 0;
     }
   }
 
-  changeCateogryfunction(value){
-     this.props.changeCategory(value)
+  changeCateogryfunction(value) {
+     this.props.changeCategory(value);
      const categoryId = this.selectedCategory(value);
-     let params 
+     let params;
      params = {};
-     if (categoryId !== 0){
+     if (categoryId !== 0) {
        params = { category_id: categoryId };
      }
      this.props.handleFetchData(params);
@@ -84,7 +86,7 @@ class Home extends React.Component {
             <option value="music" >{ formatMessage({id: "categories.music" })}</option>
           </select>
         </div>
-        <QuestionList translate_language_id={translateLanguageId}/>  
+        <QuestionList translate_language_id={translateLanguageId}/>
       </main>
     );
   }

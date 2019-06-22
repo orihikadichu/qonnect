@@ -8,7 +8,8 @@ import dayjs from 'dayjs';
 import { sprintf } from 'sprintf-js';
 import { injectIntl } from 'react-intl';
 import { isEmptyObject } from '../utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Translator from './Translator';
 
 class QuestionView extends Component {
   constructor(props) {
@@ -102,9 +103,9 @@ class QuestionView extends Component {
     );
   }
 
-  selectedNationalFlag(countryId){
+  selectedNationalFlag(countryId) {
     let src;
-    switch(countryId){
+    switch(countryId) {
       case 1:
         src = "japan";
         break;
@@ -112,24 +113,21 @@ class QuestionView extends Component {
         src = "america";
         break;
     }
-    return <img className="uk-box-shadow-medium" src={`/image/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
+    return <img src={`/image/common/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
   }
 
-  TranslateUser(img, name){
+  getTranslateUser(img) {
     const { formatMessage } = this.props.intl;
-    const temp = formatMessage({id: "translated.name"})
-    const msg = sprintf(temp, name);
+    const msg = formatMessage({id: "translated.name"});
 
     return (
-      <div>
-        <div className="uk-text-right">
+      <div className="uk-text-right">
+        <div className="uk-comment-meta uk-display-inline-block" style={{padding: '0 10px'}}>{ msg }</div>
+        <div className="uk-display-inline-block">
           <img className="uk-comment-avatar uk-border-circle uk-text-right" src={img} width="35" height="35" alt="" />
         </div>
-        <div>
-          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ msg }</h4>
-        </div>
       </div>
-    )
+    );
   }
 
   render() {
@@ -157,18 +155,17 @@ class QuestionView extends Component {
     const myVotes = votes.filter(v => {return v.user_id === loginUser.id});
     const voteState = myVotes.length !== 0;
     const votebutton = voteState
-                  　?<a onClick={this.deleteVote.bind(this, currentQuestion)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-                  　:<a onClick={this.sendVote.bind(this, currentQuestion)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
+                     ? <a onClick={this.deleteVote.bind(this, currentQuestion)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
+                     : <a onClick={this.sendVote.bind(this, currentQuestion)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
     const voteNumbers = <span className="uk-text-default">{ votes.length }</span>;
     const nationalFlag = this.selectedNationalFlag(user.country_id);
 
     const { question_translations } = question;
     let translator;
     translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
-    if( question_translations.length !== 0 ){
-      const img = question_translations[0].user.image_path;
-      const name = question_translations[0].user.name;
-      translator = this.TranslateUser(img, name);
+    if (question_translations.length !== 0) {
+      const { user } = question_translations[0];
+      translator = <Translator user={user} />;
     }
 
     return (

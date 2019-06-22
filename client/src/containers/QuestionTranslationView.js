@@ -46,7 +46,7 @@ class QuestionTranslationView extends Component {
     }
   }
 
-  selectedNationalFlag(countryId){
+  selectedNationalFlag(countryId) {
     let src;
     switch(countryId){
       case 1:
@@ -54,6 +54,9 @@ class QuestionTranslationView extends Component {
         break;
       case 2:
         src = "america";
+        break;
+      default:
+        src = "japan";
         break;
     }
     return <img className="uk-box-shadow-medium" src={`/image/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;

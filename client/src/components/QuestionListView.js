@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { getFilteredContents, getTranslatedContents } from '../utils/Translations';
 import { injectIntl } from 'react-intl';
 import { sprintf } from 'sprintf-js';
+import Translator from './Translator';
 
 //componentの中でdispatchするための設定
 import { connect } from 'react-redux';
@@ -50,32 +51,18 @@ class QuestionListView extends Component {
 
   selectedNationalFlag(countryId){
     let src;
-    switch(countryId){
+    switch(countryId) {
       case 1:
         src = "japan";
         break;
       case 2:
         src = "america";
         break;
+      default :
+        src = "japan";
+        break;
     }
-    return <img className="uk-box-shadow-medium" src={`/image/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
-  }
-
-  TranslateUser(img, name){
-    const {formatMessage } = this.props.intl;
-    const temp = formatMessage({id: "translated.name"})
-    const msg = sprintf(temp, name);
-
-    return (
-      <div>
-        <div className="uk-text-right">
-          <img className="uk-comment-avatar uk-border-circle uk-text-right" src={img} width="35" height="35" alt="" />
-        </div>
-        <div>
-          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ msg }</h4>
-        </div>
-      </div>
-    )
+    return <img className="" src={`/image/common/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
   }
 
   getQuestionList(questionArray, translateLanguageId, categoryId) {
@@ -93,44 +80,54 @@ class QuestionListView extends Component {
       const myVotes = votes.filter(v => {return v.user_id === this.props.user.id});
       const voteState = myVotes.length !== 0;
       const votebutton = voteState
-                   ? <a onClick={this.deleteVote.bind(this, question)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-                   : <a onClick={this.sendVote.bind(this, question)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
+                       ? <a onClick={this.deleteVote.bind(this, question)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
+                       : <a onClick={this.sendVote.bind(this, question)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
 
       const voteNumbers = <span className="uk-text-default">{ votes.length }</span>;
       const nationalFlag = this.selectedNationalFlag(user.country_id);
 
       const { question_translations } = question;
       let translator;
-      translator = <h4 className="uk-comment-meta uk-text-right">{ formatMessage({id: "translated.state" })}</h4>;
-      if( question_translations.length !== 0 ){
-        const img = question_translations[0].user.image_path;
-        const name = question_translations[0].user.name;
-        translator = this.TranslateUser(img, name);
+      translator = (
+        <h4 className="uk-comment-meta uk-text-right">
+          { formatMessage({id: "translated.state" })}
+        </h4>
+      );
+      if (question_translations.length !== 0) {
+        const { user } = question_translations[0];
+        translator = <Translator user={user} />;
       }
 
       return (
         <li key={question.id} >
-          <p className="uk-text-muted">{ formatMessage({id: question.category.intl_key })}</p>
+          <p>
+            <span className="uk-text-muted">{ formatMessage({id: question.category.intl_key })}</span>
+            <span className="uk-text-meta uk-margin-small-left">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</span>
+          </p>
           {/* <p className="uk-text-muted">{ question.category.category }</p> */}
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
-          <Link to={`/question_translations/${question.id}`}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link><br/>
-          { votebutton }
-          { voteNumbers }
-          
-          <p className="uk-text-meta">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
+          <div className="button-area uk-margin-small-bottom" >
+            <span>
+              { votebutton }
+              { voteNumbers }
+            </span>
+            <Link to={`/question_translations/${question.id}`} className="uk-margin-small-left" >
+              <FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/>
+            </Link>
+          </div>
           <div className="uk-grid uk-grid-small uk-flex-middle" >
             <div className="uk-width-auto">
               {/* <img className="uk-comment-avatar uk-border-circle" src='/image/blank-profile.png' width="35" height="35" alt="" /> */}
               <Link to={profileLink}><img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" /></Link>
             </div>
             <div>
-              <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={profileLink}>{ userName }</Link></h4>  
+              <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={profileLink}>{ userName }</Link></h4>
+            </div>
+            <div className="uk-width-auto" >
+              { nationalFlag }
             </div>
             <div className="uk-width-expand" >
-                { nationalFlag }
-            </div>
-            <div className="uk-width-expand" >
-                { translator }
+              { translator }
             </div>
           </div>
         </li>
@@ -169,7 +166,7 @@ const mapStateToProps = state => {
   const { intl } = state;
 
   return {
-    user, 
+    user,
     categoryId,
     intl
   };
@@ -177,9 +174,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-      //評価機能
-      handlePostVote: (data) => dispatch(postVote(data)),
-      handleDeleteVote: (data) => dispatch(deleteVote(data)),
+    //評価機能
+    handlePostVote: (data) => dispatch(postVote(data)),
+    handleDeleteVote: (data) => dispatch(deleteVote(data)),
   };
 };
 

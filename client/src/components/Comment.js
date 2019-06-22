@@ -8,6 +8,8 @@ import { postVote, deleteVote } from '../actions/Vote';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { sprintf } from 'sprintf-js';
 import { injectIntl } from 'react-intl';
+import Translator from './Translator';
+
 
 class Comment extends Component {
 
@@ -46,9 +48,9 @@ class Comment extends Component {
     return this.props.handleDeleteVote(data);
   }
 
-  selectedNationalFlag(countryId){
+  selectedNationalFlag(countryId) {
     let src;
-    switch(countryId){
+    switch(countryId) {
       case 1:
         src = "japan";
         break;
@@ -56,24 +58,7 @@ class Comment extends Component {
         src = "america";
         break;
     }
-    return <img className="uk-box-shadow-medium" src={`/image/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
-  }
-
-  TranslateUser(img, name){
-    const { formatMessage } = this.props.intl;
-    const temp = formatMessage({id: "translated.name"})
-    const msg = sprintf(temp, name);
-
-    return (
-      <div>
-        <div className="uk-text-right">
-          <img className="uk-comment-avatar uk-border-circle uk-text-right" src={img} width="35" height="35" alt="" />
-        </div>
-        <div>
-          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ msg }</h4>
-        </div>
-      </div>
-    )
+    return <img className="uk-box-shadow-medium" src={`/image/common/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
   }
 
   render() {
@@ -85,8 +70,8 @@ class Comment extends Component {
     const myVotes = voteList.filter(v => {return v.user_id === user.id});
     const voteState = myVotes.length !== 0;
     const votebutton = voteState
-    　　　　　　　　  ?<a onClick={this.deleteVote.bind(this,  id, currentQuestionId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-    　　　　　　　　  :<a onClick={this.sendVote.bind(this,  id, currentQuestionId)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
+                     ? <a onClick={this.deleteVote.bind(this, id, currentQuestionId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
+                     : <a onClick={this.sendVote.bind(this, id, currentQuestionId)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
     const voteNumbers = <span className="uk-text-default">{ voteList.length }</span>;
     const nationalFlag = this.selectedNationalFlag(user.country_id);
     const { formatMessage } = intl;
@@ -97,15 +82,14 @@ class Comment extends Component {
     translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
     if(typeof commentArray !== 'undefined'){
       const thisAnswerCommentList = commentArray[answerId] ;
-      if(typeof thisAnswerCommentList === 'undefined'){
+      if (typeof thisAnswerCommentList === 'undefined') {
         return;
       }
-      const thisCommentData = thisAnswerCommentList.filter( v => v.id === id) ;
+      const thisCommentData = thisAnswerCommentList.filter(v => v.id === id);
       const commentTranslated = thisCommentData[0].comment_translations;
-      if( commentTranslated.length !== 0 ){
-        const img = commentTranslated[0].user.image_path;
-        const name = commentTranslated[0].user.name;
-        translator = this.TranslateUser(img, name);
+      if (commentTranslated.length !== 0) {
+        const { user } = commentTranslated[0];
+        translator = <Translator user={user} />;
       }
     }
 
@@ -125,10 +109,10 @@ class Comment extends Component {
             <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${commentUser.id}`}>{ commentUser.name }</Link></h4>
           </div>
           <div className="uk-width-expand" >
-                { nationalFlag }
+            { nationalFlag }
           </div>
           <div className="uk-width-expand" >
-                { translator }
+            { translator }
           </div>
           { editLink }
           { votebutton }
@@ -155,9 +139,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-      //評価機能
-      handlePostVote: (data, questionId) => dispatch(postVote(data, questionId)),
-      handleDeleteVote: (data) => dispatch(deleteVote(data)),
+    //評価機能
+    handlePostVote: (data, questionId) => dispatch(postVote(data, questionId)),
+    handleDeleteVote: (data) => dispatch(deleteVote(data)),
   };
 };
 

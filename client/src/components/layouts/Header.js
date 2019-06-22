@@ -137,7 +137,7 @@ class Header extends React.Component {
       <header className="uk-margin-bottom uk-heading-divider uk-grid" >
         <div className="uk-width-expand uk-margin-small-left" >
           <a href="/" className="uk-display-inline-block" >
-            <img src={`/logo.png`} alt="Logo" style={{ "max-height": "60px" }} />
+            <img src={`/logo.png`} alt="Logo" style={{ "maxHeight": "60px" }} />
           </a>
           <span className="uk-text-meta uk-margin-small-left uk-display-inline-block">
             α ver.

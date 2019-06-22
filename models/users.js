@@ -37,6 +37,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       field: 'profile'
     },
+    profile_link: {
+      type: DataTypes.VIRTUAL(DataTypes.STRING, ['id']),
+      get: function() {
+        const id = this.get('id');
+        return `/users/profile/${id}`;
+      }
+    },
     image_path: {
       type: DataTypes.VIRTUAL(DataTypes.STRING, ['id']),
       get: function() {
