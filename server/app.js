@@ -929,6 +929,16 @@ ${activationUrl}
           return res.status(200).send(user);
         });
     })
+    .catch((e) => {
+      let eMsg = '';
+      for (const ve of e.errors) {
+        switch (ve.type) {
+        case 'unique violation':
+          eMsg = 'ユーザーの作成に失敗しました。';
+        }
+      }
+      return res.status(500).send({ eMsg });
+    })
   ;
 });
 

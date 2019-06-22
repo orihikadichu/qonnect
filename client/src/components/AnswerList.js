@@ -9,15 +9,17 @@ import { getFilteredContents, getTranslatedContents } from '../utils/Translation
 import { injectIntl } from 'react-intl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { sprintf } from 'sprintf-js';
+import Translator from './Translator';
+
 
 class AnswerList extends Component {
   constructor(props) {
     super(props);
     this.qId = this.props.qId;
-        //ここからはコメント機能を実装するところ
+    //ここからはコメント機能を実装するところ
     this.state = {
-        buttonState:{},//空のオブジェクト
-        voteState:{},//評価のための
+      buttonState: {},//空のオブジェクト
+      voteState: {},//評価のための
     };
   }
 
@@ -59,8 +61,8 @@ class AnswerList extends Component {
     };
     return (
       <div className="uk-margin-bottom" style={{"paddingLeft": "30px"}} >
-          {/*commentFormはコメントを投稿する場所*/}
-          <CommentForm form={`commentForm_${answerId}`} onSubmit={this.onClickCommentForm.bind(this)} initialValues={initialValues} />
+        {/*commentFormはコメントを投稿する場所*/}
+        <CommentForm form={`commentForm_${answerId}`} onSubmit={this.onClickCommentForm.bind(this)} initialValues={initialValues} />
       </div>
     );
   }
@@ -90,8 +92,8 @@ class AnswerList extends Component {
       answer_id: answerId,
       comment_id: null,
       status: 1,
-       //再レンダリングするためのquestion_id
-       questionId: currentQuestionId,
+      //再レンダリングするためのquestion_id
+      questionId: currentQuestionId,
     };
     const key = "answer";
     const data = { params, key };
@@ -114,7 +116,7 @@ class AnswerList extends Component {
     const data = { params, key };
     return this.props.handleDeleteVote(data);
   }
-  
+
   selectedNationalFlag(countryId){
     let src;
     switch(countryId){
@@ -125,24 +127,7 @@ class AnswerList extends Component {
         src = "america";
         break;
     }
-    return <img className="uk-box-shadow-medium" src={`/image/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
-  }
-  
-  TranslateUser(img, name){
-    const { formatMessage } = this.props.intl;
-    const temp = formatMessage({id: "translated.name"})
-    const msg = sprintf(temp, name);
-
-    return (
-      <div>
-        <div className="uk-text-right">
-          <img className="uk-comment-avatar uk-border-circle uk-text-right" src={img} width="35" height="35" alt="" />
-        </div>
-        <div>
-          <h4 className="uk-comment-meta uk-margin-remove uk-text-right">{ msg }</h4>
-        </div>
-      </div>
-    )
+    return <img className="uk-box-shadow-medium" src={`/image/common/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
   }
 
   getAnswerList(answerArray, translateLanguageId) {
@@ -161,8 +146,8 @@ class AnswerList extends Component {
       const myVotes = answer.votes.filter(v => {return v.user_id === loginUser.id});
       const voteState = myVotes.length !== 0;
       const votebutton = voteState
-                     ?<a onClick={this.deleteVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-                     :<a onClick={this.sendVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
+                       ? <a onClick={this.deleteVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
+                       : <a onClick={this.sendVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
       const voteNumbers = <span className="uk-text-default">{ answer.votes.length }</span>;
       const commentForm = this.getComment(answer.id);
       const nationalFlag = this.selectedNationalFlag(answer.user.country_id);
@@ -171,10 +156,9 @@ class AnswerList extends Component {
 
       let translator;
       translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
-      if( answer_translations.length !== 0 ){
-        const img = answer_translations[0].user.image_path;
-        const name = answer_translations[0].user.name;
-        translator = this.TranslateUser(img, name);
+      if (answer_translations.length !== 0) {
+        const { user } = answer_translations[0];
+        translator = <Translator user={user} />;
       }
 
       return (

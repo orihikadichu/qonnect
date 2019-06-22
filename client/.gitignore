@@ -9,8 +9,8 @@
 /coverage
 
 # production
-/build/*
-!/build/image
+# /build/*
+# !/build/image
 /build/image/*
 !/build/image/.gitkeep
 !/build/image/common/

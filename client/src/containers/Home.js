@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import Home from '../components/Home';
 import {
   postQuestionData,
-  fetchQuestionList 
+  fetchQuestionList
 } from '../actions/Question';
 import {
   updateCurrentLanguage,
