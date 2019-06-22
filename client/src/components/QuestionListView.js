@@ -104,7 +104,6 @@ class QuestionListView extends Component {
             <span className="uk-text-muted">{ formatMessage({id: question.category.intl_key })}</span>
             <span className="uk-text-meta uk-margin-small-left">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</span>
           </p>
-          {/* <p className="uk-text-muted">{ question.category.category }</p> */}
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
           <div className="button-area uk-margin-small-bottom" >
             <span>
@@ -117,7 +116,6 @@ class QuestionListView extends Component {
           </div>
           <div className="uk-grid uk-grid-small uk-flex-middle" >
             <div className="uk-width-auto">
-              {/* <img className="uk-comment-avatar uk-border-circle" src='/image/blank-profile.png' width="35" height="35" alt="" /> */}
               <Link to={profileLink}><img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" /></Link>
             </div>
             <div>
