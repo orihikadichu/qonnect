@@ -6,18 +6,16 @@ import { getFilteredContents, getTranslatedContents } from '../utils/Translation
 import { injectIntl } from 'react-intl';
 import { sprintf } from 'sprintf-js';
 import Translator from './Translator';
-
 //componentの中でdispatchするための設定
 import { connect } from 'react-redux';
 //評価するための関数
 import { postVote, deleteVote } from '../actions/Vote';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class QuestionListView extends Component {
 
-  sendVote(question){
-    if(this.props.user.id == null ){
+  sendVote(question) {
+    if (this.props.user.id == null) {
       return;
     }
     const params = {
@@ -34,7 +32,7 @@ class QuestionListView extends Component {
   }
 
   deleteVote(question) {
-    if(this.props.user.id == null ){
+    if (this.props.user.id == null) {
       return;
     }
     const params = {
@@ -49,7 +47,7 @@ class QuestionListView extends Component {
     return this.props.handleDeleteVote(data);
   }
 
-  selectedNationalFlag(countryId){
+  selectedNationalFlag(countryId) {
     let src;
     switch(countryId) {
       case 1:
