@@ -70,7 +70,7 @@ class Profile extends Component {
         const userName = user ? user.name : '不明なユーザー';
         return (
           <li key={answer.id} >
-            <p className="uk-text-lead uk-text-truncate" ><Link to={`/answer/${answer.id}`}>{`${answer.content}`}</Link></p>
+            <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${answer.question_id}`}>{`${answer.content}`}</Link></p>
             <p className="uk-text-meta">{dayjs(answer.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
             <div className="uk-grid uk-grid-small uk-flex-middle" >
               <div className="uk-width-auto">
@@ -91,11 +91,11 @@ class Profile extends Component {
     return (
       <ul className="uk-list uk-list-divider uk-list-large">
         {comments.map(comment => {
-           const { user } = comment;
+           const { user, answer } = comment;
            const userName = user ? user.name : '不明なユーザー';
            return (
              <li key={comment.id} >
-               <p className="uk-text-lead uk-text-truncate" ><Link to={`/comment/${comment.id}`}>{`${comment.content}`}</Link></p>
+               <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${answer.question_id}`}>{`${comment.content}`}</Link></p>
                <p className="uk-text-meta">{dayjs(comment.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
                <div className="uk-grid uk-grid-small uk-flex-middle" >
                  <div className="uk-width-auto">
@@ -126,17 +126,15 @@ class Profile extends Component {
         })}
       </ul>
     );
-  }  
+  }
 
-  filterTranslatedContent(translate){
+  filterTranslatedContent(translate) {
     const translatedContentArray = [];
-    translate.map((v)=>{
-      if( v.length === 0){
+    translate.map((v) => {
+      if (v.length === 0) {
         return;
       };
-      v.map((e)=>{
-        translatedContentArray.push(e)
-      })      
+      v.map(e => translatedContentArray.push(e));
     })
     return translatedContentArray;
   }
