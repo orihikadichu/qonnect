@@ -149,7 +149,7 @@ class QuestionView extends Component {
     const answerForm = this.getAnswerForm(currentQuestion, loginUser);
 
     const editLink = user.id === loginUser.id
-                   ? <p><Link to={`/questions/edit/${this.qId}`}>{formatMessage({id: 'links.edit'})}</Link></p>
+                   ? <Link className="uk-margin-small-right" to={`/questions/edit/${this.qId}`}><FontAwesomeIcon icon="edit" color="steelblue" size="lg"/></Link>
                    : '';
 
     const myVotes = votes.filter(v => {return v.user_id === loginUser.id});
@@ -157,7 +157,7 @@ class QuestionView extends Component {
     const votebutton = voteState
                      ? <a onClick={this.deleteVote.bind(this, currentQuestion)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
                      : <a onClick={this.sendVote.bind(this, currentQuestion)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
-    const voteNumbers = <span className="uk-text-default">{ votes.length }</span>;
+    const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ votes.length }</span>;
     const nationalFlag = this.selectedNationalFlag(user.country_id);
 
     const { question_translations } = question;
@@ -174,6 +174,11 @@ class QuestionView extends Component {
           <p className="uk-text-muted">{ question.category.category }</p>
           <p>
             <Linkify properties={{ target: '_blank'}} >{question.dispText}</Linkify>
+            <br/>
+            <br/>
+            { votebutton }
+            { voteNumbers }
+            { editLink }
             <Link to={`/question_translations/${this.qId}`}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link>
           </p>
           <p className="uk-text-meta">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
@@ -191,10 +196,6 @@ class QuestionView extends Component {
                 { translator }
             </div>
           </div>
-          { editLink }
-          { votebutton }
-          { voteNumbers }
-
         </div>
 
         <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.answer_list"})}</span></h3>

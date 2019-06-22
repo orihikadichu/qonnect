@@ -74,7 +74,7 @@ class QuestionTranslationList extends Component {
 
     return translationList.map(translation => {
       const editLink = translation.user.id === loginUser.id
-                     ? <Link to={`/question_translations/edit/${translation.id}`}>{formatMessage({id: "links.edit"})}</Link>
+                     ? <Link className="uk-margin-small-right" to={`/question_translations/edit/${translation.id}`}><FontAwesomeIcon icon="edit" color="steelblue" size="lg"/></Link>
                      : '';
 
       const myVotes = translation.vote_translations.filter(v => {return v.user_id === loginUser.id});
@@ -82,7 +82,7 @@ class QuestionTranslationList extends Component {
       const votebutton = voteState
                      ?<a onClick={this.deleteVote.bind(this, translation)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
                      :<a onClick={this.sendVote.bind(this,  translation)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
-      const voteNumbers = <span className="uk-text-default">{ translation.vote_translations.length }</span>;
+      const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ translation.vote_translations.length }</span>;
       const nationalFlag = this.selectedNationalFlag(translation.user.country_id);
 
       return (
@@ -90,10 +90,12 @@ class QuestionTranslationList extends Component {
           <article className="uk-comment">
             <div className="uk-comment-header uk-comment-body">
               <p style={{"whiteSpace": "pre-wrap"}} >
-                <Linkify properties={{ target: '_blank'}} >{translation.content}</Linkify><br/>
-                { editLink }
+                <Linkify properties={{ target: '_blank'}} >{translation.content}</Linkify>
+                <br/>
+                <br/>
                 { votebutton }
                 { voteNumbers }
+                { editLink }
               </p>
               <p className="uk-text-meta">{dayjs(translation.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
 

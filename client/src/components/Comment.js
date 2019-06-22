@@ -68,14 +68,14 @@ class Comment extends Component {
     const { id, user, content, isOwner, voteList, questions, commentUser, comments, answerId, intl} = this.props;
     const currentQuestionId = questions.currentQuestion.id;
     const editLink = isOwner
-                   ? <Link to={`/comments/edit/${id}`}>編集</Link>
-                   : '';
+                   ? <Link to={`/comments/edit/${id}`}><FontAwesomeIcon className="uk-margin-small-right" icon="edit" color="steelblue" size="lg"/></Link>
+                   : '';   
     const myVotes = voteList.filter(v => {return v.user_id === user.id});
     const voteState = myVotes.length !== 0;
     const votebutton = voteState
                      ? <a onClick={this.deleteVote.bind(this, id, currentQuestionId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
                      : <a onClick={this.sendVote.bind(this, id, currentQuestionId)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
-    const voteNumbers = <span className="uk-text-default">{ voteList.length }</span>;
+    const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ voteList.length }</span>;
     const nationalFlag = this.selectedNationalFlag(user.country_id);
     const { formatMessage } = intl;
     const { commentArray } = comments;
@@ -97,7 +97,12 @@ class Comment extends Component {
         <div className="uk-comment-header uk-comment-body">
           <p style={{"whiteSpace": "pre-wrap"}} >
             {content}
-            <Link to={`/comment_translations/${id}`}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link>
+            <br/>
+            <br/>
+            { votebutton }
+            { voteNumbers }
+            <Link className="uk-margin-small-right" to={`/comment_translations/${id}`}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link>
+            { editLink }
           </p>
         </div>
         <div className="uk-grid uk-grid-small uk-flex-middle">
@@ -113,10 +118,6 @@ class Comment extends Component {
           <div className="uk-width-expand" >
             { translator }
           </div>
-          { editLink }
-          { votebutton }
-          { voteNumbers }
-
         </div>
       </article>
     );
