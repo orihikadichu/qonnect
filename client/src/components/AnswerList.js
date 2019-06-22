@@ -140,7 +140,7 @@ class AnswerList extends Component {
 
     return translatedAnswers.map(answer => {
       const editLink = answer.user.id === loginUser.id
-                     ? <Link to={`/answers/edit/${answer.id}`}>{ formatMessage({id: "links.edit"}) }</Link>
+                     ? <Link className="uk-margin-small-right" to={`/answers/edit/${answer.id}`}><FontAwesomeIcon icon="edit" color="steelblue" size="lg"/></Link>
                      : '';
 
       const myVotes = answer.votes.filter(v => {return v.user_id === loginUser.id});
@@ -148,7 +148,7 @@ class AnswerList extends Component {
       const votebutton = voteState
                        ? <a onClick={this.deleteVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
                        : <a onClick={this.sendVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
-      const voteNumbers = <span className="uk-text-default">{ answer.votes.length }</span>;
+      const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ answer.votes.length }</span>;
       const commentForm = this.getComment(answer.id);
       const nationalFlag = this.selectedNationalFlag(answer.user.country_id);
 
@@ -167,10 +167,13 @@ class AnswerList extends Component {
             <div className="uk-comment-header uk-comment-body">
               <p style={{"whiteSpace": "pre-wrap"}} >
                 <Linkify properties={{ target: '_blank'}} >{answer.dispText}</Linkify>
-                <Link to={`/answer_translations/${answer.id}`}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link><br/>
-                { editLink }
+                <br/>
+                <br/>
                 { votebutton }
                 { voteNumbers }
+                <Link className="uk-margin-small-right" to={`/answer_translations/${answer.id}`}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link>
+                { editLink }
+
               </p>
               <p className="uk-text-meta">{dayjs(answer.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
 
