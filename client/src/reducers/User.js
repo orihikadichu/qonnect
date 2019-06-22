@@ -8,6 +8,7 @@ import {
   UPDATED_PROFILE_QUESTION_DATA,
   UPDATED_PROFILE_ANSWER_DATA,
   UPDATED_PROFILE_COMMENT_DATA,
+  UPDATED_PROFILE_TRANSLATED_DATA,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   PREPARED_AUTH
@@ -104,6 +105,12 @@ export const profile = (state = initialState.profile, action) => {
       ...state,
       isFetching: false,
       comments: action.payload.data
+    };
+  case UPDATED_PROFILE_TRANSLATED_DATA:
+    return {
+      ...state,
+      isFetching: false,
+      translates: action.payload.data
     };
   default:
     return state;

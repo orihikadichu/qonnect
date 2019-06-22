@@ -19,6 +19,7 @@ const ja_JP = {
   "links.question": '質問',
   "links.answer": '回答',
   "links.comment": 'コメント',
+  "links.translate": '翻訳',
   "links.profile": 'プロフィール',
   "links.profile_edit": 'プロフィール編集',
   "links.sign_up": '新規登録',

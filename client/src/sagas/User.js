@@ -4,7 +4,7 @@ import {
   updateUserData, requestData, receiveDataSuccess, receiveDataFailed,
   loginSuccess, loginFailed, removeUserData, updatedUserData,
   updatedProfileData, preparedAuth, updatedProfileQuestionData,
-  updatedProfileAnswerData, updatedProfileCommentData,
+  updatedProfileAnswerData, updatedProfileCommentData, updatedProfileTranslatedData,
 } from '../actions/User';
 import {
   CREATE_USER_ACCOUNT,
@@ -22,6 +22,7 @@ import * as api from './apis/Users';
 import { fetchQuestionList } from './apis/Questions';
 import { fetchAnswerListWithQuestion } from './apis/Answers';
 import { fetchCommentListWithAnswer } from './apis/Comments';
+import { fetchContentTranslation } from './apis/ContentTranslations';
 import { notifySuccess, notifyError } from './Util';
 
 export function* createUserAccount(action) {
@@ -145,10 +146,15 @@ export function* getUserProfile(action) {
 
     const commentParams = {user_id : action.payload};
     const commentPayload = yield call(fetchCommentListWithAnswer, commentParams);
+
+    const translateParams = {user_id : action.payload};
+    const translatedContent = yield call(fetchContentTranslation, translateParams);
+    
     yield put(updatedProfileData(payload));
     yield put(updatedProfileQuestionData(questionPayload));
     yield put(updatedProfileAnswerData(answerPayload));
     yield put(updatedProfileCommentData(commentPayload));
+    yield put(updatedProfileTranslatedData(translatedContent));
   } catch (e) {
     yield put(receiveDataFailed());
   }

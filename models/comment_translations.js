@@ -4,7 +4,14 @@ module.exports = (sequelize, DataTypes) => {
     user_id: DataTypes.INTEGER,
     comment_id: DataTypes.INTEGER,
     translate_language_id: DataTypes.INTEGER,
-    content: DataTypes.STRING
+    content: DataTypes.STRING,
+    translation_link: {
+      type: DataTypes.VIRTUAL(DataTypes.STRING, ['comment_id']),
+      get: function() {
+        const id = this.get('comment_id');
+        return `/comment_translations/${id}`;
+      }
+    }
   }, {
     underscored: true,
   });

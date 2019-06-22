@@ -4,7 +4,14 @@ module.exports = (sequelize, DataTypes) => {
     user_id: DataTypes.INTEGER,
     question_id: DataTypes.INTEGER,
     content: DataTypes.STRING,
-    translate_language_id: DataTypes.INTEGER
+    translate_language_id: DataTypes.INTEGER,
+    translation_link: {
+      type: DataTypes.VIRTUAL(DataTypes.STRING, ['question_id']),
+      get: function() {
+        const id = this.get('question_id');
+        return `/question_translations/${id}`;
+      }
+    }
   }, {
     underscored: true,
   });

@@ -15,7 +15,6 @@ class Profile extends Component {
     this.state = {currentTab: 'questions'};
     this.userId = parseInt(params.id, 10);
     this.props.fetchUserProfile(this.userId);
-
   }
 
   onClickTab(newTabKey, e) {
@@ -40,6 +39,10 @@ class Profile extends Component {
       {
         name: formatMessage({id: "links.comment"}),
         key: 'comments'
+      },
+      {
+        name: formatMessage({id: "links.translate"}),
+        key: 'translates'
       }
     ];
 
@@ -109,15 +112,46 @@ class Profile extends Component {
     );
   }
 
+  getTranslatedList(translates) {
+    return (
+      <ul className="uk-list uk-list-divider uk-list-large">
+        {translates.map(translate => {
+           const link = translate.translation_link;
+           return (
+             <li key={`translate_${translate.id}_${translate.user_id}`} >
+               <p className="uk-text-lead uk-text-truncate" ><Link to={link}>{`${translate.content}`}</Link></p>
+               <p className="uk-text-meta">{dayjs(translate.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
+             </li>
+           );
+        })}
+      </ul>
+    );
+  }  
+
+  filterTranslatedContent(translate){
+    const translatedContentArray = [];
+    translate.map((v)=>{
+      if( v.length === 0){
+        return;
+      };
+      v.map((e)=>{
+        translatedContentArray.push(e)
+      })      
+    })
+    return translatedContentArray;
+  }
 
   getCurrentTabContents(tabState, currentTab) {
-    const { questions, answers, comments } = tabState;
+    const { questions, answers, comments, translates } = tabState;
     if (currentTab === 'questions') {
       return (<QuestionListView questionArray={questions} translateLanguageId={1} />);
     } else if (currentTab === 'answers') {
       return this.getAnswerList(answers);
     } else if (currentTab === 'comments') {
       return this.getCommentList(comments);
+    } else if (currentTab === 'translates') {
+      const translateArray = this.filterTranslatedContent(translates);
+      return this.getTranslatedList(translateArray);
     }
   }
 

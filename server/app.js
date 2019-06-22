@@ -116,7 +116,6 @@ app.post('/api/vote_translations', (req, res) => {
   ;
 });
 
-//評価を削除する
 app.delete('/api/votes/:id', (req, res) => {
 
   const { vote_id, key, user_id } = req.query;
@@ -152,7 +151,6 @@ app.delete('/api/votes/:id', (req, res) => {
   ;
 });
 
-//翻訳の評価を削除する
 app.delete('/api/vote_translations/:id', (req, res) => {
 
   const { vote_id, key, user_id } = req.query;
@@ -186,42 +184,23 @@ app.delete('/api/vote_translations/:id', (req, res) => {
   ;
 });
 
-// Questions
-app.get('/api/questions', (req, res) => {
-  //params={country.id:1}
-  const params = req.query;
-  db.questions.findAll({
-    where: params,
-    include: [
-      {
-        model: db.users,
-        required: false
-      },
-      {
-        model: db.question_translations,
-        required: false,
-        include: [
-          db.users,
-        ]
-      },
-      {
-        model: db.votes,
-        required: false
-      },
-      {
-        model: db.categories,
-        required: false
-      },
-    ],
-    order: [
-      ['created_at', 'DESC']
-    ]
-  })
-    .then((instanses) => {
-      res.status(200).send(instanses);
+/*
+  翻訳一覧取得
+*/
+app.get('/api/content_translations', (req, res) => {
+    const params = req.query;
+    const promise1 = db.question_translations.findAll({ where: params }); 
+    const promise2 = db.answer_translations.findAll({ where: params });
+    const promise3 = db.comment_translations.findAll({ where: params }); 
+    Promise.all([promise1, promise2, promise3]).then(function(values) {
+      console.log(values);
+      res.status(200).send(values);
     });
 });
 
+/*
+  未翻訳
+*/
 // 未翻訳の質問を取得する
 app.get('/api/not_translated_questions', (req, res) => {
   // const params = req.query;
@@ -303,6 +282,42 @@ app.get('/api/not_translated_comments', (req, res) => {
   //findAllで取得したデータを撮り終えてからthenを走らせる。
     .then((instanses) => {
       //ここでクライアント側にデータを渡している。
+      res.status(200).send(instanses);
+    });
+});
+
+// Questions
+app.get('/api/questions', (req, res) => {
+  //params={country.id:1}
+  const params = req.query;
+  db.questions.findAll({
+    where: params,
+    include: [
+      {
+        model: db.users,
+        required: false
+      },
+      {
+        model: db.question_translations,
+        required: false,
+        include: [
+          db.users,
+        ]
+      },
+      {
+        model: db.votes,
+        required: false
+      },
+      {
+        model: db.categories,
+        required: false
+      },
+    ],
+    order: [
+      ['created_at', 'DESC']
+    ]
+  })
+    .then((instanses) => {
       res.status(200).send(instanses);
     });
 });

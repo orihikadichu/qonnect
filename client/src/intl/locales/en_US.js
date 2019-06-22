@@ -19,6 +19,7 @@ const en_US = {
   "links.question": 'Question',
   "links.answer": 'Answer',
   "links.comment": 'Comment',
+  "links.translate": 'translate',
   "links.profile": 'Profile',
   "links.profile_edit": 'Profile Edit',
   "links.sign_up": 'Sign Up',
