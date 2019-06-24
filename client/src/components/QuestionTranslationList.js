@@ -9,7 +9,8 @@ import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 //評価するための関数
 import { postVote, deleteVote } from '../actions/VoteTranslation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PostUser from './PostUser';
 
 class QuestionTranslationList extends Component {
   constructor(props) {
@@ -56,19 +57,6 @@ class QuestionTranslationList extends Component {
     return this.props.handleDeleteVote(data);
   }
 
-  selectedNationalFlag(countryId){
-    let src;
-    switch(countryId){
-      case 1:
-        src = "japan";
-        break;
-      case 2:
-        src = "america";
-        break;
-    }
-    return <img className="uk-box-shadow-medium" src={`/image/common/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
-  }
-
   getTranslationList(translationList, loginUser) {
     const { formatMessage } = this.props.intl;
 
@@ -83,7 +71,6 @@ class QuestionTranslationList extends Component {
                      ?<a onClick={this.deleteVote.bind(this, translation)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
                      :<a onClick={this.sendVote.bind(this,  translation)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
       const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ translation.vote_translations.length }</span>;
-      const nationalFlag = this.selectedNationalFlag(translation.user.country_id);
 
       return (
         <li key={translation.id} >
@@ -101,14 +88,8 @@ class QuestionTranslationList extends Component {
 
             </div>
             <div className="uk-grid uk-grid-small uk-flex-middle" >
-              <div className="uk-width-auto">
-                <img className="uk-comment-avatar uk-border-circle" src={translation.user.image_path} width="35" height="35" alt="" />
-              </div>
               <div>
-                <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${translation.user.id}`}>{ translation.user.name }</Link></h4>
-              </div>
-              <div className="uk-width-expand" >
-                { nationalFlag }
+                <PostUser user={ translation.user } />
               </div>
             </div>
           </article>

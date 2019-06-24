@@ -10,7 +10,7 @@ import { injectIntl } from 'react-intl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { sprintf } from 'sprintf-js';
 import Translator from './Translator';
-
+import PostUser from './PostUser';
 
 class AnswerList extends Component {
   constructor(props) {
@@ -117,18 +117,6 @@ class AnswerList extends Component {
     return this.props.handleDeleteVote(data);
   }
 
-  selectedNationalFlag(countryId){
-    let src;
-    switch(countryId){
-      case 1:
-        src = "japan";
-        break;
-      case 2:
-        src = "america";
-        break;
-    }
-    return <img className="uk-box-shadow-medium" src={`/image/common/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
-  }
 
   getAnswerList(answerArray, translateLanguageId) {
     const { formatMessage } = this.props.intl;
@@ -150,7 +138,6 @@ class AnswerList extends Component {
                        : <a onClick={this.sendVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
       const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ answer.votes.length }</span>;
       const commentForm = this.getComment(answer.id);
-      const nationalFlag = this.selectedNationalFlag(answer.user.country_id);
 
       const { answer_translations } = answer;
 
@@ -179,14 +166,8 @@ class AnswerList extends Component {
 
             </div>
             <div className="uk-grid uk-grid-small uk-flex-middle" >
-              <div className="uk-width-auto">
-                <img className="uk-comment-avatar uk-border-circle" src={answer.user.image_path} width="35" height="35" alt="" />
-              </div>
               <div>
-                <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${answer.user.id}`}>{ answer.user.name }</Link></h4>
-              </div>
-              <div className="uk-width-expand" >
-                { nationalFlag }
+                <PostUser user={ answer.user } />
               </div>
               <div className="uk-width-expand" >
                 { translator }
