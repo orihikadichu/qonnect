@@ -897,9 +897,9 @@ app.get('/api/users/password_reset/:token', (req, res) => {
 
 
 app.post('/api/users', (req, res) => {
-  const { name, mail } = req.body;
+  const { name, mail, country_id } = req.body;
   const password = getPasswordHash(req.body.password);
-  db.users.create({ name, mail, password })
+  db.users.create({ name, mail, country_id, password })
     .then((instance) => {
       if (!instance) {
         return res.status(500).send('ユーザーの作成に失敗しました。');

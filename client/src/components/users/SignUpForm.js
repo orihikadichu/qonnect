@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, Formik } from 'formik';
 import { injectIntl } from 'react-intl';
+import CountryFormSelect from '../CountryFormSelect';
 
 class SignUpForm extends React.Component {
   validate(values) {
@@ -16,6 +17,10 @@ class SignUpForm extends React.Component {
       errors.mail = formatMessage({id: "errors.sign_ups.mail"});
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.mail)) {
       errors.mail = formatMessage({id: "errors.sign_ups.appropriate_mail"});
+    }
+
+    if (!values.country_id) {
+      errors.country_id = formatMessage({id: "errors.sign_ups.country"});
     }
 
     if (!values.password) {
@@ -37,6 +42,7 @@ class SignUpForm extends React.Component {
         initialValues={{
           name: '',
           mail: '',
+          country_id: '',
           password: '',
           passwordConfirm: ''
         }}
@@ -73,6 +79,15 @@ class SignUpForm extends React.Component {
                 />
                 {touched.mail && errors.mail && <div className="uk-text-warning">{errors.mail}</div>}
               </div>
+
+              <div className="uk-margin" >
+                <CountryFormSelect 
+                  id={'counrty_id'}
+                  name="country_id" 
+                  placeholder={formatMessage({id: "placeholders.sign_ups.country"})} />
+                {touched.country_id && errors.country_id && <div className="uk-text-warning">{ formatMessage({id: "errors.sign_ups.country"}) }</div>}
+              </div>
+
               <div className="uk-margin">
                 <Field
                   id={'password'}
@@ -105,7 +120,6 @@ class SignUpForm extends React.Component {
     );
   }
 }
-
 
 const mapStateToProps = state => {
   return {
