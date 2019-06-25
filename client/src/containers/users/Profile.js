@@ -136,12 +136,6 @@ class Profile extends Component {
         translatedContentArray.push(e);
       });
   　};
-    // translate.map((v) => {
-    //   if (v.length === 0) {
-    //     return;
-    //   };
-    //   v.map(e => translatedContentArray.push(e));
-    // })
     return translatedContentArray;
   }
 

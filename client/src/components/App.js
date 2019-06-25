@@ -4,10 +4,18 @@ import NotificationsSystem from 'reapop';
 import theme from 'reapop-theme-wybo';
 import Header from '../containers/layouts/Header';
 import { ClipLoader } from 'react-spinners';
+import ReactGA from 'react-ga';
 
 class App extends Component {
   componentWillMount() {
     this.props.fetchLoginState();
+  }
+
+  componentDidMount() {
+    // const { pathname } = this.props.location;
+    console.log("appjs-------------",this.props);
+    // ReactGA.set({ page: pathname });
+    // ReactGA.pageview(pathname);
   }
 
   handleLogout() {
