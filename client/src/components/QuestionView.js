@@ -189,7 +189,7 @@ class QuestionView extends Component {
             <div>
               <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${user.id}`}>{ user.name }</Link></h4>
             </div>
-            <div className="uk-width-expand" >
+            <div className="uk-width-auto" >
                 { nationalFlag }
             </div>
             <div className="uk-width-expand" >
