@@ -34,9 +34,9 @@ import { Provider } from 'react-redux';
 import store from './store';
 import UIkit from 'uikit';
 // import Icons from 'uikit/dist/js/uikit-icons';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { far } from '@fortawesome/free-regular-svg-icons'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
 
 // Styles
 import './css/normalize.css';
@@ -51,7 +51,7 @@ const { intl } = store.getState();
 const { locale, messages } = intl;
 addLocaleData([...ja, ...en]);
 
-library.add( fas, far );
+library.add(fas, far);
 
 // 取り急ぎの質問フォーム初期化処理
 localStorage.setItem('question-form', '');
