@@ -895,7 +895,8 @@ app.get('/api/users/password_reset/:token', (req, res) => {
     });
 });
 
-
+// ユーザー新規作成(Activation)
+/*
 app.post('/api/users', (req, res) => {
   const { name, mail, country_id } = req.body;
   const password = getPasswordHash(req.body.password);
@@ -928,6 +929,32 @@ ${activationUrl}
           sendMailFromAdmin(mailParams);
           return res.status(200).send(user);
         });
+    })
+    .catch((e) => {
+      let eMsg = '';
+      for (const ve of e.errors) {
+        switch (ve.type) {
+        case 'unique violation':
+          eMsg = 'ユーザーの作成に失敗しました。';
+        }
+      }
+      return res.status(500).send({ eMsg });
+    })
+  ;
+});
+*/
+
+// ユーザー新規作成
+app.post('/api/users', (req, res) => {
+  const { name, mail, country_id } = req.body;
+  const password = getPasswordHash(req.body.password);
+  db.users.create({ name, mail, country_id, password })
+    .then((instance) => {
+      if (!instance) {
+        return res.status(500).send('ユーザーの作成に失敗しました。');
+      }
+      const user = instance.get();
+      return res.status(200).send(user);
     })
     .catch((e) => {
       let eMsg = '';
