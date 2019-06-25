@@ -9,10 +9,12 @@ import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 
 class Header extends React.Component {
-
-  state = {
-    anchorEl: null
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      anchorEl: null
+    };
+  }
 
   onClickLogout() {
     const { user } = this.props.state.auth;
@@ -134,14 +136,11 @@ class Header extends React.Component {
     const menu = this.getMenu(displayMenuElem);
 
     return (
-      <header className="uk-margin-bottom uk-heading-divider uk-grid" >
+      <header className="uk-margin-bottom uk-heading-divider uk-grid uk-grid-small" >
         <div className="uk-width-expand uk-margin-small-left" >
           <a href="/" className="uk-display-inline-block" >
             <img src={`/logo.png`} alt="Logo" style={{ "maxHeight": "60px" }} />
           </a>
-          <span className="uk-text-meta uk-margin-small-left uk-display-inline-block">
-            α ver.
-          </span>
         </div>
         <div className="uk-margin-small-right">
           { menu }

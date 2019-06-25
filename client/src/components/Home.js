@@ -42,6 +42,15 @@ class Home extends React.Component {
     }
   }
 
+  onChangeLanguage(locale, e) {
+    e.preventDefault();
+    e.stopPropagation();
+    localStorage.setItem('locale', locale);
+    // かなり不適切な書き方だが一旦ここでリダイレクトさせるようにしておく
+    window.location.href = '/';
+    return;
+  }
+
   changeCateogryfunction(value) {
      this.props.changeCategory(value);
      const categoryId = this.selectedCategory(value);
@@ -67,15 +76,25 @@ class Home extends React.Component {
 
     return (
       <main className="uk-container uk-container-small">
+        <div className="uk-width-auto uk-margin-bottom uk-text-right" >
+          {/* <select className="uk-select" value={locale} onChange={this.onChangeLanguage.bind(this)} >
+              <option value="ja" >{ formatMessage({id: "languages.japanese" })}</option>
+              <option value="en" >{ formatMessage({id: "languages.english" })}</option>
+              </select> */}
+          <span>
+            <a href="/" onClick={this.onChangeLanguage.bind(this, 'ja')} >
+              { formatMessage({id: "languages.japanese" })}
+            </a>
+          </span>
+          <span className="uk-margin-small-left">
+            <a href="/" onClick={this.onChangeLanguage.bind(this, 'en')} >
+              { formatMessage({id: "languages.english" })}
+            </a>
+          </span>
+        </div>
         <QuestionForm initialValues={questionFormInitVals} loginUser={auth} onSubmit={this.submitQuestionForm.bind(this)} />
         {/* 言語切り替え */}
         <h3 className="uk-heading-line"><span>{ formatMessage({id: "titles.question_list" })}</span></h3>
-        <div className="uk-margin">
-          <select className="uk-select" value={locale} onChange={e => this.props.changeLanguage(e.target.value)} >
-            <option value="ja" >{ formatMessage({id: "languages.japanese" })}</option>
-            <option value="en" >{ formatMessage({id: "languages.english" })}</option>
-          </select>
-        </div>
         {/* カテゴリー切り替え */}
         <div className="uk-margin">
           <select className="uk-select" value={category} onChange={e => this.changeCateogryfunction( e.target.value )} >
