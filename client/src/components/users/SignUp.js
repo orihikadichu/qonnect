@@ -6,9 +6,9 @@ import { injectIntl } from 'react-intl';
 class SignUp extends React.Component {
 
   onClickSubmit(formData) {
-    const { name, mail, password } = formData;
+    const { name, mail, country_id, password } = formData;
     const { history } = this.props;
-    this.props.clickSubmit({ name, mail, password, history });
+    this.props.clickSubmit({ name, mail, country_id, password, history });
   }
 
   render() {
