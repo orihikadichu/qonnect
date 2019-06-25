@@ -141,6 +141,9 @@ class Header extends React.Component {
           <a href="/" className="uk-display-inline-block" >
             <img src={`/logo.png`} alt="Logo" style={{ "maxHeight": "60px" }} />
           </a>
+          <span className="uk-text-meta uk-margin-small-left uk-display-inline-block">
+            α ver.
+          </span>
         </div>
         <div className="uk-margin-small-right">
           { menu }
