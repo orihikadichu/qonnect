@@ -118,7 +118,7 @@ class Profile extends Component {
         {translates.map(translate => {
            const link = translate.translation_link;
            return (
-             <li key={`translate_${translate.id}_${translate.user_id}`} >
+             <li key={`translate_${translate.key}`} >
                <p className="uk-text-lead uk-text-truncate" ><Link to={link}>{`${translate.content}`}</Link></p>
                <p className="uk-text-meta">{dayjs(translate.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
              </li>
@@ -130,12 +130,18 @@ class Profile extends Component {
 
   filterTranslatedContent(translate) {
     const translatedContentArray = [];
-    translate.map((v) => {
-      if (v.length === 0) {
-        return;
-      };
-      v.map(e => translatedContentArray.push(e));
-    })
+    for (const [key, value] of Object.entries(translate)){
+      value.forEach((e)=>{
+        e["key"]=key+e.id;
+        translatedContentArray.push(e);
+      });
+  　};
+    // translate.map((v) => {
+    //   if (v.length === 0) {
+    //     return;
+    //   };
+    //   v.map(e => translatedContentArray.push(e));
+    // })
     return translatedContentArray;
   }
 
