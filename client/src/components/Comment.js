@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { sprintf } from 'sprintf-js';
 import { injectIntl } from 'react-intl';
 import Translator from './Translator';
-
+import PostUser from './PostUser';
 
 class Comment extends Component {
 
@@ -48,22 +48,6 @@ class Comment extends Component {
     return this.props.handleDeleteVote(data);
   }
 
-  selectedNationalFlag(countryId) {
-    let src;
-    switch(countryId) {
-      case 1:
-        src = "japan";
-        break;
-      case 2:
-        src = "america";
-        break;
-      default:
-        src = "japan";
-        break;
-    }
-    return <img className="uk-box-shadow-medium" src={`/image/common/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
-  }
-
   render() {
     const { id, user, content, isOwner, voteList, questions, commentUser, comments, answerId, intl} = this.props;
     const currentQuestionId = questions.currentQuestion.id;
@@ -76,7 +60,6 @@ class Comment extends Component {
                      ? <a onClick={this.deleteVote.bind(this, id, currentQuestionId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
                      : <a onClick={this.sendVote.bind(this, id, currentQuestionId)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
     const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ voteList.length }</span>;
-    const nationalFlag = this.selectedNationalFlag(user.country_id);
     const { formatMessage } = intl;
     const { commentArray } = comments;
 
@@ -106,14 +89,8 @@ class Comment extends Component {
           </p>
         </div>
         <div className="uk-grid uk-grid-small uk-flex-middle">
-          <div className="uk-width-auto">
-            <img className="uk-comment-avatar uk-border-circle" src={commentUser.image_path} width="35" height="35" alt="" />
-          </div>
           <div>
-            <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${commentUser.id}`}>{ commentUser.name }</Link></h4>
-          </div>
-          <div className="uk-width-expand" >
-            { nationalFlag }
+            <PostUser user={ commentUser } />
           </div>
           <div className="uk-width-expand" >
             { translator }

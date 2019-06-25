@@ -10,6 +10,7 @@ import { injectIntl } from 'react-intl';
 import { isEmptyObject } from '../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Translator from './Translator';
+import PostUser from './PostUser';
 
 class QuestionView extends Component {
   constructor(props) {
@@ -103,18 +104,6 @@ class QuestionView extends Component {
     );
   }
 
-  selectedNationalFlag(countryId) {
-    let src;
-    switch(countryId) {
-      case 1:
-        src = "japan";
-        break;
-      case 2:
-        src = "america";
-        break;
-    }
-    return <img src={`/image/common/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
-  }
 
   getTranslateUser(img) {
     const { formatMessage } = this.props.intl;
@@ -158,7 +147,6 @@ class QuestionView extends Component {
                      ? <a onClick={this.deleteVote.bind(this, currentQuestion)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
                      : <a onClick={this.sendVote.bind(this, currentQuestion)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
     const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ votes.length }</span>;
-    const nationalFlag = this.selectedNationalFlag(user.country_id);
 
     const { question_translations } = question;
     let translator;
@@ -183,14 +171,8 @@ class QuestionView extends Component {
           </p>
           <p className="uk-text-meta">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
           <div className="uk-grid uk-grid-small uk-flex-middle" >
-            <div className="uk-width-auto">
-              <img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" />
-            </div>
             <div>
-              <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={`/users/profile/${user.id}`}>{ user.name }</Link></h4>
-            </div>
-            <div className="uk-width-auto" >
-                { nationalFlag }
+              <PostUser user={user} />
             </div>
             <div className="uk-width-expand" >
                 { translator }

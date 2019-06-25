@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 //評価するための関数
 import { postVote, deleteVote } from '../actions/Vote';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import PostUser from './PostUser';
 
 class QuestionListView extends Component {
 
@@ -47,22 +48,6 @@ class QuestionListView extends Component {
     return this.props.handleDeleteVote(data);
   }
 
-  selectedNationalFlag(countryId) {
-    let src;
-    switch(countryId) {
-      case 1:
-        src = "japan";
-        break;
-      case 2:
-        src = "america";
-        break;
-      default :
-        src = "japan";
-        break;
-    }
-    return <img className="" src={`/image/common/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="25" height="25" alt=""/>;
-  }
-
   getQuestionList(questionArray, translateLanguageId, categoryId) {
     const contentType = 'question_translations';
     const filteredQuestions = getFilteredContents(questionArray, translateLanguageId, contentType, categoryId);
@@ -70,8 +55,6 @@ class QuestionListView extends Component {
 
     return translatedQuestions.map(question => {
       const { user } = question;
-      const userName = user ? user.name : '不明なユーザー';
-      const profileLink = `/users/profile/${user.id}`;
       const { formatMessage } = this.props.intl
 
       const { votes } = question;
@@ -82,7 +65,6 @@ class QuestionListView extends Component {
                        : <a onClick={this.sendVote.bind(this, question)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
 
       const voteNumbers = <span className="uk-text-default">{ votes.length }</span>;
-      const nationalFlag = this.selectedNationalFlag(user.country_id);
 
       const { question_translations } = question;
       let translator;
@@ -103,7 +85,7 @@ class QuestionListView extends Component {
             <span className="uk-text-meta uk-margin-small-left">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</span>
           </p>
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
-          <div className="button-area uk-margin-small-bottom" >
+          <div className="button-area uk-margin-bottom" >
             <span>
               { votebutton }
               { voteNumbers }
@@ -113,14 +95,8 @@ class QuestionListView extends Component {
             </Link>
           </div>
           <div className="uk-grid uk-grid-small uk-flex-middle" >
-            <div className="uk-width-auto">
-              <Link to={profileLink}><img className="uk-comment-avatar uk-border-circle" src={user.image_path} width="35" height="35" alt="" /></Link>
-            </div>
             <div>
-              <h4 className="uk-comment-meta uk-margin-remove"><Link className="" to={profileLink}>{ userName }</Link></h4>
-            </div>
-            <div className="uk-width-auto" >
-              { nationalFlag }
+              <PostUser user={user} />
             </div>
             <div className="uk-width-expand" >
               { translator }
@@ -155,7 +131,6 @@ class QuestionListView extends Component {
   }
 }
 
-//stateの中からauthだけを取り出す。
 const mapStateToProps = state => {
   const { user } = state.auth;
   const { categoryId } = state.ctgr;
