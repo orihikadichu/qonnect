@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import ProfileForm from './ProfileForm';
+import { injectIntl } from 'react-intl';
 
 class Profile extends React.Component {
 
@@ -35,9 +36,10 @@ class Profile extends React.Component {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     return (
       <main className="uk-container uk-container-small">
-        <h2 className="uk-h3" >プロフィール編集</h2>
+        <h2 className="uk-h3" >{formatMessage({id: "titles.profile.edit"})}</h2>
         
         <ProfileForm onSubmit={this.onClickSubmit.bind(this)} />
 
@@ -50,4 +52,4 @@ class Profile extends React.Component {
   }
 };
 
-export default Profile;
+export default injectIntl(Profile);
