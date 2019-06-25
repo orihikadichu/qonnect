@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, Formik } from 'formik';
 import LanguageFormSelect from '../LanguageFormSelect';
+import { injectIntl } from 'react-intl';
+import CountryFormSelect from '../CountryFormSelect';
 
 class ProfileForm extends Component {
   constructor(props) {
@@ -20,15 +22,17 @@ class ProfileForm extends Component {
   }
 
   validate(values) {
+    const { formatMessage } = this.props.intl;
     let errors = {};
     if (!values.country_id) {
-      errors.country_id = '出身地を設定してください';
+      errors.country_id = formatMessage({id: "errors.profile_edit.country"});
     }
     return errors;
   }
 
   render() {
     const { user } = this.props.state.auth;
+    const { formatMessage } = this.props.intl;
     const { id, name, profile, country_id } = user;
     const imagePreview = this.state.image_url !== ''
                        ? (<p><img src={this.state.image_url} alt="" width="200" /></p>)
@@ -48,46 +52,52 @@ class ProfileForm extends Component {
           <form onSubmit={handleSubmit} className="uk-form-stacked" >
             <fieldset className="uk-fieldset">
               <div className="uk-margin">
-                <label className="uk-form-label">ユーザー名</label>
+                <label className="uk-form-label">{formatMessage({id: "titles.profile_edit.user_name"})}</label>
                 <Field
                   id={'name'}
                      name="name"
                      component="input"
                      type="text"
-                     placeholder="ニックネーム"
+                     placeholder={formatMessage({id: "placeholder.profile_edit.nickname"})}
                      className={'uk-form-control uk-input'}
                 />
                 {touched.name && errors.name && <div>{errors.name}</div>}
               </div>
               <div className="uk-margin">
-                <label className="uk-form-label">出身地</label>
-                <LanguageFormSelect name="country_id" placeholder="出身地" />
+                <label className="uk-form-label">{formatMessage({id: "titles.profile_edit.birthplace"})}</label>
+
+                <CountryFormSelect 
+                  id={'counrty_id'}
+                  name="country_id" 
+                  placeholder={formatMessage({id: "placeholders.sign_ups.country"})} />
+                {/* <LanguageFormSelect name="country_id" placeholder="出身地" /> */}
+
                 {touched.country_id && errors.country_id && <div className="uk-text-warning">{errors.country_id}</div>}
               </div>
               <div className="uk-margin">
-                <label className="uk-form-label">プロフィール</label>
+                <label className="uk-form-label">{formatMessage({id: "titles.profile_edit.profile"})}</label>
                 <Field
                   id={'profile'}
                      name="profile"
                      component="textarea"
                      type="text"
-                     placeholder="プロフィールを入力してください"
+                     placeholder={formatMessage({id: "placeholder.profile_edit.profile"})}
                      className={'uk-form-control uk-textarea'}
                      rows="5"
                 />
                 {touched.profile && errors.profile && <div className="uk-text-warning">{errors.profile}</div>}
               </div>
               <div className="uk-margin js-upload" uk-form-custom="true" >
-                <label className="uk-form-label">プロフィール画像</label>
+                <label className="uk-form-label">{formatMessage({id: "titles.profile_edit.user_image"})}</label>
                 <input id="file" name="image" type="file" onChange={this.handleImageChange.bind(this, setFieldValue)} />
 
                 {touched.image && errors.image && <div>{errors.image}</div>}
-                <button className="uk-button uk-button-default" type="button" tabIndex="-1">選択</button>
+                <button className="uk-button uk-button-default" type="button" tabIndex="-1">{formatMessage({id: "buttons.profile_edit.select"})}</button>
                 {imagePreview}
               </div>
               <div className="uk-margin">
                 <button type="submit" className="uk-button uk-button-primary" disabled={isSubmitting}>
-                  保存
+                {formatMessage({id: "buttons.profile_edit.save"})}
                 </button>
               </div>
             </fieldset>
@@ -110,4 +120,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ProfileForm));

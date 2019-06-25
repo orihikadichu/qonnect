@@ -4,6 +4,7 @@ import LanguageFormSelect from './LanguageFormSelect';
 import CategoryFormSelect from './CategoryFormSelect';
 import { injectIntl } from 'react-intl';
 import { Persist } from 'formik-persist';
+import CountryFormSelect from './CountryFormSelect';
 
 class QuestionForm extends Component {
 
@@ -63,11 +64,12 @@ class QuestionForm extends Component {
               </div>
               <div className="uk-margin uk-grid uk-grid-small uk-child-width-expand@s" >
                 <div className="uk-grid-margin" >
-                  <Field name="country_id" component="select" className={'form-control uk-select'}>
-                    <option value="">{formatMessage({id: "placeholders.questions.country_id"})}</option>
-                    <option value="1" >{ formatMessage({id: "countries.japan" })}</option>
-                    <option value="2" >{ formatMessage({id: "countries.usa" })}</option>
-                  </Field>
+
+                  <CountryFormSelect 
+                  id={'counrty_id'}
+                  name="country_id" 
+                  placeholder={formatMessage({id: "placeholders.questions.country_id"})} />
+
                   {touched.country_id && errors.country_id && <div className="uk-text-warning">{ formatMessage({id: errors.country_id}) }</div>}
                   {/* {touched.country_id && errors.country_id && <div className="uk-text-warning">{errors.country_id}</div>} */}
                 </div>
@@ -76,7 +78,7 @@ class QuestionForm extends Component {
                   {touched.translate_language_id && errors.translate_language_id && <div className="uk-text-warning">{ formatMessage({id: errors.translate_language_id}) }</div>}
                   {/* {touched.translate_language_id && errors.translate_language_id && <div className="uk-text-warning">{errors.translate_language_id}</div>} */}
                 </div>
-                {/* カテゴリー指定 */}
+
                 <div className="uk-grid-margin" >
                   <CategoryFormSelect name="category_id" placeholder={formatMessage({id: "placeholders.questions.category_id"})} />
                   {touched.category_id && errors.category_id && <div className="uk-text-warning">{ formatMessage({id: errors.category_id}) }</div>}
