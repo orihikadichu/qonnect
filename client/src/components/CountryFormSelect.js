@@ -12,7 +12,7 @@ class CountryFormSelect extends Component {
         <option value="">{placeholder}</option>
         <option value="1" >{ formatMessage({id: "countries.japan" })}</option>
         <option value="2" >{ formatMessage({id: "countries.usa" })}</option>
-        <option value="3" >{ formatMessage({id: "countries.SoutheastAsia" })}</option>
+        <option value="3" >{ formatMessage({id: "countries.southeastasia" })}</option>
       </Field>
     );
   }
