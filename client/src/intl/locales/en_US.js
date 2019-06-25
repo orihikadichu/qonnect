@@ -78,6 +78,7 @@ const en_US = {
   "placeholders.translations.content": 'Please write a translated text.',
   "placeholders.translations.translate_language_id": 'Language',
   "placeholder.profile_edit.profile": 'Please write your profile',
+  "placeholder.profile_edit.country": 'Birthplace・Location', 
   "buttons.title.reply": 'Reply',
   "buttons.title.post": 'Post',
   "buttons.title.sign_up": 'Sign Up',

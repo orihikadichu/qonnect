@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Field, Formik } from 'formik';
 import LanguageFormSelect from '../LanguageFormSelect';
 import { injectIntl } from 'react-intl';
+import CountryFormSelect from '../CountryFormSelect';
 
 class ProfileForm extends Component {
   constructor(props) {
@@ -64,7 +65,13 @@ class ProfileForm extends Component {
               </div>
               <div className="uk-margin">
                 <label className="uk-form-label">{formatMessage({id: "titles.profile_edit.birthplace"})}</label>
-                <LanguageFormSelect name="country_id" placeholder="出身地" />
+
+                <CountryFormSelect 
+                  id={'counrty_id'}
+                  name="country_id" 
+                  placeholder={formatMessage({id: "placeholders.sign_ups.country"})} />
+                {/* <LanguageFormSelect name="country_id" placeholder="出身地" /> */}
+
                 {touched.country_id && errors.country_id && <div className="uk-text-warning">{errors.country_id}</div>}
               </div>
               <div className="uk-margin">
