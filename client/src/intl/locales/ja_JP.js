@@ -36,7 +36,7 @@ const ja_JP = {
   "languages.english": '英語',
   "countries.japan": '日本',
   "countries.usa": 'アメリカ合衆国',
-  "countries.SoutheastAsia": '東南アジア', 
+  "countries.southeastasia": '東南アジア', 
   "categories.all": 'すべて',
   "categories.subculture": '漫画・アニメ',
   "categories.culture": '文化',
@@ -92,5 +92,6 @@ const ja_JP = {
   "categories.culture": '文化',
   "categories.tourism": '観光',
   "categories.music": '音楽',
+
 };
 export default ja_JP;

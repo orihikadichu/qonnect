@@ -7,11 +7,19 @@ import { initialState } from './constants';
 import rootSaga from './rootSaga';
 import createSagaMiddleware from 'redux-saga';
 import logger from "redux-logger";
+import ReactGA from 'react-ga';
 
 // Redux DevTools
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const history = createHistory();
+ReactGA.initialize('UA-128421111-1');
+console.log("-------------",history);
+history.listen(({ pathname }) => {
+  console.log("GA---------",pathname);
+//   ReactGA.set({ page: pathname });
+//   ReactGA.pageview(pathname);
+});
 
 const routingMiddleware = routerMiddleware(history);
 const sagaMiddleware = createSagaMiddleware();

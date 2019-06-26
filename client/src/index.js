@@ -28,6 +28,7 @@ import UserOnly from './containers/auth/UserOnly';
 import GuestOnly from './containers/auth/GuestOnly';
 import { Provider } from 'react-redux';
 import store from './store';
+import history from './store';
 import UIkit from 'uikit';
 // import Icons from 'uikit/dist/js/uikit-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -52,15 +53,11 @@ library.add(fas, far);
 // 取り急ぎの質問フォーム初期化処理
 localStorage.setItem('question-form', '');
 
-
-// JS
-// UIkit.use(Icons);
-
 const render = () => {
   ReactDOM.render(
     <Provider store={store}>
       <IntlProvider locale={locale} messages={messages} >
-        <BrowserRouter>
+        <BrowserRouter> 
           <App>
             <ScrollToTop>
               <Switch>

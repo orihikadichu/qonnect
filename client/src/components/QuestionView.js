@@ -87,14 +87,14 @@ class QuestionView extends Component {
 
   getAnswerForm(currentQuestion, loginUser) {
     const { formatMessage } = this.props.intl;
+    const key = currentQuestion.country.intl_key;
     if (currentQuestion.country_id !== loginUser.country_id) {
       const temp = formatMessage({id: "messages.you_are_not_target"})
-      const mesasge = sprintf(temp, currentQuestion.country.name);
+      const mesasge = sprintf(temp, formatMessage({id: key}));
       return (
         <div>
           <p className="uk-text-meta">{mesasge}</p>
         </div>
-
       );
     }
 
