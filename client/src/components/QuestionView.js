@@ -11,6 +11,7 @@ import { isEmptyObject } from '../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Translator from './Translator';
 import PostUser from './PostUser';
+import PostIcons from './PostIcons';
 
 class QuestionView extends Component {
   constructor(props) {
@@ -49,42 +50,24 @@ class QuestionView extends Component {
       return (question.translate_language_id === translateLanguageId);
     })[0];
 
-    //questionの中に新たなdispTextというプロパティを生成する
     question.dispText = questionTranslation.content;
     return question;
   }
 
-  sendVote(question){
-    if (this.props.state.auth.user.id == null) {
-      return;
+  sendVote(data, user_id) {
+    if (user_id == null) {
+        return;
     }
-    const params = {
-      user_id: this.props.state.auth.user.id,
-      question_id: question.id,
-      answer_id: null,
-      comment_id: null,
-      status: 1,
-    };
-    const key = "questionView";
-    const data = { params,  key };
     return this.props.handlePostVote(data);
   }
 
-  deleteVote(question) {
-    if (this.props.state.auth.user.id == null) {
-      return;
-    }
-    const params = {
-      user_id: this.props.state.auth.user.id,
-      key : "question",
-      //他のコンテンツと共通化するためvote_idというkeyにする
-      vote_id: question.id,
-    };
-    const key = "questionView";
-    const data = { params,  key };
-    return this.props.handleDeleteVote(data);
+  deleteVote(data, user_id) {
+      if (user_id == null) {
+          return;
+      }
+      return this.props.handleDeleteVote(data);
   }
-
+  
   getAnswerForm(currentQuestion, loginUser) {
     const { formatMessage } = this.props.intl;
     const key = currentQuestion.country.intl_key;
@@ -103,7 +86,6 @@ class QuestionView extends Component {
       <AnswerForm qId={this.qId} initialValues={answerFormInitVals} onSubmit={this.handleSubmit.bind(this)}/>
     );
   }
-
 
   getTranslateUser(img) {
     const { formatMessage } = this.props.intl;
@@ -137,16 +119,21 @@ class QuestionView extends Component {
     const { user, votes } = currentQuestion;
     const answerForm = this.getAnswerForm(currentQuestion, loginUser);
 
-    const editLink = user.id === loginUser.id
-                   ? <Link className="uk-margin-small-right" to={`/questions/edit/${this.qId}`}><FontAwesomeIcon icon="edit" color="steelblue" size="lg"/></Link>
-                   : '';
-
-    const myVotes = votes.filter(v => {return v.user_id === loginUser.id});
-    const voteState = myVotes.length !== 0;
-    const votebutton = voteState
-                     ? <a onClick={this.deleteVote.bind(this, currentQuestion)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-                     : <a onClick={this.sendVote.bind(this, currentQuestion)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
-    const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ votes.length }</span>;
+    const key = "questionView";
+    const sendVoteParams = {
+        user_id: this.props.state.auth.user.id,
+        question_id: currentQuestion.id,
+        answer_id: null,
+        comment_id: null,
+        status: 1,
+    };
+    const deleteVoteParams = {
+        user_id: this.props.state.auth.user.id,
+        key : "question",
+        vote_id: currentQuestion.id,
+    };
+    const sendData = { sendVoteParams,  key };
+    const deleteData = { deleteVoteParams,  key };
 
     const { question_translations } = question;
     let translator;
@@ -164,10 +151,18 @@ class QuestionView extends Component {
             <Linkify properties={{ target: '_blank'}} >{question.dispText}</Linkify>
             <br/>
             <br/>
-            { votebutton }
-            { voteNumbers }
-            { editLink }
-            <Link to={`/question_translations/${this.qId}`}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link>
+            <PostIcons 
+              user = { user } 
+              loginUser = { loginUser } 
+              votes = { votes }
+              sendData = { sendData }
+              deleteData = { deleteData }
+              editLink = {`/questions/edit/${this.qId}`}
+              translateLink = {`/question_translations/${this.qId}`}
+              onClickSendVote = {this.sendVote.bind(this)}
+              onClickDeleteVote = {this.deleteVote.bind(this)}
+            />
+            
           </p>
           <p className="uk-text-meta">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
           <div className="uk-grid uk-grid-small uk-flex-middle" >

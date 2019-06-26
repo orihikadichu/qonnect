@@ -34,28 +34,28 @@ export function* handleFetchQestionVotesList(action) {
 
 export function* postVote(action) {
   try {
-    const { params, key } = action.payload;
+    const { sendVoteParams, key } = action.payload;
     yield put(requestData());
-    yield call(postVotes, params);
+    yield call(postVotes, sendVoteParams);
 
     let data;
     switch (key) {
       case "comment":
       case "answer":
           data = { payload: {
-            question_id: params.questionId,
+            question_id: sendVoteParams.questionId,
             translate_language_id: 1,
           } };
           yield call(answerSaga.handleFetchAnswerData, data);
           break;
       case "questionList":
           data = { payload: {
-            country_id: params.country_id,
+            country_id: sendVoteParams.country_id,
           } };
           yield call(questionSagas.handleFetchData, data);
           break;
       case "questionView":
-          data = { payload: params.question_id };
+          data = { payload: sendVoteParams.question_id };
           yield call(questionSagas.handleFetchQuestionById, data);
           break;
     }
@@ -72,28 +72,28 @@ export function* postVote(action) {
 
 export function* deleteVote(action) {
   try {
-    const { params, key } = action.payload;
+    const { deleteVoteParams, key } = action.payload;
     yield put(requestData());
-    yield call(deleteVotes, params);
+    yield call(deleteVotes, deleteVoteParams);
 
     let data;
     switch (key) {
       case "comment":
       case "answer":
           data = { payload: {
-            question_id: params.questionId,
+            question_id: deleteVoteParams.questionId,
             translate_language_id: 1,
           } };
           yield call(answerSaga.handleFetchAnswerData, data);
           break;
       case "questionList":
           data = { payload: {
-            country_id: params.country_id,
+            country_id: deleteVoteParams.country_id,
           } };
           yield call(questionSagas.handleFetchData, data);
           break;
       case "questionView":
-          data = { payload: params.vote_id };
+          data = { payload: deleteVoteParams.vote_id };
           yield call(questionSagas.handleFetchQuestionById, data);
           break;
     }
