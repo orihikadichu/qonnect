@@ -162,7 +162,6 @@ class QuestionView extends Component {
               onClickSendVote = {this.sendVote.bind(this)}
               onClickDeleteVote = {this.deleteVote.bind(this)}
             />
-            
           </p>
           <p className="uk-text-meta">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
           <div className="uk-grid uk-grid-small uk-flex-middle" >

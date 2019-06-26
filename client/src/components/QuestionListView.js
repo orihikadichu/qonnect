@@ -12,40 +12,22 @@ import { connect } from 'react-redux';
 import { postVote, deleteVote } from '../actions/Vote';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PostUser from './PostUser';
+import PostIcons from './PostIcons';
 
 class QuestionListView extends Component {
 
-  sendVote(question) {
-    if (this.props.user.id == null) {
-      return;
+  sendVote(data, user_id) {
+    if (user_id == null) {
+        return;
     }
-    const params = {
-      user_id: this.props.user.id,
-      question_id: question.id,
-      answer_id: null,
-      comment_id: null,
-      status: 1,
-      country_id: question.country_id,
-    };
-    const key = "questionList";
-    const data = { params,  key };
     return this.props.handlePostVote(data);
   }
 
-  deleteVote(question) {
-    if (this.props.user.id == null) {
-      return;
-    }
-    const params = {
-      user_id: this.props.user.id,
-      key : "question",
-      //他のコンテンツと共通化するためvote_idというkeyにする
-      vote_id: question.id,
-      country_id: question.country_id,
-    };
-    const key = "questionList";
-    const data = { params,  key };
-    return this.props.handleDeleteVote(data);
+  deleteVote(data, user_id) {
+      if (user_id == null) {
+          return;
+      }
+      return this.props.handleDeleteVote(data);
   }
 
   getQuestionList(questionArray, translateLanguageId, categoryId) {
@@ -58,13 +40,22 @@ class QuestionListView extends Component {
       const { formatMessage } = this.props.intl
 
       const { votes } = question;
-      const myVotes = votes.filter(v => {return v.user_id === this.props.user.id});
-      const voteState = myVotes.length !== 0;
-      const votebutton = voteState
-                       ? <a onClick={this.deleteVote.bind(this, question)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-                       : <a onClick={this.sendVote.bind(this, question)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
 
-      const voteNumbers = <span className="uk-text-default">{ votes.length }</span>;
+      const key = "questionList";
+      const sendVoteParams = {
+          user_id: this.props.user.id,
+          question_id: question.id,
+          answer_id: null,
+          comment_id: null,
+          status: 1,
+      };
+      const deleteVoteParams = {
+          user_id: this.props.user.id,
+          key : "question",
+          vote_id: question.id,
+      };
+      const sendData = { sendVoteParams,  key };
+      const deleteData = { deleteVoteParams,  key };
 
       const { question_translations } = question;
       let translator;
@@ -86,13 +77,19 @@ class QuestionListView extends Component {
           </p>
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
           <div className="button-area uk-margin-bottom" >
-            <span>
-              { votebutton }
-              { voteNumbers }
-            </span>
-            <Link to={`/question_translations/${question.id}`} className="uk-margin-small-left" >
-              <FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/>
-            </Link>
+          <PostIcons 
+              //コンテンツのユーザー
+              user = { user } 
+              //ログインユーザー
+              loginUser = { this.props.user  } 
+              votes = { votes }
+              sendData = { sendData }
+              deleteData = { deleteData }
+              editLink = {`/questions/edit/${question.id}`}
+              translateLink = {`/question_translations/${question.id}`}
+              onClickSendVote = {this.sendVote.bind(this)}
+              onClickDeleteVote = {this.deleteVote.bind(this)}
+          />
           </div>
           <div className="uk-grid uk-grid-small uk-flex-middle" >
             <div>

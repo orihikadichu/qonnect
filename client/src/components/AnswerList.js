@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { sprintf } from 'sprintf-js';
 import Translator from './Translator';
 import PostUser from './PostUser';
+import PostIcons from './PostIcons';
 
 class AnswerList extends Component {
   constructor(props) {
@@ -82,41 +83,19 @@ class AnswerList extends Component {
     }
   }
 
-  sendVote(answerId, currentQuestionId){
-    if(this.props.state.auth.user.id == null ){
-      return;
+  sendVote(data, user_id) {
+    if (user_id == null) {
+        return;
     }
-    const params = {
-      user_id: this.props.state.auth.user.id,
-      question_id: null,
-      answer_id: answerId,
-      comment_id: null,
-      status: 1,
-      //再レンダリングするためのquestion_id
-      questionId: currentQuestionId,
-    };
-    const key = "answer";
-    const data = { params, key };
     return this.props.handlePostVote(data);
   }
 
-  deleteVote(answerId, currentQuestionId) {
-    if(this.props.state.auth.user.id == null ){
-      return;
-    }
-    const params = {
-      user_id: this.props.state.auth.user.id,
-      key : "answer",
-      //他のコンテンツと共通化するためvote_idというkeyにする
-      vote_id: answerId,
-      //再レンダリングするためのquestion_id
-      questionId: currentQuestionId,
-    };
-    const key = "answer";
-    const data = { params, key };
-    return this.props.handleDeleteVote(data);
+  deleteVote(data, user_id) {
+      if (user_id == null) {
+          return;
+      }
+      return this.props.handleDeleteVote(data);
   }
-
 
   getAnswerList(answerArray, translateLanguageId) {
     const { formatMessage } = this.props.intl;
@@ -127,16 +106,31 @@ class AnswerList extends Component {
     const translatedAnswers = getTranslatedContents(filteredAnswers, translateLanguageId, contentType);
 
     return translatedAnswers.map(answer => {
-      const editLink = answer.user.id === loginUser.id
-                     ? <Link className="uk-margin-small-right" to={`/answers/edit/${answer.id}`}><FontAwesomeIcon icon="edit" color="steelblue" size="lg"/></Link>
-                     : '';
 
-      const myVotes = answer.votes.filter(v => {return v.user_id === loginUser.id});
-      const voteState = myVotes.length !== 0;
-      const votebutton = voteState
-                       ? <a onClick={this.deleteVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-                       : <a onClick={this.sendVote.bind(this,  answer.id, this.props.qId)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
-      const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ answer.votes.length }</span>;
+      const { user } = answer;
+      const { votes } = answer;
+
+      const key = "answer";
+      const sendVoteParams = {
+        user_id: this.props.state.auth.user.id,
+        question_id: null,
+        answer_id: answer.id,
+        comment_id: null,
+        status: 1,
+        //再レンダリングするためのquestion_id
+        questionId: this.props.qId,
+      };
+      const deleteVoteParams = {
+        user_id: this.props.state.auth.user.id,
+        key : "answer",
+        //他のコンテンツと共通化するためvote_idというkeyにする
+        vote_id: answer.id,
+        //再レンダリングするためのquestion_id
+        questionId: this.props.qId,
+      };
+      const sendData = { sendVoteParams,  key };
+      const deleteData = { deleteVoteParams,  key };
+
       const commentForm = this.getComment(answer.id);
 
       const { answer_translations } = answer;
@@ -156,10 +150,19 @@ class AnswerList extends Component {
                 <Linkify properties={{ target: '_blank'}} >{answer.dispText}</Linkify>
                 <br/>
                 <br/>
-                { votebutton }
-                { voteNumbers }
-                <Link className="uk-margin-small-right" to={`/answer_translations/${answer.id}`}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link>
-                { editLink }
+                <PostIcons 
+                    //コンテンツのユーザー
+                    user = { user } 
+                    //ログインユーザー
+                    loginUser = { this.props.state.auth.user } 
+                    votes = { votes }
+                    sendData = { sendData }
+                    deleteData = { deleteData }
+                    editLink = {`/questions/edit/${answer.id}`}
+                    translateLink = {`/question_translations/${answer.id}`}
+                    onClickSendVote = {this.sendVote.bind(this)}
+                    onClickDeleteVote = {this.deleteVote.bind(this)}
+                />
 
               </p>
               <p className="uk-text-meta">{dayjs(answer.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
