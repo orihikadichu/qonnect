@@ -1,0 +1,6 @@
+{
+  "mails.activation.subject": "Qonnect Sign Up",
+  "mails.activation.body": "Thank you for your registration.\n\nWe hope that you can access the following URL and complete the authentication process.\n\n%s",
+  "mails.password_reset.subject": "Qonnect Password Reset",
+  "mails.password_reset.body": "Please access below URL. And set your new password. \n\n %s"
+}

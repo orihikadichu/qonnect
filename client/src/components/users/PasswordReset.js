@@ -8,7 +8,7 @@ class PasswordReset extends Component {
 
   onClickSubmit(formData) {
     const { mail } = formData;
-    return this.props.handleSubmit(mail);
+    return this.props.handleSubmit({ mail });
   }
 
   render() {

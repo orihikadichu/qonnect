@@ -28,8 +28,8 @@ export const activateUser = (postData) => {
   return axios.post(`/api/users/activate/${token}`, postData);
 };
 
-export const resetPassword = (mail) => {
-  return axios.post(`/api/users/password_reset`, { mail });
+export const resetPassword = (postData) => {
+  return axios.post(`/api/users/password_reset`, postData);
 };
 
 export const saveUserPassword = (postData) => {

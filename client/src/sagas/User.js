@@ -1,4 +1,4 @@
-import { takeEvery, call, put } from 'redux-saga/effects';
+import { takeEvery, call, put, select } from 'redux-saga/effects';
 // import { push } from 'react-router-redux';
 import {
   updateUserData, requestData, receiveDataSuccess, receiveDataFailed,
@@ -123,6 +123,9 @@ export function* saveUserPassword(action) {
 
 export function *resetPassword(action) {
   try {
+    const state = yield select();
+    const { locale } = state.intl;
+    action.payload.locale = locale;
     yield put(requestData());
     const payload = yield call(api.resetPassword, action.payload);
     const message = 'メールを送信しました';

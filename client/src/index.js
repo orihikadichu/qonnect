@@ -1,16 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 
 import Home from './containers/Home';
 import QuestionView from './containers/QuestionView';
 import QuestionEdit from './containers/QuestionEdit';
-
-//未翻訳の質問一覧を表示するコンポーネント
-//containerを介していないと、connectの処理をしていないのでエラーになる。
-//containerを介してcomponentsの作業を行う。
 import NotTranslated from './containers/NotTranslated';
-
 import AnswerEdit from './containers/AnswerEdit';
 import CommentEdit from './containers/CommentEdit';
 import QuestionTranslationView from './containers/QuestionTranslationView';

@@ -126,6 +126,7 @@ class AnswerList extends Component {
     const filteredAnswers = getFilteredContents(answerArray, translateLanguageId, contentType);
     const translatedAnswers = getTranslatedContents(filteredAnswers, translateLanguageId, contentType);
 
+
     return translatedAnswers.map(answer => {
       const editLink = answer.user.id === loginUser.id
                      ? <Link className="uk-margin-small-right" to={`/answers/edit/${answer.id}`}><FontAwesomeIcon icon="edit" color="steelblue" size="lg"/></Link>
