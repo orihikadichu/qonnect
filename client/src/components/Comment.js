@@ -10,58 +10,51 @@ import { sprintf } from 'sprintf-js';
 import { injectIntl } from 'react-intl';
 import Translator from './Translator';
 import PostUser from './PostUser';
+import PostIcons from './PostIcons';
 
 class Comment extends Component {
 
-  sendVote(commentId, currentQuestionId){
-    if(this.props.user.id == null ){
-      return;
+  sendVote(data, user_id) {
+    if (user_id == null) {
+        return;
     }
-    const params = {
-      user_id: this.props.user.id,
-      question_id: null,
-      answer_id: null,
-      comment_id: commentId,
-      status: 1,
-      //再レンダリングするためのquestion_id
-      questionId: currentQuestionId,
-    };
-    const key = "comment";
-    const data = { params, key };
     return this.props.handlePostVote(data);
   }
 
-  deleteVote(commentId, currentQuestionId) {
-    if(this.props.user.id == null ){
-      return;
-    }
-    const params = {
-      user_id: this.props.user.id,
-      key : "comment",
-      //他のコンテンツと共通化するためvote_idというkeyにする
-      vote_id: commentId,
-      //再レンダリングするためのquestion_id
-      questionId: currentQuestionId,
-    };
-    const key = "comment";
-    const data = { params,  key };
-    return this.props.handleDeleteVote(data);
+  deleteVote(data, user_id) {
+      if (user_id == null) {
+          return;
+      }
+      return this.props.handleDeleteVote(data);
   }
 
   render() {
     const { id, user, content, isOwner, voteList, questions, commentUser, comments, answerId, intl} = this.props;
     const currentQuestionId = questions.currentQuestion.id;
-    const editLink = isOwner
-                   ? <Link to={`/comments/edit/${id}`}><FontAwesomeIcon className="uk-margin-small-right" icon="edit" color="steelblue" size="lg"/></Link>
-                   : '';   
-    const myVotes = voteList.filter(v => {return v.user_id === user.id});
-    const voteState = myVotes.length !== 0;
-    const votebutton = voteState
-                     ? <a onClick={this.deleteVote.bind(this, id, currentQuestionId)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-                     : <a onClick={this.sendVote.bind(this, id, currentQuestionId)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
-    const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ voteList.length }</span>;
+
     const { formatMessage } = intl;
     const { commentArray } = comments;
+
+    const key = "comment";
+    const sendVoteParams = {
+      user_id: this.props.user.id,
+      question_id: null,
+      answer_id: null,
+      comment_id: id,
+      status: 1,
+      //再レンダリングするためのquestion_id
+      questionId: currentQuestionId,
+    };
+    const deleteVoteParams = {
+      user_id: this.props.user.id,
+      key : "comment",
+      //他のコンテンツと共通化するためvote_idというkeyにする
+      vote_id: id,
+      //再レンダリングするためのquestion_id
+      questionId: currentQuestionId,
+    };
+    const sendData = { sendVoteParams,  key };
+    const deleteData = { deleteVoteParams,  key };
 
     let translator;
     translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
@@ -82,10 +75,20 @@ class Comment extends Component {
             {content}
             <br/>
             <br/>
-            { votebutton }
-            { voteNumbers }
-            <Link className="uk-margin-small-right" to={`/comment_translations/${id}`}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link>
-            { editLink }
+            <PostIcons 
+                //コンテンツのユーザー
+                user = { user } 
+                //ログインユーザー
+                loginUser = { this.props.user } 
+                votes = { voteList }
+                sendData = { sendData }
+                deleteData = { deleteData }
+                editLink = {`/questions/edit/${id}`}
+                translateLink = {`/question_translations/${id}`}
+                onClickSendVote = {this.sendVote.bind(this)}
+                onClickDeleteVote = {this.deleteVote.bind(this)}
+            />
+
           </p>
         </div>
         <div className="uk-grid uk-grid-small uk-flex-middle">
