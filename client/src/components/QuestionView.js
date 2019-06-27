@@ -67,16 +67,16 @@ class QuestionView extends Component {
       }
       return this.props.handleDeleteVote(data);
   }
-  
+
   getAnswerForm(currentQuestion, loginUser) {
     const { formatMessage } = this.props.intl;
-    const key = currentQuestion.country.intl_key;
+    const { intl_key } = currentQuestion.country;
     if (currentQuestion.country_id !== loginUser.country_id) {
-      const temp = formatMessage({id: "messages.you_are_not_target"})
-      const mesasge = sprintf(temp, formatMessage({id: key}));
+      const temp = formatMessage({id: "messages.you_are_not_target"});
+      const message = sprintf(temp, formatMessage({id: intl_key}));
       return (
         <div>
-          <p className="uk-text-meta">{mesasge}</p>
+          <p className="uk-text-meta">{message}</p>
         </div>
       );
     }
@@ -151,9 +151,9 @@ class QuestionView extends Component {
             <Linkify properties={{ target: '_blank'}} >{question.dispText}</Linkify>
             <br/>
             <br/>
-            <PostIcons 
-              user = { user } 
-              loginUser = { loginUser } 
+            <PostIcons
+              user = { user }
+              loginUser = { loginUser }
               votes = { votes }
               sendData = { sendData }
               deleteData = { deleteData }

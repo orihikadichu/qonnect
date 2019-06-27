@@ -845,7 +845,7 @@ app.post('/api/answers', (req, res) => {
 
 const notifyForQuestionUser = (question_id) => {
   return db.questions.findOne({
-    where: { question_id},
+    where: { id: question_id },
     include: [db.users]
   })
     .then((instance) => {
@@ -865,7 +865,7 @@ const notifyForQuestionUser = (question_id) => {
 
 const notifyForAnswerUser = (answer_id) => {
   return db.answers.findOne({
-    where: { answer_id},
+    where: { id: answer_id },
     include: [db.users]
   })
     .then((instance) => {
