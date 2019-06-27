@@ -13,7 +13,9 @@ import multer from 'multer';
 import jimp from 'jimp';
 import fs from 'fs';
 import dayjs from 'dayjs';
+import { sprintf } from 'sprintf-js';
 import { config } from 'dotenv';
+import i18n from 'i18n';
 import {
   getHashName,
   getPasswordHash,
@@ -42,6 +44,24 @@ app.use(express.static(PUBLIC_URL));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
+
+i18n.configure({
+  locales: ['ja', 'en'],  //使用する言語指定
+  defaultLocale: 'en',  //デフォルトの言語を決める
+  directory: __dirname + '/locales',  //言語の内容を置く場所
+  queryParameter: 'lang',  //langクエリで切り替え
+  logDebugFn: function (msg) { //デバッグモード
+    console.log('debug', msg);
+  },
+  logWarnFn: function (msg) {  //Warningモード
+    console.log('warn', msg);
+  },
+  logErrorFn: function (msg) { //Errorモード
+    console.log('error', msg);
+  }
+});
+app.use(i18n.init);
+
 
 // Bcrypt
 const saltRounds = 10;
@@ -799,19 +819,69 @@ app.get('/api/answers/:id', (req, res) => {
 });
 
 app.post('/api/answers', (req, res) => {
-  const params = req.body;
-  console.log('params', params);
+  const {
+    content,
+    question_id,
+    user_id,
+    translate_language_id
+  } = req.body;
   db.answers.create({
-    content: params.content,
-    question_id: params.question_id,
-    user_id: params.user_id,
-    translate_language_id: params.translate_language_id,
+    content,
+    question_id,
+    user_id,
+    translate_language_id,
   })
-    .then((createdData) => {
-      res.status(200).send(createdData);
+    .then((instance) => {
+      if (!instance) {
+        return res.status(500).send('Error');
+      }
+      const answer = instance.get();
+      const { question_id } = answer;
+      notifyForQuestionUser(question_id);
+      return res.status(200).send(answer);
     })
   ;
 });
+
+const notifyForQuestionUser = (question_id) => {
+  return db.questions.findOne({
+    where: { id: question_id },
+    include: [db.users]
+  })
+    .then((instance) => {
+      if (!instance) {
+        return false;
+      }
+      const { id, user } = instance.get();
+      const to = user.mail;
+      const subject = i18n.__('mails.questions.subject');
+      const textTemp = i18n.__('mails.questions.body');
+      const url = `${HOST}/questions/${id}`;
+      const text = sprintf(textTemp, url);
+      const mailParams = { to, subject, text };
+      return sendMailFromAdmin(mailParams);
+    });
+};
+
+const notifyForAnswerUser = (answer_id) => {
+  return db.answers.findOne({
+    where: { id: answer_id },
+    include: [db.users]
+  })
+    .then((instance) => {
+      if (!instance) {
+        return false;
+      }
+      const { question_id, user } = instance.get();
+      const to = user.mail;
+      const subject = i18n.__('mails.answers.subject');
+      const textTemp = i18n.__('mails.answers.body');
+      const url = `${HOST}/questions/${question_id}`;
+      const text = sprintf(textTemp, url);
+      const mailParams = { to, subject, text };
+      return sendMailFromAdmin(mailParams);
+    });
+};
 
 app.put('/api/answers/:id', (req, res) => {
   const { id } = req.params;
@@ -898,7 +968,10 @@ app.get('/api/users/password_reset/:token', (req, res) => {
 // ユーザー新規作成(Activation)
 /*
 app.post('/api/users', (req, res) => {
-  const { name, mail, country_id } = req.body;
+  const { name, mail, country_id, locale } = req.body;
+  if (locale) {
+    i18n.setLocale(locale);
+  }
   const password = getPasswordHash(req.body.password);
   db.users.create({ name, mail, country_id, password })
     .then((instance) => {
@@ -914,16 +987,12 @@ app.post('/api/users', (req, res) => {
           }
           const authToken = instance.get();
           const activationUrl = `${HOST}/users/activate/${authToken.token}`;
-          const text = `
-ご登録ありがとうございます。
-
-以下のURLにアクセスし、認証処理を完了させていただければ幸いです。
-
-${activationUrl}
-`;
+          const subject = i18n.__('mails.activation.subject');
+          const textTemp = i18n.__('mails.activation.body');
+          const text = sprintf(textTemp, activationUrl);
           const mailParams = {
             to: user.mail,
-            subject: 'Qonnect 仮登録完了',
+            subject,
             text
           };
           sendMailFromAdmin(mailParams);
@@ -1140,7 +1209,10 @@ app.post('/api/users/login_jwt', passport.authenticate('jwt', { session: false }
 });
 
 app.post('/api/users/password_reset', (req, res) => {
-  const { mail } = req.body;
+  const { mail, locale } = req.body;
+  if (locale) {
+    i18n.setLocale(locale);
+  }
   db.users.findOne({ where: { mail }})
     .then((instance) => {
       if (!instance) {
@@ -1150,14 +1222,12 @@ app.post('/api/users/password_reset', (req, res) => {
       const authTokenData = getTokenData(user.id);
       const { token } = authTokenData;
       const resetUrl = `${HOST}/users/password_reset/${token}`;
-      const text = `
-以下のURLにアクセスし、新しいパスワードを設定してください。
-
-${resetUrl}
-`;
+      const subject = i18n.__('mails.password_reset.subject');
+      const textTemp = i18n.__('mails.password_reset.body');
+      const text = sprintf(textTemp, resetUrl);
       const mailParams = {
         to: user.mail,
-        subject: 'Qonnect パスワード再設定',
+        subject,
         text
       };
 
@@ -1286,8 +1356,14 @@ app.post('/api/comments', (req, res) => {
     content,
     translate_language_id
   })
-    .then((createdData) => {
-      res.status(200).send(createdData);
+    .then((instance) => {
+      if (!instance) {
+        return res.status(500).send('Error');
+      }
+      const comment = instance.get();
+      const { answer_id } = comment;
+      notifyForAnswerUser(answer_id);
+      return res.status(200).send(comment);
     })
   ;
 });
@@ -1337,23 +1413,6 @@ app.delete('/api/comments/:id', (req, res) => {
     })
   ;
 });
-
-app.post('/api/mail', (req, res) => {
-  const { from, to, subject, text } = req.body;
-
-  const message = { from, to, subject, text };
-
-  sendMailFromAdmin(message, (err, response) => {
-    if (err) {
-      console.log(err || response);
-      return res.status(500).send('メールの送信に失敗しました');
-    }
-    return res.status(200).send('sent!');
-  });
-
-});
-
-
 
 app.get('*', (req, res) => {
   res.sendFile(PUBLIC_URL + '/index.html');

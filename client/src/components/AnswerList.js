@@ -105,6 +105,7 @@ class AnswerList extends Component {
     const filteredAnswers = getFilteredContents(answerArray, translateLanguageId, contentType);
     const translatedAnswers = getTranslatedContents(filteredAnswers, translateLanguageId, contentType);
 
+
     return translatedAnswers.map(answer => {
 
       const { user } = answer;

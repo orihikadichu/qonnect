@@ -13,7 +13,7 @@ class App extends Component {
 
   componentDidMount() {
     // const { pathname } = this.props.location;
-    console.log("appjs-------------",this.props);
+    /* console.log("appjs-------------",this.props);*/
     // ReactGA.set({ page: pathname });
     // ReactGA.pageview(pathname);
   }

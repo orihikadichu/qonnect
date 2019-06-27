@@ -14,7 +14,6 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const history = createHistory();
 ReactGA.initialize('UA-128421111-1');
-console.log("-------------",history);
 history.listen(({ pathname }) => {
   console.log("GA---------",pathname);
 //   ReactGA.set({ page: pathname });
