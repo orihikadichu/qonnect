@@ -28,13 +28,13 @@ import {
 } from './users/util';
 import { getTokenData } from './auth_tokens';
 import { sendMailFromAdmin } from './mails';
+import { notifyForQuestionUser, notifyForAnswerUser } from './notifications';
 
 const app = express();
 // 環境変数の読み込み
 config();
 
 const HOST = process.env.HOST;
-
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 // Serve static files from the React app
@@ -842,46 +842,6 @@ app.post('/api/answers', (req, res) => {
     })
   ;
 });
-
-const notifyForQuestionUser = (question_id) => {
-  return db.questions.findOne({
-    where: { id: question_id },
-    include: [db.users]
-  })
-    .then((instance) => {
-      if (!instance) {
-        return false;
-      }
-      const { id, user } = instance.get();
-      const to = user.mail;
-      const subject = i18n.__('mails.questions.subject');
-      const textTemp = i18n.__('mails.questions.body');
-      const url = `${HOST}/questions/${id}`;
-      const text = sprintf(textTemp, url);
-      const mailParams = { to, subject, text };
-      return sendMailFromAdmin(mailParams);
-    });
-};
-
-const notifyForAnswerUser = (answer_id) => {
-  return db.answers.findOne({
-    where: { id: answer_id },
-    include: [db.users]
-  })
-    .then((instance) => {
-      if (!instance) {
-        return false;
-      }
-      const { question_id, user } = instance.get();
-      const to = user.mail;
-      const subject = i18n.__('mails.answers.subject');
-      const textTemp = i18n.__('mails.answers.body');
-      const url = `${HOST}/questions/${question_id}`;
-      const text = sprintf(textTemp, url);
-      const mailParams = { to, subject, text };
-      return sendMailFromAdmin(mailParams);
-    });
-};
 
 app.put('/api/answers/:id', (req, res) => {
   const { id } = req.params;
