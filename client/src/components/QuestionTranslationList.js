@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { postVote, deleteVote } from '../actions/VoteTranslation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PostUser from './PostUser';
+import PostIcons from './PostIcons';
 
 class QuestionTranslationList extends Component {
   constructor(props) {
@@ -22,55 +23,45 @@ class QuestionTranslationList extends Component {
     this.props.handleFetchData(this.qId);
   }
 
-  sendVote(question){
-    if( this.props.user.id == null){
-      return;
+  sendVote(data, user_id) {
+    if (user_id == null) {
+        return;
     }
-    const params = {
-      user_id: this.props.user.id,
-      question_translation_id: question.id,
-      answer_translation_id: null,
-      commcomment_translation_id: null,
-      status: 1,
-      //再レンダリング用のId
-      questionId: question.question_id,
-    };
-    const key = "question";
-    const data = { params,  key };
     return this.props.handlePostVote(data);
   }
 
-  deleteVote(question) {
-    if( this.props.user.id == null){
-      return;
-    }
-    const params = {
-      user_id: this.props.user.id,
-      key : "question",
-      //他のコンテンツと共通化するためvote_idというkeyにする
-      vote_id: question.id,
-      //再レンダリング用のId
-      questionId: question.question_id,
-    };
-    const key = "question";
-    const data = { params,  key };
-    return this.props.handleDeleteVote(data);
+  deleteVote(data, user_id) {
+      if (user_id == null) {
+          return;
+      }
+      return this.props.handleDeleteVote(data);
   }
 
   getTranslationList(translationList, loginUser) {
     const { formatMessage } = this.props.intl;
 
     return translationList.map(translation => {
-      const editLink = translation.user.id === loginUser.id
-                     ? <Link className="uk-margin-small-right" to={`/question_translations/edit/${translation.id}`}><FontAwesomeIcon icon="edit" color="steelblue" size="lg"/></Link>
-                     : '';
 
-      const myVotes = translation.vote_translations.filter(v => {return v.user_id === loginUser.id});
-      const voteState = myVotes.length !== 0;
-      const votebutton = voteState
-                     ?<a onClick={this.deleteVote.bind(this, translation)}><FontAwesomeIcon icon="heart" color="red" size="lg"/></a>
-                     :<a onClick={this.sendVote.bind(this,  translation)}><FontAwesomeIcon icon={['far','heart']} color="gray" size="lg"/></a>;
-      const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ translation.vote_translations.length }</span>;
+      const key = "question";
+      const sendVoteParams = {
+          user_id: this.props.user.id,
+          question_translation_id: translation.id,
+          answer_translation_id: null,
+          commcomment_translation_id: null,
+          status: 1,
+          //再レンダリング用のId
+          questionId: translation.question_id,
+      };
+      const deleteVoteParams = {
+          user_id: this.props.user.id,
+          key : "question",
+          //他のコンテンツと共通化するためvote_idというkeyにする
+          vote_id: translation.id,
+          //再レンダリング用のId
+          questionId: translation.question_id,
+      };
+      const sendData = { sendVoteParams,  key };
+      const deleteData = { deleteVoteParams,  key };
 
       return (
         <li key={translation.id} >
@@ -80,9 +71,20 @@ class QuestionTranslationList extends Component {
                 <Linkify properties={{ target: '_blank'}} >{translation.content}</Linkify>
                 <br/>
                 <br/>
-                { votebutton }
-                { voteNumbers }
-                { editLink }
+                <PostIcons 
+                    //コンテンツのユーザー
+                    user = { translation.user } 
+                    //ログインユーザー
+                    loginUser = { loginUser  } 
+                    votes = { translation.vote_translations }
+                    sendData = { sendData }
+                    deleteData = { deleteData }
+                    editLink = {`/question_translations/edit/${translation.id}`}
+                    // translateLink = {}
+                    onClickSendVote = {this.sendVote.bind(this)}
+                    onClickDeleteVote = {this.deleteVote.bind(this)}
+                    translate = { false }
+                />
               </p>
               <p className="uk-text-meta">{dayjs(translation.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
 

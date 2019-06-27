@@ -159,10 +159,11 @@ class AnswerList extends Component {
                     votes = { votes }
                     sendData = { sendData }
                     deleteData = { deleteData }
-                    editLink = {`/questions/edit/${answer.id}`}
-                    translateLink = {`/question_translations/${answer.id}`}
+                    editLink = {`/answers/edit/${answer.id}`}
+                    translateLink = {`/answer_translations/${answer.id}`}
                     onClickSendVote = {this.sendVote.bind(this)}
                     onClickDeleteVote = {this.deleteVote.bind(this)}
+                    translate = { true }
                 />
 
               </p>

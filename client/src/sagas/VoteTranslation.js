@@ -20,21 +20,21 @@ import { postVotes, deleteVotes } from './apis/VoteTranslations';
 
 export function* postVote(action) {
   try {
-    const { params, key } = action.payload;
+    const { sendVoteParams, key } = action.payload;
     yield put(requestData());
-    yield call(postVotes, params);
+    yield call(postVotes, sendVoteParams);
     let data;
     switch (key) {
       case "comment":
-          data = { payload: params.commentId } ;
+          data = { payload: sendVoteParams.commentId } ;
           yield call(commentTranslationSagas.handleFetchCommentTranslationList, data);
           break;
       case "answer":
-          data = { payload: params.answerId } ;
+          data = { payload: sendVoteParams.answerId } ;
           yield call(answerTranslationSagas.handleFetchAnswerTranslationList, data);
           break;
       case "question":
-          data = { payload: params.questionId } ;
+          data = { payload: sendVoteParams.questionId } ;
           yield call(questionTranslationSagas.handleFetchQuestionTranslationList, data);
           break;
     }
@@ -51,22 +51,22 @@ export function* postVote(action) {
 
 export function* deleteVote(action) {
   try {
-    const { params, key } = action.payload;
+    const { deleteVoteParams, key } = action.payload;
     yield put(requestData());
-    yield call(deleteVotes, params);
+    yield call(deleteVotes, deleteVoteParams);
 
     let data;
     switch (key) {
       case "comment":
-          data = { payload: params.commentId } ;
+          data = { payload: deleteVoteParams.commentId } ;
           yield call(commentTranslationSagas.handleFetchCommentTranslationList, data);
           break;
       case "answer":
-          data = { payload: params.answerId };
+          data = { payload: deleteVoteParams.answerId };
           yield call(answerTranslationSagas.handleFetchAnswerTranslationList, data);
           break;
       case "question":
-          data = { payload:  params.questionId };
+          data = { payload:  deleteVoteParams.questionId };
           yield call(questionTranslationSagas.handleFetchQuestionTranslationList, data);
           break;
     }

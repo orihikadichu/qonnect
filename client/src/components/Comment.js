@@ -83,10 +83,11 @@ class Comment extends Component {
                 votes = { voteList }
                 sendData = { sendData }
                 deleteData = { deleteData }
-                editLink = {`/questions/edit/${id}`}
-                translateLink = {`/question_translations/${id}`}
+                editLink = {`/comments/edit/${id}`}
+                translateLink = {`/comment_translations/${id}`}
                 onClickSendVote = {this.sendVote.bind(this)}
                 onClickDeleteVote = {this.deleteVote.bind(this)}
+                translate = { true }
             />
 
           </p>
