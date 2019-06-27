@@ -1,4 +1,8 @@
 {
+  "mails.questions.subject": "Qonnect 質問に回答がきました",
+  "mails.questions.body": "あなたの質問に新しい回答が追加されました。\n以下のURLから確認してみましょう！\n\n%s",
+  "mails.answers.subject": "Qonnect 回答にコメントがつきました",
+  "mails.answers.body": "あなたの回答に新しいコメントが追加されました。\n以下のURLから確認してみましょう！\n\n%s",
   "mails.activation.subject": "Qonnect 新規登録完了",
   "mails.activation.body": "ご登録ありがとうございます。\n\n以下のURLにアクセスし、認証処理を完了させていただければ幸いです。\n\n%s",
   "mails.password_reset.subject": "Qonnect パスワード再設定",

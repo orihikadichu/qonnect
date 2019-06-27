@@ -819,19 +819,69 @@ app.get('/api/answers/:id', (req, res) => {
 });
 
 app.post('/api/answers', (req, res) => {
-  const params = req.body;
-  console.log('params', params);
+  const {
+    content,
+    question_id,
+    user_id,
+    translate_language_id
+  } = req.body;
   db.answers.create({
-    content: params.content,
-    question_id: params.question_id,
-    user_id: params.user_id,
-    translate_language_id: params.translate_language_id,
+    content,
+    question_id,
+    user_id,
+    translate_language_id,
   })
-    .then((createdData) => {
-      res.status(200).send(createdData);
+    .then((instance) => {
+      if (!instance) {
+        return res.status(500).send('Error');
+      }
+      const answer = instance.get();
+      const { question_id } = answer;
+      notifyForQuestionUser(question_id);
+      return res.status(200).send(answer);
     })
   ;
 });
+
+const notifyForQuestionUser = (question_id) => {
+  return db.questions.findOne({
+    where: { question_id},
+    include: [db.users]
+  })
+    .then((instance) => {
+      if (!instance) {
+        return false;
+      }
+      const { id, user } = instance.get();
+      const to = user.mail;
+      const subject = i18n.__('mails.questions.subject');
+      const textTemp = i18n.__('mails.questions.body');
+      const url = `${HOST}/questions/${id}`;
+      const text = sprintf(textTemp, url);
+      const mailParams = { to, subject, text };
+      return sendMailFromAdmin(mailParams);
+    });
+};
+
+const notifyForAnswerUser = (answer_id) => {
+  return db.answers.findOne({
+    where: { answer_id},
+    include: [db.users]
+  })
+    .then((instance) => {
+      if (!instance) {
+        return false;
+      }
+      const { question_id, user } = instance.get();
+      const to = user.mail;
+      const subject = i18n.__('mails.answers.subject');
+      const textTemp = i18n.__('mails.answers.body');
+      const url = `${HOST}/questions/${question_id}`;
+      const text = sprintf(textTemp, url);
+      const mailParams = { to, subject, text };
+      return sendMailFromAdmin(mailParams);
+    });
+};
 
 app.put('/api/answers/:id', (req, res) => {
   const { id } = req.params;
@@ -1306,8 +1356,14 @@ app.post('/api/comments', (req, res) => {
     content,
     translate_language_id
   })
-    .then((createdData) => {
-      res.status(200).send(createdData);
+    .then((instance) => {
+      if (!instance) {
+        return res.status(500).send('Error');
+      }
+      const comment = instance.get();
+      const { answer_id } = comment;
+      notifyForAnswerUser(answer_id);
+      return res.status(200).send(comment);
     })
   ;
 });
