@@ -38,6 +38,7 @@ class PostIcons extends Component {
             </a>
         );
         }
+        const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ votes.length }</span>;
 
         const translateButton = translate === true
                             ?<Link to={translateLink}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link>
