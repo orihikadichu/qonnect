@@ -89,6 +89,7 @@ class QuestionListView extends Component {
               translateLink = {`/question_translations/${question.id}`}
               onClickSendVote = {this.sendVote.bind(this)}
               onClickDeleteVote = {this.deleteVote.bind(this)}
+              translate = { true }
           />
           </div>
           <div className="uk-grid uk-grid-small uk-flex-middle" >

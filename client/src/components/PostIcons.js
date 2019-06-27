@@ -13,7 +13,8 @@ class PostIcons extends Component {
             editLink,
             translateLink,
             onClickSendVote,
-            onClickDeleteVote
+            onClickDeleteVote,
+            translate
         } = this.props;
         
         const editLinkButton = user.id === loginUser.id
@@ -40,12 +41,16 @@ class PostIcons extends Component {
 
         const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ votes.length }</span>;
 
+        const translateButton = translate === true
+                            ?<Link to={translateLink}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link>
+                            :"";
+
         return (
             <div>
                 { votebutton }
                 { voteNumbers }
                 { editLinkButton }
-                <Link to={translateLink}><FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/></Link>
+                { translateButton }
             </div>
         );
   }

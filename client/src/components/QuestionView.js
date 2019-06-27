@@ -161,6 +161,7 @@ class QuestionView extends Component {
               translateLink = {`/question_translations/${this.qId}`}
               onClickSendVote = {this.sendVote.bind(this)}
               onClickDeleteVote = {this.deleteVote.bind(this)}
+              translate = { true }
             />
           </p>
           <p className="uk-text-meta">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
