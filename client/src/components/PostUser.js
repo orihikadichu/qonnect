@@ -10,7 +10,7 @@ class PostUser extends Component {
             src = "japan";
             break;
             case 2:
-            src = "america";
+            src = "usa";
             break;
             default :
             src = "japan";

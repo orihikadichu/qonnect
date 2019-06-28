@@ -11,7 +11,7 @@ module.exports = {
     },
     {
       language: '英語',
-      intl_key: 'languages.america',
+      intl_key: 'languages.usa',
       created_at: '2019-06-01 00:00:00', 
       updated_at: '2019-06-01 00:00:00'
     }], {});

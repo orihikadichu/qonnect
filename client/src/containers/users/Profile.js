@@ -141,8 +141,9 @@ class Profile extends Component {
 
   getCurrentTabContents(tabState, currentTab) {
     const { questions, answers, comments, translates } = tabState;
+    const { id } = this.props.state.auth.user
     if (currentTab === 'questions') {
-      return (<QuestionListView questionArray={questions} translateLanguageId={1} />);
+      return (<QuestionListView questionArray={questions} translateLanguageId={id} />);
     } else if (currentTab === 'answers') {
       return this.getAnswerList(answers);
     } else if (currentTab === 'comments') {

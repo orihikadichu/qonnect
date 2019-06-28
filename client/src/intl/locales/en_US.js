@@ -35,7 +35,7 @@ const en_US = {
   "languages.japanese": 'Japanese',
   "languages.english": 'English',
   "countries.japan": 'Japan',
-  "countries.america": 'USA',
+  "countries.usa": 'USA',
   "countries.southeastasia": 'SouthEastAsia',
   "categories.all": 'All',
   "categories.subculture": 'Comic・Anime',

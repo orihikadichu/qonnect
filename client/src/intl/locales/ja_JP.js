@@ -35,7 +35,7 @@ const ja_JP = {
   "languages.japanese": '日本語',
   "languages.english": '英語',
   "countries.japan": '日本',
-  "countries.america": 'アメリカ合衆国',
+  "countries.usa": 'アメリカ合衆国',
   "countries.southeastasia": '東南アジア',
   "categories.all": 'すべて',
   "categories.subculture": '漫画・アニメ',

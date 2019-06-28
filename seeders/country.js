@@ -11,7 +11,7 @@ module.exports = {
     },
     {
       name: 'アメリカ合衆国',
-      intl_key: 'countries.america',
+      intl_key: 'countries.usa',
       created_at: '2019-06-01 00:00:00',
       updated_at: '2019-06-01 00:00:00'
     },
