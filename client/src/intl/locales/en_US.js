@@ -97,5 +97,9 @@ const en_US = {
   "categories.culture": 'culture',
   "categories.tourism": 'tourism',
   "categories.music": 'music',
+  "sort.answerMany":'Order of many answers',
+  "sort.answerFew":'Order of few answers',
+  "sort.Asc":'New order of posts',
+  "sort.Des":'Oldest order of posts',
 };
 export default en_US;

@@ -318,6 +318,10 @@ app.get('/api/questions', (req, res) => {
         required: false
       },
       {
+        model: db.answers,
+        required: false
+      },
+      {
         model: db.question_translations,
         required: false,
         include: [

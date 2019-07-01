@@ -24,18 +24,86 @@ class QuestionListView extends Component {
   }
 
   deleteVote(data, user_id) {
-      if (user_id == null) {
-          return;
-      }
-      return this.props.handleDeleteVote(data);
+    if (user_id == null) {
+        return;
+    }
+    return this.props.handleDeleteVote(data);
   }
 
-  getQuestionList(questionArray, translateLanguageId, categoryId) {
+  categoryFilteredContents(array, id){
+    let SortedArray
+    switch(id) {
+      case 1 :
+        var result = array.filter((e)=>{
+          return e.category_id === 1 ;
+        })
+        return result;
+      case 2 :
+        var result = array.filter((e)=>{
+          return e.category_id === 2 ;
+        })
+        return result;
+      case 3 :
+        var result = array.filter((e)=>{
+          return e.category_id === 3 ;
+        })
+        return result;
+      case 4 :
+        var result = array.filter((e)=>{
+          return e.category_id === 4 ;
+        })
+        return result;
+    }
+  }
+
+  sortFilteredContents(array, id){
+
+    let editArray = [];
+    array.forEach(function(value) {
+      let a 
+      a = {
+        "num" : value.answers.length,
+        "array": value
+      };
+      editArray.push(a);
+    });
+
+    let SortedArray
+    switch(id) {
+      case 1 :
+        SortedArray = editArray.sort(function(a,b) {
+          return (a.num < b.num ? 1 : -1);
+        });
+        SortedArray  = SortedArray.map((e)=>{ return e.array})
+        return SortedArray;
+      case 2 :
+        SortedArray = editArray.sort(function(a,b) {
+          return (a.num > b.num ? 1 : -1);
+        });
+        SortedArray  = SortedArray.map((e)=>{ return e.array})
+        return SortedArray;
+      case 3 :
+        SortedArray = array.sort(function(a,b) {
+          return (a.created_at < b.created_at ? 1 : -1);
+        });
+        return SortedArray;
+      case 4 :
+        SortedArray = array.sort(function(a,b) {
+          return (a.created_at > b.created_at ? 1 : -1);
+        });
+        return SortedArray;
+    }
+  }
+
+  getQuestionList(questionArray, translateLanguageId, categoryId, sortId) {
+
     const contentType = 'question_translations';
     const filteredQuestions = getFilteredContents(questionArray, translateLanguageId, contentType, categoryId);
     const translatedQuestions = getTranslatedContents(filteredQuestions, translateLanguageId, contentType, categoryId);
+    const categoryQuestions = this.categoryFilteredContents(translatedQuestions, categoryId);
+    const sortQuestions = this.sortFilteredContents(categoryQuestions, sortId);
 
-    return translatedQuestions.map(question => {
+    return sortQuestions.map(question => {
       const { user } = question;
       const { formatMessage } = this.props.intl
 
@@ -105,8 +173,8 @@ class QuestionListView extends Component {
     });
   }
 
-  getQuestionListView(questionArray, translateLanguageId, categoryId) {
-    const questionList = this.getQuestionList(questionArray, translateLanguageId, categoryId);
+  getQuestionListView(questionArray, translateLanguageId, categoryId, sortId) {
+    const questionList = this.getQuestionList(questionArray, translateLanguageId, categoryId, sortId);
 
     return (
       <div>
@@ -118,8 +186,8 @@ class QuestionListView extends Component {
   }
 
   render() {
-    const { questionArray, translateLanguageId, categoryId } = this.props;
-    const content = this.getQuestionListView(questionArray, translateLanguageId, categoryId);
+    const { questionArray, translateLanguageId, categoryId, sortId } = this.props;
+    const content = this.getQuestionListView(questionArray, translateLanguageId, categoryId, sortId);
 
     return (
       <div>
@@ -132,11 +200,13 @@ class QuestionListView extends Component {
 const mapStateToProps = state => {
   const { user } = state.auth;
   const { categoryId } = state.ctgr;
+  const { sortId } = state.sort;  
   const { intl } = state;
 
   return {
     user,
     categoryId,
+    sortId,
     intl
   };
 };

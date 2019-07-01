@@ -36,3 +36,22 @@ export const categories = {
       categoryId: 4,
   },
 };
+
+export const sorts = {
+  answerMany: {
+      sort: 'answerMany',
+      sortId: 1,
+  },
+  answerFew: {
+      sort: 'answerFew',
+      sortId: 2,
+  },
+  Asc: {
+      sort: 'Asc',
+      sortId: 3,
+  },
+  Des: {
+      sort: 'Des',
+      sortId: 4,
+  },
+};

@@ -97,6 +97,9 @@ const ja_JP = {
   "categories.culture": '文化',
   "categories.tourism": '観光',
   "categories.music": '音楽',
-
+  "sort.answerMany":'回答の多い順',
+  "sort.answerFew":'回答の少ない順',
+  "sort.Asc":'投稿の新しい順',
+  "sort.Des":'投稿の古い順',
 };
 export default ja_JP;
