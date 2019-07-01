@@ -30,35 +30,38 @@ class QuestionListView extends Component {
     return this.props.handleDeleteVote(data);
   }
 
-  categoryFilteredContents(array, id){
-    let SortedArray
+  categoryFilteredContents(array, id) {
+
+    const CREATED_ALL = 0;
+    const CREATED_SUBCULTURE = 1;
+    const CREATED_CULTURE = 2;
+    const CREATED_TOURISM = 3;
+    const CREATED_MUSIC = 4;
+
     switch(id) {
-      case 1 :
-        var result = array.filter((e)=>{
-          return e.category_id === 1 ;
-        })
-        return result;
-      case 2 :
-        var result = array.filter((e)=>{
-          return e.category_id === 2 ;
-        })
-        return result;
-      case 3 :
-        var result = array.filter((e)=>{
-          return e.category_id === 3 ;
-        })
-        return result;
-      case 4 :
-        var result = array.filter((e)=>{
-          return e.category_id === 4 ;
-        })
-        return result;
+      case CREATED_ALL :
+        return array;
+      case CREATED_SUBCULTURE :
+      case CREATED_CULTURE :
+      case CREATED_TOURISM :
+      case CREATED_MUSIC :
+        return array.filter((e)=>{
+          return e.category_id === id;
+        });
+      default:
+        return [];
+        break;
     }
   }
 
-  sortFilteredContents(array, id){
+  sortFilteredContents(array, id) {
+    const CREATED_ANSWER_MANY = 1;
+    const CREATED_ANSWER_FEW = 2;
+    const CREATED_CREATED_ASC = 3;
+    const CREATED_CREATED_DES = 4;
 
     let editArray = [];
+
     array.forEach(function(value) {
       let a 
       a = {
@@ -68,38 +71,33 @@ class QuestionListView extends Component {
       editArray.push(a);
     });
 
-    let SortedArray
     switch(id) {
-      case 1 :
-        SortedArray = editArray.sort(function(a,b) {
-          return (a.num < b.num ? 1 : -1);
-        });
-        SortedArray  = SortedArray.map((e)=>{ return e.array})
-        return SortedArray;
-      case 2 :
-        SortedArray = editArray.sort(function(a,b) {
+      case CREATED_ANSWER_MANY :
+        return editArray.sort(function(a,b) {
+            return (a.num < b.num ? 1 : -1);
+          }).map((e)=>{ return e.array});
+      case CREATED_ANSWER_FEW :
+        return editArray.sort(function(a,b) {
           return (a.num > b.num ? 1 : -1);
-        });
-        SortedArray  = SortedArray.map((e)=>{ return e.array})
-        return SortedArray;
-      case 3 :
-        SortedArray = array.sort(function(a,b) {
+        }).map((e)=>{ return e.array})
+      case CREATED_CREATED_ASC :
+        return array.sort(function(a,b) {
           return (a.created_at < b.created_at ? 1 : -1);
         });
-        return SortedArray;
-      case 4 :
-        SortedArray = array.sort(function(a,b) {
+      case CREATED_CREATED_DES :
+        return array.sort(function(a,b) {
           return (a.created_at > b.created_at ? 1 : -1);
         });
-        return SortedArray;
+      default:
+        return [];
     }
   }
 
   getQuestionList(questionArray, translateLanguageId, categoryId, sortId) {
 
     const contentType = 'question_translations';
-    const filteredQuestions = getFilteredContents(questionArray, translateLanguageId, contentType, categoryId);
-    const translatedQuestions = getTranslatedContents(filteredQuestions, translateLanguageId, contentType, categoryId);
+    const filteredQuestions = getFilteredContents(questionArray, translateLanguageId, contentType);
+    const translatedQuestions = getTranslatedContents(filteredQuestions, translateLanguageId, contentType);
     const categoryQuestions = this.categoryFilteredContents(translatedQuestions, categoryId);
     const sortQuestions = this.sortFilteredContents(categoryQuestions, sortId);
 
