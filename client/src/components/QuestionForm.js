@@ -12,19 +12,15 @@ class QuestionForm extends Component {
     const { formatMessage } = this.props.intl;
     let errors = {};
     if (!values.content) {
-      // errors.content = formatMessage({id: "errors.questions.content"});
       errors.content = "errors.questions.content";
     }
     if (!values.country_id) {
-      // errors.country_id = formatMessage({id: "errors.questions.country_id"});
       errors.country_id  = "errors.questions.country_id";
     }
     if (!values.translate_language_id) {
-      // errors.translate_language_id = formatMessage({id: "errors.questions.translate_language_id"});
       errors.translate_language_id = "errors.questions.translate_language_id";
     }
     if (!values.category_id) {
-      // errors.category_id = formatMessage({id: "errors.questions.category_id"});
       errors.category_id = "errors.questions.category_id";
     }
     return errors;
@@ -33,6 +29,12 @@ class QuestionForm extends Component {
   render() {
     const { initialValues } = this.props;
     const { formatMessage } = this.props.intl;
+
+    let persistTab
+    persistTab = "";
+    if(this.props.fromName === "questionForm"){
+      persistTab = <Persist name={this.props.fromName} />;
+    }
 
     return (
       <Formik
@@ -60,7 +62,7 @@ class QuestionForm extends Component {
                 />
                 {touched.content && errors.content && <div className="uk-text-warning">{ formatMessage({id: errors.content}) }</div>}
                 {/* {touched.content && errors.content && <div className="uk-text-warning">{errors.content}</div>} */}
-                <Persist name="question-form"/>
+                { persistTab }
               </div>
               <div className="uk-margin uk-grid uk-grid-small uk-child-width-expand@s" >
                 <div className="uk-grid-margin" >

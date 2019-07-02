@@ -4,8 +4,6 @@ import QuestionForm from './QuestionForm';
 import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 
-
-
 class Home extends React.Component {
 
   submitQuestionForm(formData) {
@@ -109,7 +107,7 @@ class Home extends React.Component {
             </a>
           </span>
         </div>
-        <QuestionForm initialValues={questionFormInitVals} loginUser={auth} onSubmit={this.submitQuestionForm.bind(this)} />
+        <QuestionForm initialValues={questionFormInitVals} loginUser={auth} onSubmit={this.submitQuestionForm.bind(this)} formName="questionForm"/>
         {/* 言語切り替え */}
         <h3 className="uk-heading-line"><span>{ formatMessage({id: "titles.question_list" })}</span></h3>
         <div className="uk-margin uk-grid uk-grid-small uk-child-width-expand@s" >
