@@ -19,8 +19,8 @@ export const categories = {
       category: 'all',
       categoryId: 0,
   },
-  subculture: {
-      category: 'subculture',
+  comic_anime: {
+      category: 'comic_anime',
       categoryId: 1,
   },
   culture: {

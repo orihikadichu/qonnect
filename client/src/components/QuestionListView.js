@@ -33,7 +33,7 @@ class QuestionListView extends Component {
   categoryFilteredContents(array, id) {
 
     const CREATED_ALL = 0;
-    const CREATED_SUBCULTURE = 1;
+    const CREATED_COMIC_ANIME = 1;
     const CREATED_CULTURE = 2;
     const CREATED_TOURISM = 3;
     const CREATED_MUSIC = 4;
@@ -41,7 +41,7 @@ class QuestionListView extends Component {
     switch(id) {
       case CREATED_ALL :
         return array;
-      case CREATED_SUBCULTURE :
+      case CREATED_COMIC_ANIME :
       case CREATED_CULTURE :
       case CREATED_TOURISM :
       case CREATED_MUSIC :

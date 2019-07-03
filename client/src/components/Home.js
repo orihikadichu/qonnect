@@ -29,7 +29,7 @@ class Home extends React.Component {
     switch(value) {
       case "all" :
         return 0;
-      case "subculture":
+      case "comic_anime":
         return 1;
       case "culture":
         return 2;
@@ -115,7 +115,7 @@ class Home extends React.Component {
           <div className="uk-grid-margin" >
             <select className="uk-select" value={category} onChange={e => this.changeCateogryfunction( e.target.value )} >
               <option value="all" >{ formatMessage({id: "categories.all" })}</option>
-              <option value="subculture" >{ formatMessage({id: "categories.subculture" })}</option>
+              <option value="comic_anime" >{ formatMessage({id: "categories.comic_anime" })}</option>
               <option value="culture" >{ formatMessage({id: "categories.culture" })}</option>
               <option value="tourism" >{ formatMessage({id: "categories.tourism" })}</option>
               <option value="music" >{ formatMessage({id: "categories.music" })}</option>
