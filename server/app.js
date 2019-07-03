@@ -895,6 +895,13 @@ app.get('/api/users/:id', (req, res) => {
         model: db.countries,
         required: false
       },
+      {
+        model: db.vote_translations,
+        required: false,
+        include: [
+          db.users
+        ]
+      },
     ]
   })
     .then((instance) => {

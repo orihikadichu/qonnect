@@ -7,14 +7,20 @@ class PostUser extends Component {
         let src;
         switch(countryId) {
             case 1:
-            src = "japan";
-            break;
+                src = "japan";
+                break;
             case 2:
-            src = "usa";
-            break;
+                src = "usa";
+                break;
+            case 3:
+                src = "philippines";
+                break;
+            case 4:
+                src = "england";
+                break;
             default :
-            src = "japan";
-            break;
+                src = "japan";
+                break;
         }
         return <img className="" src={`/image/common/flag/${src}.png`} style={{border: "1px solid #dcdcdc"}} width="20" height="20" alt=""/>;
     }
