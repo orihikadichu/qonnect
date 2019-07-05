@@ -4,16 +4,15 @@ import { sorts } from '../intl';
 
 export const sortRule = (state = initialState.ctgr, action) => {
 
-switch (action.type) {
-case UPDATE_CURRENT_SORT:
+  switch (action.type) {
+  case UPDATE_CURRENT_SORT:
     const { sort, sortId } = sorts[action.payload];
-    localStorage.setItem('sort', sort);
     return {
-    ...state,
-    sort,
-    sortId
+      ...state,
+      sort,
+      sortId
     };
-default:
+  default:
     return state;
-}
+  }
 };

@@ -2,15 +2,17 @@ import { locales, categories, sorts } from './intl';
 
 const savedLocale = localStorage.getItem('locale');
 const currentLocale = savedLocale ? savedLocale : 'ja';
-const savedCategory = localStorage.getItem('category');
-const currentCategory = savedCategory ? savedCategory : 'all';
-const savedSort = localStorage.getItem('sort');
-const currentSort = savedSort ? savedSort : 'answerMany';
 
 export const initialState = {
   intl: locales[currentLocale],
-  ctgr: categories[currentCategory],
-  sort: sorts[currentSort],
+  ctgr: {
+    category: 'all',
+    categoryId: 0
+  },
+  sort: {
+    sort: 'Asc',
+    sortId: 3
+  },
   signUp: {
     mail: '',
     password: '',

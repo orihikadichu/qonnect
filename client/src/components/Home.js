@@ -97,12 +97,12 @@ class Home extends React.Component {
         <div className="uk-width-auto uk-margin-bottom uk-text-right" >
           <span>
             <a href="/" onClick={this.onChangeLanguage.bind(this, 'ja')} >
-              { formatMessage({id: "languages.japanese" })}
+              日本語
             </a>
           </span>
           <span className="uk-margin-small-left">
             <a href="/" onClick={this.onChangeLanguage.bind(this, 'en')} >
-              { formatMessage({id: "languages.english" })}
+              English
             </a>
           </span>
         </div>
