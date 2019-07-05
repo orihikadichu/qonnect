@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { isEmptyObject } from '../../utils';
 import { injectIntl } from 'react-intl';
+import Stampcard from '../../components/Stampcard';
 
 class Profile extends Component {
   constructor(props) {
@@ -25,15 +26,25 @@ class Profile extends Component {
     });
   }
 
-  getVoteList(vote_translations){
-    // const userId = vote_translations.map((e)=>{return e.user_id})
-    return vote_translations.map((e)=>{
-      return (
-          <Link to={e.user.profile_link}>
-            <img className="uk-comment-avatar uk-border-circle" src={e.user.image_path} width="35" height="35" alt="" />
-          </Link>
-      )
-    });
+  getVoteList(voteLists){
+
+    const repeatNum = Math.ceil(voteLists.length/5);
+    const stampCardNum =  Math.ceil(voteLists.length/10);
+    const addArrayNum = stampCardNum*10 - voteLists.length;
+
+    for(let i=0 ; i < addArrayNum ; i++){
+      voteLists.push("");
+    }
+    const tableContents =[];
+    for(let i =0; i < stampCardNum ;i++) {
+      const stampcard = <Stampcard 
+        voteArray = { voteLists.slice((i*5)*2, (i*5)*2+10)}
+        repeatNum = { repeatNum }
+      />
+      tableContents.unshift(stampcard);
+    }
+
+    return tableContents;
   };
 
   getTabList() {
@@ -183,7 +194,7 @@ class Profile extends Component {
 
     const tabList = this.getTabList();
     const userPostList = this.getCurrentTabContents(profile, this.state.currentTab);
-    const voteList = this.getVoteList(vote_translations);
+    const voteTables = this.getVoteList(vote_translations);
   
     return (
       <main className="uk-container uk-container-small">
@@ -192,14 +203,19 @@ class Profile extends Component {
             <img src={user.image_path} className="uk-border-circle" alt="" width="120" height="" />
           </div>
           <div className="uk-width-expand" >
+          {/* <div className="uk-width-expand" > */}
             <p className="uk-text-lead">{user.name}</p>
             <p>{formatMessage({id: "messages.birthplace"})}: {user.country.name}</p>
           </div>
+          <div className="uk-flex-end">
+            <p>いいねした人一覧</p>
+            {voteTables}
+          </div>
         </div>
-        <div class="uk-overflow-auto">
-          <p>いいねした人</p>
-          {voteList}
-        </div>
+        {/* <div className="uk-width-auto">
+            <p>いいねした人一覧</p>
+            {voteTables}
+        </div> */}
         <div>
           <p style={{"whiteSpace": "pre-wrap"}}>{user.profile}</p>
         </div>
