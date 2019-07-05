@@ -3,6 +3,7 @@ import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import QuestionForm from './QuestionForm';
 import { isEmptyObject } from '../utils';
+import { injectIntl } from 'react-intl';
 
 class QuestionEdit extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class QuestionEdit extends Component {
   }
 
   componentWillMount() {
+    console.log("発火")
     this.props.getQuestionById(this.qId);
   }
 
@@ -51,10 +53,16 @@ class QuestionEdit extends Component {
     } catch (e) {
       return;
     }
-  }
+  }s
 
   render() {
     const { currentQuestion } = this.props.state.questions;
+    const { formatMessage } = this.props.intl;
+
+    if(currentQuestion.length===0){
+      return;
+    };
+
     if (isEmptyObject(currentQuestion)) {
       return (
         <div className="uk-position-center uk-overlay uk-overlay-default">
@@ -67,13 +75,13 @@ class QuestionEdit extends Component {
 
     return (
       <main className="uk-container uk-container-small">
-        <h2>質問の編集</h2>
-        <QuestionForm initialValues={currentQuestion} onSubmit={this.handleSubmit.bind(this)} />
-        <p><button className="uk-button uk-button-danger" onClick={this.onClickDeleteBtn.bind(this)}>この質問を削除</button></p>
-        <Link to="/">Top</Link>
+        <h2>{ formatMessage({id: "titles.question.edit" })}</h2>
+        <QuestionForm initialValues={currentQuestion} onSubmit={this.handleSubmit.bind(this)}/>
+        <p><button className="uk-button uk-button-danger" onClick={this.onClickDeleteBtn.bind(this)}>{ formatMessage({id: "titles.question.delete" })}</button></p>
+        <Link to="/">{ formatMessage({id: "titles.question.return" })}</Link>
       </main>
     );
   }
 }
 
-export default QuestionEdit;
+export default injectIntl(QuestionEdit);

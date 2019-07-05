@@ -16,8 +16,14 @@ module.exports = {
       updated_at: '2019-06-01 00:00:00'
     },
     {
-      name: '東南アジア',
-      intl_key: 'countries.southeastasia',
+      name: 'フィリピン',
+      intl_key: 'countries.philippines',
+      created_at: '2019-06-01 00:00:00',
+      updated_at: '2019-06-01 00:00:00'
+    },
+    {
+      name: 'イギリス',
+      intl_key: 'countries.england',
       created_at: '2019-06-01 00:00:00',
       updated_at: '2019-06-01 00:00:00'
     }], {});

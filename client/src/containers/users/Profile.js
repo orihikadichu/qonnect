@@ -25,6 +25,17 @@ class Profile extends Component {
     });
   }
 
+  getVoteList(vote_translations){
+    // const userId = vote_translations.map((e)=>{return e.user_id})
+    return vote_translations.map((e)=>{
+      return (
+          <Link to={e.user.profile_link}>
+            <img className="uk-comment-avatar uk-border-circle" src={e.user.image_path} width="35" height="35" alt="" />
+          </Link>
+      )
+    });
+  };
+
   getTabList() {
     const { formatMessage } = this.props.intl;
     const tabData = [
@@ -160,6 +171,7 @@ class Profile extends Component {
     const { profile } = this.props.state;
     const { user } = profile;
     const { formatMessage } = this.props.intl;
+    const { vote_translations } = user;
 
     if (isEmptyObject(user)) {
       return (
@@ -171,7 +183,8 @@ class Profile extends Component {
 
     const tabList = this.getTabList();
     const userPostList = this.getCurrentTabContents(profile, this.state.currentTab);
-
+    const voteList = this.getVoteList(vote_translations);
+  
     return (
       <main className="uk-container uk-container-small">
         <div className="uk-grid uk-grid-small uk-flex-middle uk-margin-bottom">
@@ -182,6 +195,10 @@ class Profile extends Component {
             <p className="uk-text-lead">{user.name}</p>
             <p>{formatMessage({id: "messages.birthplace"})}: {user.country.name}</p>
           </div>
+        </div>
+        <div class="uk-overflow-auto">
+          <p>いいねした人</p>
+          {voteList}
         </div>
         <div>
           <p style={{"whiteSpace": "pre-wrap"}}>{user.profile}</p>

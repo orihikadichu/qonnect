@@ -318,6 +318,10 @@ app.get('/api/questions', (req, res) => {
         required: false
       },
       {
+        model: db.answers,
+        required: false
+      },
+      {
         model: db.question_translations,
         required: false,
         include: [
@@ -890,6 +894,13 @@ app.get('/api/users/:id', (req, res) => {
       {
         model: db.countries,
         required: false
+      },
+      {
+        model: db.vote_translations,
+        required: false,
+        include: [
+          db.users
+        ]
       },
     ]
   })

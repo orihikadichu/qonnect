@@ -24,18 +24,84 @@ class QuestionListView extends Component {
   }
 
   deleteVote(data, user_id) {
-      if (user_id == null) {
-          return;
-      }
-      return this.props.handleDeleteVote(data);
+    if (user_id == null) {
+        return;
+    }
+    return this.props.handleDeleteVote(data);
   }
 
-  getQuestionList(questionArray, translateLanguageId, categoryId) {
-    const contentType = 'question_translations';
-    const filteredQuestions = getFilteredContents(questionArray, translateLanguageId, contentType, categoryId);
-    const translatedQuestions = getTranslatedContents(filteredQuestions, translateLanguageId, contentType, categoryId);
+  categoryFilteredContents(array, id) {
 
-    return translatedQuestions.map(question => {
+    const CREATED_ALL = 0;
+    const CREATED_COMIC_ANIME = 1;
+    const CREATED_CULTURE = 2;
+    const CREATED_TOURISM = 3;
+    const CREATED_MUSIC = 4;
+
+    switch(id) {
+      case CREATED_ALL :
+        return array;
+      case CREATED_COMIC_ANIME :
+      case CREATED_CULTURE :
+      case CREATED_TOURISM :
+      case CREATED_MUSIC :
+        return array.filter((e)=>{
+          return e.category_id === id;
+        });
+      default:
+        return [];
+        break;
+    }
+  }
+
+  sortFilteredContents(array, id) {
+    const CREATED_ANSWER_MANY = 1;
+    const CREATED_ANSWER_FEW = 2;
+    const CREATED_CREATED_ASC = 3;
+    const CREATED_CREATED_DES = 4;
+
+    let editArray = [];
+
+    array.forEach(function(value) {
+      let a 
+      a = {
+        "num" : value.answers.length,
+        "array": value
+      };
+      editArray.push(a);
+    });
+
+    switch(id) {
+      case CREATED_ANSWER_MANY :
+        return editArray.sort(function(a,b) {
+            return (a.num < b.num ? 1 : -1);
+          }).map((e)=>{ return e.array});
+      case CREATED_ANSWER_FEW :
+        return editArray.sort(function(a,b) {
+          return (a.num > b.num ? 1 : -1);
+        }).map((e)=>{ return e.array})
+      case CREATED_CREATED_ASC :
+        return array.sort(function(a,b) {
+          return (a.created_at < b.created_at ? 1 : -1);
+        });
+      case CREATED_CREATED_DES :
+        return array.sort(function(a,b) {
+          return (a.created_at > b.created_at ? 1 : -1);
+        });
+      default:
+        return [];
+    }
+  }
+
+  getQuestionList(questionArray, translateLanguageId, categoryId, sortId) {
+
+    const contentType = 'question_translations';
+    const filteredQuestions = getFilteredContents(questionArray, translateLanguageId, contentType);
+    const translatedQuestions = getTranslatedContents(filteredQuestions, translateLanguageId, contentType);
+    const categoryQuestions = this.categoryFilteredContents(translatedQuestions, categoryId);
+    const sortQuestions = this.sortFilteredContents(categoryQuestions, sortId);
+
+    return sortQuestions.map(question => {
       const { user } = question;
       const { formatMessage } = this.props.intl
 
@@ -105,8 +171,8 @@ class QuestionListView extends Component {
     });
   }
 
-  getQuestionListView(questionArray, translateLanguageId, categoryId) {
-    const questionList = this.getQuestionList(questionArray, translateLanguageId, categoryId);
+  getQuestionListView(questionArray, translateLanguageId, categoryId, sortId) {
+    const questionList = this.getQuestionList(questionArray, translateLanguageId, categoryId, sortId);
 
     return (
       <div>
@@ -118,8 +184,8 @@ class QuestionListView extends Component {
   }
 
   render() {
-    const { questionArray, translateLanguageId, categoryId } = this.props;
-    const content = this.getQuestionListView(questionArray, translateLanguageId, categoryId);
+    const { questionArray, translateLanguageId, categoryId, sortId } = this.props;
+    const content = this.getQuestionListView(questionArray, translateLanguageId, categoryId, sortId);
 
     return (
       <div>
@@ -132,11 +198,13 @@ class QuestionListView extends Component {
 const mapStateToProps = state => {
   const { user } = state.auth;
   const { categoryId } = state.ctgr;
+  const { sortId } = state.sort;  
   const { intl } = state;
 
   return {
     user,
     categoryId,
+    sortId,
     intl
   };
 };

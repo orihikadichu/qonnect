@@ -11,6 +11,9 @@ import {
   updateCurrentCategory,
 } from '../actions/Category';
 import {
+  updateCurrentSort,
+} from '../actions/Sort';
+import {
   actionAlertMessage,
 } from '../actions/Notification';
 
@@ -23,6 +26,7 @@ const mapDispatchToProps = dispatch => {
     handleSubmit: (postData) => dispatch(postQuestionData(postData)),
     changeLanguage: (locale) => dispatch(updateCurrentLanguage(locale)),
     changeCategory: (category) => dispatch(updateCurrentCategory(category)),
+    changeSort: (sort) => dispatch(updateCurrentSort(sort)),
     handleFetchData: (queryData) => dispatch(fetchQuestionList(queryData)),
     alertMessage: (message) => dispatch(actionAlertMessage(message)),
   };

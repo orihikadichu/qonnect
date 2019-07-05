@@ -9,7 +9,6 @@ class Home extends React.Component {
   submitQuestionForm(formData) {
     try {
       const { user, isLoggedIn } = this.props.state.auth;
-      console.log("this.props",this.props);
       if (!isLoggedIn) {
         const { history } = this.props;
         this.props.alertMessage("ログインしてください。");
@@ -29,7 +28,7 @@ class Home extends React.Component {
     switch(value) {
       case "all" :
         return 0;
-      case "subculture":
+      case "comic_anime":
         return 1;
       case "culture":
         return 2;
@@ -42,6 +41,21 @@ class Home extends React.Component {
     }
   }
 
+  selectedSort(value) {
+    switch(value) {
+      case "answerMany":
+        return 1;
+      case "answerFew":
+        return 2;
+      case "Asc":
+        return 3;
+      case "Des":
+        return 4;
+      default:
+        return 4;
+    }
+  }
+
   onChangeLanguage(locale, e) {
     e.preventDefault();
     e.stopPropagation();
@@ -51,14 +65,17 @@ class Home extends React.Component {
     return;
   }
 
+  changeSortfunction(value){
+    this.props.changeSort(value);
+    let params;
+    params = {};
+    this.props.handleFetchData(params);
+  }
+
   changeCateogryfunction(value) {
      this.props.changeCategory(value);
-     const categoryId = this.selectedCategory(value);
      let params;
      params = {};
-     if (categoryId !== 0) {
-       params = { category_id: categoryId };
-     }
      this.props.handleFetchData(params);
   }
 
@@ -66,6 +83,7 @@ class Home extends React.Component {
     const { formatMessage } = this.props.intl;
     const { locale, translateLanguageId } = this.props.state.intl;
     const { category } = this.props.state.ctgr;
+    const { sort } = this.props.state.sort;
     const { auth } = this.props.state;
     const questionFormInitVals = {
       content: '',
@@ -77,10 +95,6 @@ class Home extends React.Component {
     return (
       <main className="uk-container uk-container-small">
         <div className="uk-width-auto uk-margin-bottom uk-text-right" >
-          {/* <select className="uk-select" value={locale} onChange={this.onChangeLanguage.bind(this)} >
-              <option value="ja" >{ formatMessage({id: "languages.japanese" })}</option>
-              <option value="en" >{ formatMessage({id: "languages.english" })}</option>
-              </select> */}
           <span>
             <a href="/" onClick={this.onChangeLanguage.bind(this, 'ja')} >
               日本語
@@ -92,18 +106,29 @@ class Home extends React.Component {
             </a>
           </span>
         </div>
-        <QuestionForm initialValues={questionFormInitVals} loginUser={auth} onSubmit={this.submitQuestionForm.bind(this)} />
+        <QuestionForm initialValues={questionFormInitVals} loginUser={auth} onSubmit={this.submitQuestionForm.bind(this)} formName="questionForm"/>
         {/* 言語切り替え */}
         <h3 className="uk-heading-line"><span>{ formatMessage({id: "titles.question_list" })}</span></h3>
-        {/* カテゴリー切り替え */}
-        <div className="uk-margin">
-          <select className="uk-select" value={category} onChange={e => this.changeCateogryfunction( e.target.value )} >
-            <option value="all" >{ formatMessage({id: "categories.all" })}</option>
-            <option value="subculture" >{ formatMessage({id: "categories.subculture" })}</option>
-            <option value="culture" >{ formatMessage({id: "categories.culture" })}</option>
-            <option value="tourism" >{ formatMessage({id: "categories.tourism" })}</option>
-            <option value="music" >{ formatMessage({id: "categories.music" })}</option>
-          </select>
+        <div className="uk-margin uk-grid uk-grid-small uk-child-width-expand@s" >
+          {/* カテゴリー切り替え */}
+          <div className="uk-grid-margin" >
+            <select className="uk-select" value={category} onChange={e => this.changeCateogryfunction( e.target.value )} >
+              <option value="all" >{ formatMessage({id: "categories.all" })}</option>
+              <option value="comic_anime" >{ formatMessage({id: "categories.comic_anime" })}</option>
+              <option value="culture" >{ formatMessage({id: "categories.culture" })}</option>
+              <option value="tourism" >{ formatMessage({id: "categories.tourism" })}</option>
+              <option value="music" >{ formatMessage({id: "categories.music" })}</option>
+            </select>
+          </div>
+          {/* ソート */}
+          <div className="uk-grid-margin" >
+            <select className="uk-select" value={sort} onChange={e => this.changeSortfunction( e.target.value )} >
+              <option value="answerMany" >{ formatMessage({id: "sort.answerMany" })}</option>
+              <option value="answerFew" >{ formatMessage({id: "sort.answerFew" })}</option>
+              <option value="Asc" >{ formatMessage({id: "sort.Asc" })}</option>
+              <option value="Des" >{ formatMessage({id: "sort.Des" })}</option>
+            </select>
+          </div>
         </div>
         <QuestionList translate_language_id={translateLanguageId}/>
       </main>

@@ -1,6 +1,6 @@
 'use strict';
 
-export const getFilteredContents = (contentList, translateLanguageId, contentType, categoryId) => {
+export const getFilteredContents = (contentList, translateLanguageId, contentType) => {
   const filteredContents = contentList.filter((v) => {
     if (v.translate_language_id === translateLanguageId) {
       return true ;
@@ -14,7 +14,7 @@ export const getFilteredContents = (contentList, translateLanguageId, contentTyp
   return filteredContents;
 };
 
-export const getTranslatedContents = (contentList, translateLanguageId, contentType, categoryId) => {
+export const getTranslatedContents = (contentList, translateLanguageId, contentType) => {
   const translatedContents = contentList.map((v) => {
     if (v.translate_language_id === translateLanguageId) {
         v.dispText = v.content;

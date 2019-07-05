@@ -13,6 +13,9 @@ const ja_JP = {
   "titles.profile_edit.profile": 'プロフィール',
   "titles.profile_edit.user_image": 'プロフィール画像',
   "titles.profile.edit": 'プロフィール編集',
+  "titles.question.edit": '質問の編集',
+  "titles.question.delete": '質問の削除',
+  "titles.question.return": 'トップ', 
   "messages.empty_answers": 'まだ回答がありません。最初の投稿者になりましょう！',
   "messages.birthplace": '出身地',
   "messages.you_are_not_target": 'この質問は 「%s」 の方が回答対象者です。',
@@ -36,9 +39,10 @@ const ja_JP = {
   "languages.english": '英語',
   "countries.japan": '日本',
   "countries.usa": 'アメリカ合衆国',
-  "countries.southeastasia": '東南アジア',
+  "countries.philippines": 'フィリピン',
+  "countries.england": 'イギリス',
   "categories.all": 'すべて',
-  "categories.subculture": '漫画・アニメ',
+  "categories.comic_anime": '漫画・アニメ',
   "categories.culture": '文化',
   "categories.tourism": '観光',
   "categories.music": '音楽',
@@ -97,6 +101,9 @@ const ja_JP = {
   "categories.culture": '文化',
   "categories.tourism": '観光',
   "categories.music": '音楽',
-
+  "sort.answerMany":'回答の多い順',
+  "sort.answerFew":'回答の少ない順',
+  "sort.Asc":'投稿の新しい順',
+  "sort.Des":'投稿の古い順',
 };
 export default ja_JP;

@@ -55,9 +55,6 @@ export function* changeQuestionListLanguage(action) {
   try {
     const { translate_language_id } = action.payload;
     yield put(requestData());
-    // const payload = yield call(fetchQuestionList, action.payload);
-    // yield put(updateCurrentTranslateLanguage(action));
-    // yield put(receiveDataSuccess(payload));
   } catch (e) {
     yield put(receiveDataFailed());
   }
