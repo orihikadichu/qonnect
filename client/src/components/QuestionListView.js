@@ -13,6 +13,7 @@ import { postVote, deleteVote } from '../actions/Vote';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PostUser from './PostUser';
 import PostIcons from './PostIcons';
+import PostAnswerCount from './PostAnswerCount';
 
 class QuestionListView extends Component {
 
@@ -104,7 +105,7 @@ class QuestionListView extends Component {
     return sortQuestions.map(question => {
       const { user } = question;
       const { formatMessage } = this.props.intl
-
+      const { answers } = question;
       const { votes } = question;
 
       const key = "questionList";
@@ -135,6 +136,11 @@ class QuestionListView extends Component {
         translator = <Translator user={user} />;
       }
 
+      let contentCount ="";
+      if ( answers.length !==0 ) {
+        contentCount = <PostAnswerCount reply={ answers } />
+      };
+
       return (
         <li key={question.id} >
           <p>
@@ -161,6 +167,9 @@ class QuestionListView extends Component {
           <div className="uk-grid uk-grid-small uk-flex-middle" >
             <div>
               <PostUser user={user} />
+            </div>
+            <div>
+              { contentCount }
             </div>
             <div className="uk-width-expand" >
               { translator }
