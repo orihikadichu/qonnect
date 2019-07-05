@@ -195,27 +195,25 @@ class Profile extends Component {
     const tabList = this.getTabList();
     const userPostList = this.getCurrentTabContents(profile, this.state.currentTab);
     const voteTables = this.getVoteList(vote_translations);
-  
+
     return (
       <main className="uk-container uk-container-small">
-        <div className="uk-grid uk-grid-small uk-flex-middle uk-margin-bottom">
-          <div className="uk-width-auto uk-flex-first">
-            <img src={user.image_path} className="uk-border-circle" alt="" width="120" height="" />
+        {/* <div className="uk-grid uk-grid-small uk-flex-middle uk-margin-bottom"> */}
+        <div class="uk-grid uk-grid-small">
+          <div className="uk-width-expand">
+            <div className="uk-width-auto uk-flex-first">
+              <img src={user.image_path} className="uk-border-circle" alt="" width="120" height="" />
+            </div>
+            <div className="uk-width-auto" >
+              <p className="uk-text-lead">{user.name}</p>
+              <p>{formatMessage({id: "messages.birthplace"})}: {user.country.name}</p>
+            </div>
           </div>
-          <div className="uk-width-expand" >
-          {/* <div className="uk-width-expand" > */}
-            <p className="uk-text-lead">{user.name}</p>
-            <p>{formatMessage({id: "messages.birthplace"})}: {user.country.name}</p>
-          </div>
-          <div className="uk-flex-end">
+          <div className="uk-width-2-5@s">
             <p>いいねした人一覧</p>
             {voteTables}
-          </div>
+          </div> 
         </div>
-        {/* <div className="uk-width-auto">
-            <p>いいねした人一覧</p>
-            {voteTables}
-        </div> */}
         <div>
           <p style={{"whiteSpace": "pre-wrap"}}>{user.profile}</p>
         </div>
