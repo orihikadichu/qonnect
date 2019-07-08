@@ -13,6 +13,7 @@ const en_US = {
   "titles.profile_edit.profile": 'Profile',
   "titles.profile_edit.user_image": 'Profile Image',
   "titles.profile.edit": 'Profile Edit',
+  "titles.profile.votes": 'Like list',
   "titles.question.edit": 'Question Edit',
   "titles.question.delete": 'Question Delete',
   "titles.question.return": 'Top', 
