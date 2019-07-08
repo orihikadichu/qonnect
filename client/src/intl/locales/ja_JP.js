@@ -13,6 +13,7 @@ const ja_JP = {
   "titles.profile_edit.profile": 'プロフィール',
   "titles.profile_edit.user_image": 'プロフィール画像',
   "titles.profile.edit": 'プロフィール編集',
+  "titles.profile.votes": 'いいねした人一覧',
   "titles.question.edit": '質問の編集',
   "titles.question.delete": '質問の削除',
   "titles.question.return": 'トップ', 

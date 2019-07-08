@@ -5,6 +5,8 @@ class Stampcard extends Component {
   render() {
     const { voteArray, repeatNum } = this.props
 
+    console.log("voteArray",voteArray);
+
     const tableContents =[];
     for (let i =0;i<repeatNum;i++){
         let voteList = voteArray.slice(i*5,i*5+5)
@@ -38,10 +40,3 @@ class Stampcard extends Component {
 };
       
 export default Stampcard;
-
-// <div>
-// <div class="uk-card uk-card-default uk-card-small uk-card-body">
-//     <h3 class="uk-card-title">Small</h3>
-//     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-// </div>
-// </div>

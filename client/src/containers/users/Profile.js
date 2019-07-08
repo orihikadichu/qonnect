@@ -44,6 +44,25 @@ class Profile extends Component {
       tableContents.unshift(stampcard);
     }
 
+    // いいね数が０の場合
+    if(voteLists.length===0){
+      let contents=[]
+      for (let i=0;i<5;i++){
+          contents.push(
+          <td></td>);
+      }
+      tableContents.push(<table className="uk-table stamp-card uk-card uk-card-default uk-card-small uk-card-body uk-margin-top">
+                        <tbody>
+                          <tr>
+                            {contents}
+                          </tr>
+                          <tr>
+                            {contents}
+                          </tr>
+                        </tbody>
+                      </table>)
+    }
+
     return tableContents;
   };
 
@@ -210,7 +229,7 @@ class Profile extends Component {
             </div>
           </div>
           <div className="uk-width-2-5@s">
-            <p>いいねした人一覧</p>
+            <p>{formatMessage({id: "titles.profile.votes"})}</p>
             {voteTables}
           </div> 
         </div>
