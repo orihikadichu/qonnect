@@ -43,6 +43,7 @@ export const saveUserPassword = (postData) => {
 export const saveUserProfile = (postData) => {
     const { user_id, name, profile, country_id, image } = postData;
     let data = new FormData();
+    console.log("name-----------",name);
     data.append('name', name);
     data.append('profile', profile);
     data.append('country_id', country_id);

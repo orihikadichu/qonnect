@@ -90,6 +90,7 @@ const ja_JP = {
   "placeholders.translations.translate_language_id": '投稿言語',
   "placeholder.profile_edit.profile": 'プロフィールを入力してください',
   "placeholder.profile_edit.country": '出身地・所在地',
+  "placeholder.profile_edit.nickname": "ユーザー名",
   "buttons.title.reply": '返信',
   "buttons.title.post": '投稿',
   "buttons.title.sign_up": '新規登録',

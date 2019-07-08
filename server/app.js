@@ -1012,19 +1012,28 @@ app.post('/api/users', (req, res) => {
   ;
 });
 
-// プロフィール保存処理
-app.put('/api/users/:id', upload.single('image'), (req, res) => {
-  const { id } = req.params;
-  const params = req.body;
-  const imagePath = getProfileImageFilePath(id);
-  const filePath = PUBLIC_URL + imagePath;
-  console.log('filePath', filePath);
+function updateImage(filePath) {
+  if (!fs.existsSync(filePath)) {
+    return;
+  }
   jimp.read(filePath, function(err, image) {
     if (err) throw err;
     image
       .cover(500, 500)
       .write(filePath);
   });
+}
+
+// プロフィール保存処理
+app.put('/api/users/:id', upload.single('image'), (req, res) => {
+
+  const { id } = req.params;
+  const params = req.body;
+  const imagePath = getProfileImageFilePath(id);
+  const filePath = PUBLIC_URL + imagePath;
+
+  updateImage(filePath);
+
   const filter = {
     where: { id }
   };
