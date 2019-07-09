@@ -36,13 +36,8 @@ module.exports = (sequelize, DataTypes) => {
     questions.hasMany(models.answers, {foreignKey: 'question_id'});
     questions.hasMany(models.question_translations, {foreignKey: 'question_id'});
     questions.hasMany(models.votes, {foreignKey: 'question_id'});
-    // questions.belongsTo(models.categories, {foreignKey: 'category_id'});
+    questions.hasMany(models.points, {foreignKey: 'target_id'});
   };
   return questions;
 };
 
-// content: DataTypes.STRING,
-// user_id: DataTypes.INTEGER,
-// translate_language_id: DataTypes.INTEGER,
-// country_id: DataTypes.INTEGER,
-// category_id: DataTypes.INTEGER,

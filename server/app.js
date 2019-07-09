@@ -205,17 +205,53 @@ app.delete('/api/vote_translations/:id', (req, res) => {
 });
 
 /*
+  ポイント取得
+*/
+// app.get('/api/points', (req, res) => {
+//   const {type, target} = req.query;
+//   db.questions.findAll({
+//     include: [
+//         { 
+//           model: db.points, 
+//           // where: { "action_type_id":1}
+//         }
+//     ],
+//   }).then(function(values){
+//     console.log("--------------------");
+//     console.log(values[0].point);
+//     console.log("--------------------");
+//     res.status(200).send(values);
+//   });
+// });
+
+app.get('/api/points', (req, res) => {
+  const {type, target} = req.query;
+  db.answers.findAll({
+    include: [
+        { 
+          model: db.points, 
+          where: { "action_type_id":2},
+          required: false
+        }
+    ],
+  }).then(function(values){
+    res.status(200).send(values);
+  });
+});
+
+
+/*
   翻訳一覧取得
 */
 app.get('/api/content_translations', (req, res) => {
-    const params = req.query;
-    const promise1 = db.question_translations.findAll({ where: params }); 
-    const promise2 = db.answer_translations.findAll({ where: params });
-    const promise3 = db.comment_translations.findAll({ where: params }); 
-    Promise.all([promise1, promise2, promise3]).then(function(values) {
-      console.log(values);
-      res.status(200).send(values);
-    });
+  const params = req.query;
+  const promise1 = db.question_translations.findAll({ where: params }); 
+  const promise2 = db.answer_translations.findAll({ where: params });
+  const promise3 = db.comment_translations.findAll({ where: params }); 
+  Promise.all([promise1, promise2, promise3]).then(function(values) {
+    console.log(values);
+    res.status(200).send(values);
+  });
 });
 
 /*

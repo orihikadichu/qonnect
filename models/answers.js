@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     answers.hasMany(models.comments, {foreignKey: 'answer_id'});
     answers.hasMany(models.answer_translations, {foreignKey: 'answer_id'});
     answers.hasMany(models.votes, {foreignKey: 'answer_id'});
+    answers.hasMany(models.points, {foreignKey: 'target_id'});
   };
   return answers;
 };
