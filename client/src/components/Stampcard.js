@@ -13,7 +13,7 @@ class Stampcard extends Component {
         let contents = voteList.map((e) => {
             if (!e) {
                 return (
-                    <td key={e.id}className="uk-text-center"></td>
+                    <td key={"vote_translate"+e.id}　className="uk-text-center"></td>
                 );  
             }
             return (

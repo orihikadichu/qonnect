@@ -49,10 +49,10 @@ class Profile extends Component {
       let contents=[]
       for (let i=0;i<5;i++){
           contents.push(
-          <td></td>);
+          <td className="uk-text-center"></td>);
       }
       tableContents.push(<table className="uk-table stamp-card uk-card uk-card-default uk-card-small uk-card-body uk-margin-top">
-                        <tbody>
+                        <tbody className="uk-table stamp-card uk-card uk-card-default uk-card-small uk-card-body uk-margin-top">
                           <tr>
                             {contents}
                           </tr>
@@ -227,14 +227,14 @@ class Profile extends Component {
               <p className="uk-text-lead">{user.name}</p>
               <p>{formatMessage({id: "messages.birthplace"})}: {user.country.name}</p>
             </div>
+            <div>
+              <p style={{"whiteSpace": "pre-wrap"}}>{user.profile}</p>
+            </div>
           </div>
           <div className="uk-width-2-5@s">
             <p>{formatMessage({id: "titles.profile.votes"})}</p>
             {voteTables}
           </div> 
-        </div>
-        <div>
-          <p style={{"whiteSpace": "pre-wrap"}}>{user.profile}</p>
         </div>
         <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.post_list"})}</span></h3>
         {tabList}
