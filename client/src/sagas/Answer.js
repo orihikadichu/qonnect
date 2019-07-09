@@ -20,11 +20,11 @@ export function* handleFetchAnswerData(action) {
   try {
     yield put(requestData());
     const answerList = yield call(api.fetchAnswerList, action.payload);
-    const answerId = answerList.data.map(v =>{ return v.id });
+    const answerId = answerList.data.map(v => v.id);
     const commentList = yield call(fetchCommentWithUserList, answerId);
     yield put(receiveDataSuccess(answerList));
     yield put(act.receiveCommentDataSuccess(commentList));
-    yield put(act.updatedCommentArray(action.payload));   
+    yield put(act.updatedCommentArray(action.payload));
   } catch (e) {
     yield put(receiveDataFailed());
   }
