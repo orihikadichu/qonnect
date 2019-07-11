@@ -45,8 +45,6 @@ class ProfileForm extends Component {
         enableReinitialize={true}
         validate={this.validate.bind(this)}
         onSubmit={(values, { setSubmitting, setErrors }) => {
-            console.log('onSubmit', values);
-            console.log('setErrors', setErrors);
             this.props.onSubmit(values);
             setSubmitting(false);
             return;
