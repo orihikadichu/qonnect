@@ -31,7 +31,6 @@ import { Provider } from 'react-redux';
 import store from './store';
 import history from './store';
 import UIkit from 'uikit';
-// import Icons from 'uikit/dist/js/uikit-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
@@ -58,7 +57,7 @@ const render = () => {
   ReactDOM.render(
     <Provider store={store}>
       <IntlProvider locale={locale} messages={messages} >
-        <BrowserRouter> 
+        <BrowserRouter>
           <App>
             <ScrollToTop>
               <Switch>
