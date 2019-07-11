@@ -24,6 +24,7 @@ import NewPassword from './containers/users/NewPassword';
 import Activate from './containers/users/Activate';
 import Profile from './containers/users/Profile';
 import ProfileEdit from './containers/users/ProfileEdit';
+import Contact from './containers/Contact';
 import UserOnly from './containers/auth/UserOnly';
 import GuestOnly from './containers/auth/GuestOnly';
 import { Provider } from 'react-redux';
@@ -72,6 +73,7 @@ const render = () => {
                 <Route exact path='/users/activate/:token' component={Activate} />
                 <Route exact path='/users/password_reset' component={PasswordReset} />
                 <Route exact path='/users/password_reset/:token' component={NewPassword} />
+                <Route exact path='/contact' component={Contact} />
                 <UserOnly>
                   <Switch>
                     <Route exact path='/questions/edit/:id' component={QuestionEdit} />

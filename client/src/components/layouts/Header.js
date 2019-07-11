@@ -124,6 +124,12 @@ class Header extends React.Component {
               <span>{formatMessage({id: "links.sign_up"})}</span>
             </Link>
           </MenuItem>
+          <MenuItem onClick={handleClose}>
+            <Link to="/contact" >
+              <span uk-icon="mail" ></span>
+              <span>{formatMessage({id: "links.contact"})}</span>
+            </Link>
+          </MenuItem>
         </Menu>
       </div>
     );

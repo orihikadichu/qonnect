@@ -8,17 +8,13 @@ class QuestionList extends Component {
 
   componentDidMount() {
     const { questionArray } = this.props.state.questions;
-    const categoryId = this.props.state.ctgr.categoryId;
+    const category_id = this.props.state.ctgr.categoryId;
 
     if (questionArray.length !== 0) {
       return;
     }
 
-    let params 
-    params = {};
-    if (categoryId !== 0){
-      params = { category_id: categoryId };
-    }
+    const params = (category_id === 0) ? {} : { category_id };
     this.props.handleFetchData(params);
   }
 
