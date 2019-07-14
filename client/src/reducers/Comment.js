@@ -9,6 +9,7 @@ import {
 import { initialState } from '../constants';
 
 export const list = (state = initialState.comments, action) => {
+  console.log('comment_action', action);
   switch (action.type) {
   case REQUEST_DATA:
     return {
@@ -19,13 +20,7 @@ export const list = (state = initialState.comments, action) => {
     return {
       ...state,
       isFetching: false,
-      commentArray: action.payload.data
-    };
-  case UPDATED_COMMENT_ARRAY:
-    return {
-      ...state,
-      isFetching: false,
-      commentArray: action.payload.data,
+      currentCommentList: action.payload.data
     };
   case UPDATED_COMMENT_DATA:
     return {

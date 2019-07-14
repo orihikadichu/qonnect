@@ -25,6 +25,8 @@ class AnswerTranslationList extends Component {
     if (user_id == null) {
         return;
     }
+    const ACTION_TYPE_VOTE = 6;
+    data.sendVoteParams.action_type_id = ACTION_TYPE_VOTE;
     return this.props.handlePostVote(data);
   }
 
@@ -32,6 +34,8 @@ class AnswerTranslationList extends Component {
       if (user_id == null) {
           return;
       }
+      const ACTION_TYPE_VOTE = 6;
+      data.deleteVoteParams.action_type_id = ACTION_TYPE_VOTE;
       return this.props.handleDeleteVote(data);
   }
 
@@ -42,22 +46,25 @@ class AnswerTranslationList extends Component {
       <ul className="uk-list uk-list-divider uk-list-large" >
         {translationList.map(translation => {
 
+          const votes = translation.vote_translations;
+          const myVoteList = votes.filter(v => v.user_id === loginUser.id);  
+          const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
+
           const key = "answer";
           const sendVoteParams = {
               user_id: this.props.user.id,
               question_translation_id: null,
               answer_translation_id: translation.id,
               commcomment_translation_id: null,
+              vote_id: translation.id,
               status: 1,
-              //再レンダリング用のId
               answerId: translation.answer_id
           };
           const deleteVoteParams = {
               user_id: this.props.user.id,
               key : "answer",
-              //他のコンテンツと共通化するためvote_idというkeyにする
               vote_id: translation.id,
-              //再レンダリング用のId
+              deleteVoteId: myVoteId,
               answerId: translation.answer_id,
           };
           const sendData = { sendVoteParams,  key };

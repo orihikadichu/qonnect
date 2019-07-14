@@ -23,7 +23,6 @@ export function* fetchSingleComment(action) {
   } catch (e) {
     const message = 'コメントの投稿に失敗しました。';
     yield put(notifyError(message));
-    //yield put(updatedCommentData());
   }
 }
 

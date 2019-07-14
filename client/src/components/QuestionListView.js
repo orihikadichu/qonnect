@@ -21,6 +21,8 @@ class QuestionListView extends Component {
     if (user_id == null) {
         return;
     }
+    const ACTION_TYPE_QUESTION = 6;
+    data.sendVoteParams.action_type_id = ACTION_TYPE_QUESTION;
     return this.props.handlePostVote(data);
   }
 
@@ -28,6 +30,8 @@ class QuestionListView extends Component {
     if (user_id == null) {
         return;
     }
+    const ACTION_TYPE_VOTE = 6;
+    data.deleteVoteParams.action_type_id = ACTION_TYPE_VOTE;
     return this.props.handleDeleteVote(data);
   }
 
@@ -107,6 +111,10 @@ class QuestionListView extends Component {
       const { formatMessage } = this.props.intl
       const { answers } = question;
       const { votes } = question;
+      const userData = this.props.user;
+
+      const myVoteList = votes.filter(v => v.user_id === userData.id); 
+      const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
 
       const key = "questionList";
       const sendVoteParams = {
@@ -120,6 +128,7 @@ class QuestionListView extends Component {
           user_id: this.props.user.id,
           key : "question",
           vote_id: question.id,
+          deleteVoteId: myVoteId,
       };
       const sendData = { sendVoteParams,  key };
       const deleteData = { deleteVoteParams,  key };

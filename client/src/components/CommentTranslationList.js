@@ -25,6 +25,8 @@ class CommentTranslationList extends Component {
     if (user_id == null) {
         return;
     }
+    const ACTION_TYPE_VOTE = 6;
+    data.sendVoteParams.action_type_id = ACTION_TYPE_VOTE;
     return this.props.handlePostVote(data);
   }
 
@@ -32,6 +34,8 @@ class CommentTranslationList extends Component {
       if (user_id == null) {
           return;
       }
+      const ACTION_TYPE_VOTE = 6;
+      data.deleteVoteParams.action_type_id = ACTION_TYPE_VOTE;
       return this.props.handleDeleteVote(data);
   }
 
@@ -41,22 +45,26 @@ class CommentTranslationList extends Component {
     return (
       <ul className="uk-list uk-list-divider uk-list-large" >
         {translationList.map(translation => {
+
+            const { vote_translations } = translation;
+            const myVoteList = vote_translations.filter(v => v.user_id === loginUser.id);  
+            const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
+
             const key = "comment";
             const sendVoteParams = {
                 user_id: this.props.user.id,
                 question_translation_id: null,
                 answer_translation_id: null,
                 comment_translation_id: translation.id,
+                vote_id: translation.id,
                 status: 1,
-                //再レンダリング用のId
                 commentId: translation.comment_id
             };
             const deleteVoteParams = {
                 user_id: this.props.user.id,
                 key : "comment",
-                //他のコンテンツと共通化するためvote_idというkeyにする
                 vote_id: translation.id,
-                //再レンダリング用のId
+                deleteVoteId: myVoteId,
                 commentId: translation.comment_id,
             };
             const sendData = { sendVoteParams,  key };
@@ -67,7 +75,7 @@ class CommentTranslationList extends Component {
                <article className="uk-comment">
                  <div className="uk-comment-header uk-comment-body">
                    <p style={{"whiteSpace": "pre-wrap"}} >
-                     <Linkify properties={{ target: '_blank'}} >{translation.content}</Linkify>z
+                     <Linkify properties={{ target: '_blank'}} >{translation.content}</Linkify>
                      <br/>
                      <br/>
                      <PostIcons 
@@ -118,7 +126,6 @@ class CommentTranslationList extends Component {
   }
 }
 
-//stateの中からauthだけを取り出す。
 const mapStateToProps = state => {
   const { user } = state.auth;
   return {
@@ -128,7 +135,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-      //評価機能
       handlePostVote: (data) => dispatch(postVote(data)),
       handleDeleteVote: (data) => dispatch(deleteVote(data)),
   };

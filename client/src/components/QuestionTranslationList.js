@@ -27,6 +27,8 @@ class QuestionTranslationList extends Component {
     if (user_id == null) {
         return;
     }
+    const ACTION_TYPE_VOTE = 6;
+    data.sendVoteParams.action_type_id = ACTION_TYPE_VOTE;
     return this.props.handlePostVote(data);
   }
 
@@ -34,6 +36,8 @@ class QuestionTranslationList extends Component {
       if (user_id == null) {
           return;
       }
+      const ACTION_TYPE_VOTE = 6;
+      data.deleteVoteParams.action_type_id = ACTION_TYPE_VOTE;
       return this.props.handleDeleteVote(data);
   }
 
@@ -42,22 +46,25 @@ class QuestionTranslationList extends Component {
 
     return translationList.map(translation => {
 
+      const { vote_translations } = translation;
+      const myVoteList = vote_translations.filter(v => v.user_id === loginUser.id);  
+      const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
+
       const key = "question";
       const sendVoteParams = {
           user_id: this.props.user.id,
           question_translation_id: translation.id,
           answer_translation_id: null,
           commcomment_translation_id: null,
+          vote_id: translation.id,
           status: 1,
-          //再レンダリング用のId
           questionId: translation.question_id,
       };
       const deleteVoteParams = {
           user_id: this.props.user.id,
           key : "question",
-          //他のコンテンツと共通化するためvote_idというkeyにする
           vote_id: translation.id,
-          //再レンダリング用のId
+          deleteVoteId: myVoteId,
           questionId: translation.question_id,
       };
       const sendData = { sendVoteParams,  key };

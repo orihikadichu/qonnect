@@ -24,6 +24,8 @@ class PostIcons extends Component {
         const myVotes = votes.filter(v => {return v.user_id === loginUser.id});
         const voteState = myVotes.length !== 0;
 
+        // console.log("postIcons",deleteData);
+
         let votebutton
         if (voteState) {
         votebutton = (

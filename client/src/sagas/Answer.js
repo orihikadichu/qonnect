@@ -15,6 +15,7 @@ import * as api from './apis/Answers';
 import * as act from '../actions/Comment';
 import { notifySuccess, notifyError } from './Util';
 import { fetchCommentWithUserList }from './apis/Comments';
+import { array } from 'prop-types';
 
 export function* handleFetchAnswerData(action) {
   try {
@@ -24,7 +25,6 @@ export function* handleFetchAnswerData(action) {
     const commentList = yield call(fetchCommentWithUserList, answerId);
     yield put(receiveDataSuccess(answerList));
     yield put(act.receiveCommentDataSuccess(commentList));
-    yield put(act.updatedCommentArray(action.payload));
   } catch (e) {
     yield put(receiveDataFailed());
   }

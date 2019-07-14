@@ -87,6 +87,8 @@ class AnswerList extends Component {
     if (user_id == null) {
         return;
     }
+    const ACTION_TYPE_VOTE = 6;
+    data.sendVoteParams.action_type_id = ACTION_TYPE_VOTE;
     return this.props.handlePostVote(data);
   }
 
@@ -94,6 +96,8 @@ class AnswerList extends Component {
       if (user_id == null) {
           return;
       }
+      const ACTION_TYPE_VOTE = 6;
+      data.deleteVoteParams.action_type_id = ACTION_TYPE_VOTE;
       return this.props.handleDeleteVote(data);
   }
 
@@ -105,11 +109,12 @@ class AnswerList extends Component {
     const filteredAnswers = getFilteredContents(answerArray, translateLanguageId, contentType);
     const translatedAnswers = getTranslatedContents(filteredAnswers, translateLanguageId, contentType);
 
-
     return translatedAnswers.map(answer => {
 
-      const { user } = answer;
-      const { votes } = answer;
+      const { user, votes } = answer;
+
+      const myVoteList = votes.filter(v => v.user_id === loginUser.id);  
+      const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
 
       const key = "answer";
       const sendVoteParams = {
@@ -118,15 +123,13 @@ class AnswerList extends Component {
         answer_id: answer.id,
         comment_id: null,
         status: 1,
-        //再レンダリングするためのquestion_id
         questionId: this.props.qId,
       };
       const deleteVoteParams = {
         user_id: this.props.state.auth.user.id,
         key : "answer",
-        //他のコンテンツと共通化するためvote_idというkeyにする
         vote_id: answer.id,
-        //再レンダリングするためのquestion_id
+        deleteVoteId: myVoteId,
         questionId: this.props.qId,
       };
       const sendData = { sendVoteParams,  key };

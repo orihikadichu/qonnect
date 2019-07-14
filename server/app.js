@@ -62,7 +62,6 @@ i18n.configure({
 });
 app.use(i18n.init);
 
-
 // Bcrypt
 const saltRounds = 10;
 
@@ -94,6 +93,7 @@ app.post('/api/votes', (req, res) => {
     question_id,
     answer_id,
     comment_id,
+    action_type_id,
     status
   } = req.body;
   db.votes.create({
@@ -105,6 +105,16 @@ app.post('/api/votes', (req, res) => {
   })
     .then((createdData) => {
       res.status(200).send(createdData);
+      if (!createdData) {
+        return res.status(500).send("error");
+      }
+      const params = {
+        translated : 0,
+        action_type_id : action_type_id,
+        point : 1
+      };
+      createPoint(params, createdData);
+      res.status(200).send(createdData);
     })
     .catch(function(err) {
       res.status(500).send(err);
@@ -113,11 +123,13 @@ app.post('/api/votes', (req, res) => {
 });
 
 app.post('/api/vote_translations', (req, res) => {
+
   const {
     user_id,
     question_translation_id,
     answer_translation_id,
     comment_translation_id,
+    action_type_id,
     status
   } = req.body;
   db.vote_translations.create({
@@ -128,6 +140,15 @@ app.post('/api/vote_translations', (req, res) => {
     status
   })
     .then((createdData) => {
+      if (!createdData) {
+        return res.status(500).send("error");
+      }
+      const params = {
+        translated : 1,
+        action_type_id : action_type_id,
+        point : 1
+      };
+      createPoint(params, createdData);
       res.status(200).send(createdData);
     })
     .catch(function(err) {
@@ -138,25 +159,16 @@ app.post('/api/vote_translations', (req, res) => {
 
 app.delete('/api/votes/:id', (req, res) => {
 
-  const { vote_id, key, user_id } = req.query;
-
-  let whereContent;
-  //コンテンツによってidの切り替え
-  switch(key){
-  case "question":
-    const question_id = vote_id;
-    whereContent = { user_id, question_id } ;
-    break;
-  case "answer":
-    const answer_id = vote_id;
-    whereContent = { user_id, answer_id } ;
-    break;
-  case "comment":
-    const comment_id = vote_id;
-    whereContent = { user_id, comment_id } ;
-    break;
-  }
-
+  const { 
+    vote_id, 
+    key, 
+    user_id, 
+    action_type_id,
+    deleteVoteId,
+  } = req.query;
+  let whereContent = { user_id };
+  const voteKey = key + "_id";
+  whereContent[voteKey] = vote_id;
   const filter = {
     where: whereContent,
   };
@@ -166,42 +178,39 @@ app.delete('/api/votes/:id', (req, res) => {
       if (result === 0) {
         return res.status(500).send('いいねの削除に失敗しました。');
       }
-      return res.status(200).send('いいねの削除に失敗しました。');
-    })
-  ;
+      const params = {
+        user_id: user_id,
+        translated: 0,
+        action_type_id: action_type_id,
+        target_id: deleteVoteId,
+      }
+      deletePoint(params);
+      return res.status(200).send('いいねの削除に成功しました。');
+    });
 });
 
 app.delete('/api/vote_translations/:id', (req, res) => {
-
-  const { vote_id, key, user_id } = req.query;
-  let whereContent;
-  //コンテンツによってidの切り替え
-  switch(key){
-  case "question":
-    const question_translation_id = vote_id;
-    whereContent = { user_id, question_translation_id } ;
-    break;
-  case "answer":
-    const answer_translation_id = vote_id;
-    whereContent = { user_id, answer_translation_id } ;
-    break;
-  case "comment":
-    const comment_translation_id = vote_id;
-    whereContent = { user_id, comment_translation_id } ;
-    break;
-  }
+  const { vote_id, key, user_id, action_type_id, deleteVoteId } = req.query;
+  let whereContent = { user_id };
+  const voteKey = key + "_translation_id";
+  whereContent[voteKey] = vote_id;
   const filter = {
     where: whereContent,
   };
   db.vote_translations.destroy(filter)
     .then((result) => {
-      console.log('result', result);
       if (result === 0) {
         return res.status(500).send('いいねの削除に失敗しました。');
       }
-      return res.status(200).send('いいねの削除に失敗しました。');
-    })
-  ;
+      const params = {
+        user_id: user_id,
+        translated: 1,
+        action_type_id: action_type_id,
+        target_id: deleteVoteId,
+      };
+      deletePoint(params);
+      return res.status(200).send('いいねを削除しました。');
+    });
 });
 
 /*
@@ -217,28 +226,31 @@ app.delete('/api/vote_translations/:id', (req, res) => {
 //         }
 //     ],
 //   }).then(function(values){
-//     console.log("--------------------");
-//     console.log(values[0].point);
-//     console.log("--------------------");
 //     res.status(200).send(values);
 //   });
 // });
 
-app.get('/api/points', (req, res) => {
-  const {type, target} = req.query;
-  db.answers.findAll({
-    include: [
-        { 
-          model: db.points, 
-          where: { "action_type_id":2},
-          required: false
-        }
-    ],
-  }).then(function(values){
-    res.status(200).send(values);
-  });
-});
 
+// ポイントをつけるときの関数
+function createPoint(params, createdData) {
+  params.user_id = createdData.user_id;
+  params.target_id = createdData.id;
+  return db.points.create(params);
+};
+
+//ポイントを削除するときの関数
+function deletePoint(params) {
+  const { 
+    user_id, 
+    translated, 
+    action_type_id,
+    target_id,
+  } = params;
+  const filter = {
+    where: { user_id, translated, action_type_id, target_id }
+  };
+  return db.points.destroy(filter);
+};
 
 /*
   翻訳一覧取得
@@ -439,6 +451,15 @@ app.post('/api/questions', (req, res) => {
     category_id,
   })
     .then((createdData) => {
+      if (!createdData) {
+        return res.status(500).send("error");
+      }
+      const params = {
+        translated : 0,
+        action_type_id : 1,
+        point : 1
+      };
+      createPoint(params, createdData);
       res.status(200).send(createdData);
     })
   ;
@@ -462,7 +483,7 @@ app.put('/api/questions/:id', (req, res) => {
 });
 
 app.delete('/api/questions/:id', (req, res) => {
-  const { id } = req.params;
+  const { id, action_type_id } = req.params;
   const { user_id } = req.query;
   const filter = {
     where: { id, user_id }
@@ -473,6 +494,13 @@ app.delete('/api/questions/:id', (req, res) => {
       if (result === 0) {
         return res.status(500).send('質問の削除に失敗しました');
       }
+      const params = {
+        user_id: user_id,
+        translated: 0,
+        action_type_id: 1,
+        target_id: id
+      }
+      deletePoint(params);
       return res.status(200).send('質問を削除しました');
     })
   ;
@@ -536,6 +564,15 @@ app.post('/api/question_translations', (req, res) => {
     translate_language_id
   })
     .then((createdData) => {
+      if (!createdData) {
+        return res.status(500).send("error");
+      }
+      const params = {
+        translated : 1,
+        action_type_id : 1,
+        point : 3,
+      };
+      createPoint(params, createdData);
       res.status(200).send(createdData);
     })
   ;
@@ -572,6 +609,13 @@ app.delete('/api/question_translations/:id', (req, res) => {
       if (result === 0) {
         return res.status(500).send('翻訳の削除に失敗しました');
       }
+      const params = {
+        user_id: user_id,
+        translated: 1,
+        action_type_id: 1,
+        target_id: id
+      }
+      deletePoint(params);
       return res.status(200).send('翻訳を削除しました');
     })
   ;
@@ -630,6 +674,15 @@ app.post('/api/answer_translations', (req, res) => {
     translate_language_id: params.translate_language_id,
   })
     .then((createdData) => {
+      if (!createdData) {
+        return res.status(500).send("error");
+      }
+      const params = {
+        translated : 1,
+        action_type_id : 2,
+        point : 3,
+      };
+      createPoint(params, createdData);
       res.status(200).send(createdData);
     })
   ;
@@ -666,6 +719,13 @@ app.delete('/api/answer_translations/:id', (req, res) => {
       if (result === 0) {
         return res.status(500).send('翻訳の削除に失敗しました');
       }
+      const params = {
+        user_id: user_id,
+        translated: 1,
+        action_type_id: 2,
+        target_id: id
+      }
+      deletePoint(params);
       return res.status(200).send('翻訳を削除しました');
     })
   ;
@@ -729,6 +789,15 @@ app.post('/api/comment_translations', (req, res) => {
     translate_language_id
   })
     .then((createdData) => {
+      if (!createdData) {
+        return res.status(500).send("error");
+      }
+      const params = {
+        translated : 1,
+        action_type_id : 3,
+        point : 3,
+      };
+      createPoint(params, createdData);
       res.status(200).send(createdData);
     })
   ;
@@ -765,6 +834,13 @@ app.delete('/api/comment_translations/:id', (req, res) => {
       if (result === 0) {
         return res.status(500).send('翻訳の削除に失敗しました');
       }
+      const params = {
+        user_id: user_id,
+        translated: 1,
+        action_type_id: 3,
+        target_id: id
+      }
+      deletePoint(params);
       return res.status(200).send('翻訳を削除しました');
     })
   ;
@@ -780,7 +856,7 @@ app.get('/api/answers', (req, res) => {
     include: [
       {
         model: db.users,
-        required: false
+        required: false,
       },
       {
         model: db.comments,
@@ -881,7 +957,17 @@ app.post('/api/answers', (req, res) => {
       const answer = instance.get();
       const { question_id } = answer;
       notifyForQuestionUser(question_id);
-      return res.status(200).send(answer);
+
+      if (!answer) {
+        return res.status(500).send("error");
+      }
+      const params = {
+        translated : 0,
+        action_type_id : 2,
+        point : 2,
+      };
+      createPoint(params, answer);
+      res.status(200).send(answer);
     })
   ;
 });
@@ -915,6 +1001,13 @@ app.delete('/api/answers/:id', (req, res) => {
       if (result === 0) {
         return res.status(500).send('回答の削除に失敗しました');
       }
+      const params = {
+        user_id: user_id,
+        translated: 0,
+        action_type_id: 2,
+        target_id: id,
+      }
+      deletePoint(params);
       return res.status(200).send('回答を削除しました');
     })
   ;
@@ -1285,7 +1378,7 @@ app.get('/api/comments', (req, res) => {
 
 //answer_idに紐づいたコメントと、その翻訳文を取得
 app.get('/api/comments_with_user', (req, res) => {
-  const  answerIdList = req.query;
+  const  answerIdList = Object.values(req.query);
   db.comments.findAll({
     where: {},
     include: [
@@ -1302,13 +1395,12 @@ app.get('/api/comments_with_user', (req, res) => {
     ],
   })
     .then((instanses) => {
-      //answer_idに対するコメントの取得
-      const result ={};
-      for( let i = 0 ; i < 2 ; i ++ ){
-        result[answerIdList[i]] = instanses.filter(
-          v => v.dataValues.answer_id === parseInt(answerIdList[i])
+      const result = {};
+      answerIdList.forEach((answerId) => {
+        result[answerId] = instanses.filter(
+          v => v.answer_id === parseInt(answerId)
         );
-      };
+      });
       res.status(200).send(result);
     });
 });
@@ -1382,6 +1474,15 @@ app.post('/api/comments', (req, res) => {
       const comment = instance.get();
       const { answer_id } = comment;
       notifyForAnswerUser(answer_id);
+      if (!instance) {
+        return res.status(500).send("error");
+      }
+      const params = {
+        translated: 0,
+        action_type_id : 3,
+        point : 1,
+      };
+      createPoint(params, comment);
       return res.status(200).send(comment);
     })
   ;
@@ -1418,7 +1519,7 @@ app.put('/api/comments/:id', (req, res) => {
 });
 
 app.delete('/api/comments/:id', (req, res) => {
-  const { id } = req.params;
+  const { id, action_type_id } = req.params;
   const { user_id } = req.query;
   const filter = {
     where: { id, user_id }
@@ -1428,6 +1529,13 @@ app.delete('/api/comments/:id', (req, res) => {
       if (result === 0) {
         return res.status(500).send('コメントの削除に失敗しました');
       }
+      const params = {
+        user_id: user_id,
+        translated: 0,
+        action_type_id: action_type_id,
+        target_id: id
+      }
+      deletePoint(params);
       return res.status(200).send('コメントを削除しました');
     })
   ;

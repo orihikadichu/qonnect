@@ -18,6 +18,8 @@ class Comment extends Component {
     if (user_id == null) {
         return;
     }
+    const ACTION_TYPE_VOTE = 6;
+    data.sendVoteParams.action_type_id = ACTION_TYPE_VOTE;
     return this.props.handlePostVote(data);
   }
 
@@ -25,15 +27,19 @@ class Comment extends Component {
       if (user_id == null) {
           return;
       }
+      const ACTION_TYPE_VOTE = 6;
+      data.deleteVoteParams.action_type_id = ACTION_TYPE_VOTE;
       return this.props.handleDeleteVote(data);
   }
 
   render() {
-    const { id, user, content, isOwner, voteList, questions, commentUser, comments, answerId, intl} = this.props;
+    const { id, content, isOwner, voteList, commentUser, answerId, comments, user, questions, intl } = this.props;
     const currentQuestionId = questions.currentQuestion.id;
-
     const { formatMessage } = intl;
-    const { commentArray } = comments;
+    const { currentCommentList } = comments;
+
+    const myVoteList = voteList.filter(v => v.user_id === user.id); 
+    const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
 
     const key = "comment";
     const sendVoteParams = {
@@ -42,24 +48,24 @@ class Comment extends Component {
       answer_id: null,
       comment_id: id,
       status: 1,
-      //再レンダリングするためのquestion_id
       questionId: currentQuestionId,
     };
     const deleteVoteParams = {
       user_id: this.props.user.id,
       key : "comment",
-      //他のコンテンツと共通化するためvote_idというkeyにする
       vote_id: id,
-      //再レンダリングするためのquestion_id
+      deleteVoteId: myVoteId,
       questionId: currentQuestionId,
     };
     const sendData = { sendVoteParams,  key };
     const deleteData = { deleteVoteParams,  key };
 
     let translator;
+
     translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
-    if(typeof commentArray !== 'undefined'){
-      const thisAnswerCommentList = commentArray[answerId] ;
+
+    if (currentCommentList.length !== 0) {
+      const thisAnswerCommentList = currentCommentList[answerId];
       const thisCommentData = thisAnswerCommentList.filter(v => v.id === id);
       const commentTranslated = thisCommentData[0].comment_translations;
       if (commentTranslated.length !== 0) {
@@ -105,11 +111,9 @@ class Comment extends Component {
   }
 }
 
-//stateの中からauthだけを取り出す。
 const mapStateToProps = state => {
-  const { questions, comments } = state;
+  const { questions, comments, intl } = state;
   const { user } = state.auth;
-  const { intl } = state;
   return {
     user,
     questions,
@@ -120,7 +124,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    //評価機能
     handlePostVote: (data, questionId) => dispatch(postVote(data, questionId)),
     handleDeleteVote: (data) => dispatch(deleteVote(data)),
   };

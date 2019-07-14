@@ -26,9 +26,7 @@ class QuestionView extends Component {
 
   handleSubmit(formData) {
     try {
-      //authの中にあるuserキーに対応するvalueを取り出す。という意味
       const { user } = this.props.state.auth;
-      //formDataの中のcontent,translate_langugase_idを取り出す
       const { content, translate_language_id } = formData;
       const question_id = this.qId;
       const user_id = user.id;
@@ -46,7 +44,6 @@ class QuestionView extends Component {
       return question;
     }
     const questionTranslation = question.question_translations.filter(question => {
-      //「DBに保存されている言語id」と「画面に表示されている言語」が一致している要素だけを取得する。[0]とすることで最初にフィルタリングされたものを取り出す。
       return (question.translate_language_id === translateLanguageId);
     })[0];
 
@@ -58,6 +55,8 @@ class QuestionView extends Component {
     if (user_id == null) {
         return;
     }
+    const ACTION_TYPE_QUESTION= 1;
+    data.sendVoteParams.action_type_id = ACTION_TYPE_QUESTION;
     return this.props.handlePostVote(data);
   }
 
@@ -65,6 +64,8 @@ class QuestionView extends Component {
       if (user_id == null) {
           return;
       }
+      const ACTION_TYPE_VOTE = 6;
+      data.deleteVoteParams.action_type_id = ACTION_TYPE_VOTE;
       return this.props.handleDeleteVote(data);
   }
 

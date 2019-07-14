@@ -65,6 +65,7 @@ module.exports = (sequelize, DataTypes) => {
     users.hasMany(models.answers, {foreignKey: 'user_id'});
     users.hasMany(models.points, {foreignKey: 'user_id'});
     users.hasMany(models.comments, {foreignKey: 'user_id'});
+    users.hasMany(models.votes, {foreignKey: 'user_id'});
     users.hasMany(models.vote_translations, {foreignKey: 'user_id'});
     users.belongsTo(models.countries, {foreignKey: 'country_id'});
   };

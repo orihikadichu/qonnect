@@ -2,6 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const points = sequelize.define('points', {
     user_id: DataTypes.INTEGER,
+    translated: DataTypes.INTEGER,
     action_type_id: DataTypes.INTEGER,
     target_id: DataTypes.INTEGER,
     point: DataTypes.INTEGER
