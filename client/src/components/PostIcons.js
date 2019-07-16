@@ -50,50 +50,24 @@ class PostIcons extends Component {
 
         const votebutton = this.getVoteButton(voteState);
 
-        // let votebutton
-        // if (voteState) {
-        // votebutton = (
-        //     <a onClick={onClickDeleteVote.bind(this, deleteData, loginUser.id)}>
-        //     <FontAwesomeIcon icon="heart" color="red" size="lg"/>
-        //     </a>
-        // );
-        // } else {
-        // votebutton = (
-        //     <a onClick={onClickSendVote.bind(this, sendData, loginUser.id)}>
-        //     <FontAwesomeIcon icon={['far','heart']} color="gray"  size="lg"/>
-        //     </a>
-        // );
-        // }
-
         const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ votes.length }</span>;
 
-    const votebutton = (voteState) ? (
-      <a onClick={onClickDeleteVote.bind(this, deleteData, loginUser.id)}>
-        <FontAwesomeIcon icon="heart" color="red" size="lg"/>
-      </a>
-    ) : (
-      <a onClick={onClickSendVote.bind(this, sendData, loginUser.id)}>
-        <FontAwesomeIcon icon={['far','heart']} color="gray"  size="lg"/>
-      </a>
-    );
-    const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ votes.length }</span>;
+        const translateButton = translate === true
+        ? (
+          <Link to={translateLink}>
+            <FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/>
+          </Link>
+        )
+        : "";
 
-    const translateButton = translate === true
-                          ? (
-                            <Link to={translateLink}>
-                              <FontAwesomeIcon icon="globe-americas" color="steelblue" size="lg"/>
-                            </Link>
-                          )
-                          : "";
-
-    return (
-      <div>
-        { votebutton }
-        { voteNumbers }
-        { editLinkButton }
-        { translateButton }
-      </div>
-    );
+        return (
+        <div>
+            { votebutton }
+            { voteNumbers }
+            { editLinkButton }
+            { translateButton }
+        </div>
+        );
   }
 }
 
