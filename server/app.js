@@ -158,23 +158,21 @@ app.post('/api/vote_translations', (req, res) => {
 });
 
 app.delete('/api/votes/:id', (req, res) => {
-
   const { 
     vote_id, 
-    key, 
-    user_id, 
+    deleteColumnKey,
+    user_id,
     action_type_id,
-    deleteVoteId,
+    voteIdForPoint,
   } = req.query;
   let whereContent = { user_id };
-  const voteKey = key + "_id";
+  const voteKey = deleteColumnKey + "_id";
   whereContent[voteKey] = vote_id;
   const filter = {
     where: whereContent,
   };
   db.votes.destroy(filter)
     .then((result) => {
-      console.log('result', result);
       if (result === 0) {
         return res.status(500).send('いいねの削除に失敗しました。');
       }
@@ -182,7 +180,7 @@ app.delete('/api/votes/:id', (req, res) => {
         user_id: user_id,
         translated: 0,
         action_type_id: action_type_id,
-        target_id: deleteVoteId,
+        target_id: voteIdForPoint,
       }
       deletePoint(params);
       return res.status(200).send('いいねの削除に成功しました。');
@@ -190,9 +188,9 @@ app.delete('/api/votes/:id', (req, res) => {
 });
 
 app.delete('/api/vote_translations/:id', (req, res) => {
-  const { vote_id, key, user_id, action_type_id, deleteVoteId } = req.query;
+  const { vote_id, deleteColumnKey, user_id, action_type_id, voteIdForPoint } = req.query;
   let whereContent = { user_id };
-  const voteKey = key + "_translation_id";
+  const voteKey = deleteColumnKey + "_translation_id";
   whereContent[voteKey] = vote_id;
   const filter = {
     where: whereContent,
@@ -206,7 +204,7 @@ app.delete('/api/vote_translations/:id', (req, res) => {
         user_id: user_id,
         translated: 1,
         action_type_id: action_type_id,
-        target_id: deleteVoteId,
+        target_id: voteIdForPoint,
       };
       deletePoint(params);
       return res.status(200).send('いいねを削除しました。');

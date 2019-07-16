@@ -3,33 +3,26 @@ import { Link } from 'react-router-dom';
 
 //componentの中でdispatchするための設定
 import { connect } from 'react-redux';
-//評価するための関数
-import { postVote, deleteVote } from '../actions/Vote';
+import { postVote, deleteVote, handleVote} from '../actions/Vote';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { sprintf } from 'sprintf-js';
 import { injectIntl } from 'react-intl';
 import Translator from './Translator';
 import PostUser from './PostUser';
 import PostIcons from './PostIcons';
+import { isEmptyObject } from '../utils';
 
 class Comment extends Component {
 
-  sendVote(data, user_id) {
-    if (user_id == null) {
+  getOnClickPostVote(voteParams, loginUserId) {
+    return () => {
+      if (loginUserId == null) {
         return;
-    }
-    const ACTION_TYPE_VOTE = 6;
-    data.sendVoteParams.action_type_id = ACTION_TYPE_VOTE;
-    return this.props.handlePostVote(data);
-  }
-
-  deleteVote(data, user_id) {
-      if (user_id == null) {
-          return;
       }
       const ACTION_TYPE_VOTE = 6;
-      data.deleteVoteParams.action_type_id = ACTION_TYPE_VOTE;
-      return this.props.handleDeleteVote(data);
+      voteParams.action_type_id = ACTION_TYPE_VOTE; 
+      return this.props.handleVote(voteParams);
+    };
   }
 
   render() {
@@ -38,41 +31,47 @@ class Comment extends Component {
     const { formatMessage } = intl;
     const { currentCommentList } = comments;
 
-    const myVoteList = voteList.filter(v => v.user_id === user.id); 
+    const myVoteList = voteList.filter(v => v.user_id === this.props.user.id); 
     const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
+    const commentUserId = myVoteList.length !== 0 ? myVoteList[0].user_id : 0;
 
-    const key = "comment";
-    const sendVoteParams = {
-      user_id: this.props.user.id,
-      question_id: null,
-      answer_id: null,
-      comment_id: id,
-      status: 1,
-      questionId: currentQuestionId,
-    };
-    const deleteVoteParams = {
-      user_id: this.props.user.id,
-      key : "comment",
-      vote_id: id,
-      deleteVoteId: myVoteId,
-      questionId: currentQuestionId,
-    };
-    const sendData = { sendVoteParams,  key };
-    const deleteData = { deleteVoteParams,  key };
+    const voteState = (myVoteList.length === 0);
+    const voteParams = (voteState) 
+              ? {
+                postActionType:"post",
+                thisPageKey: "comment",
+                user_id: this.props.user.id,
+                question_id: null,
+                answer_id: null,
+                comment_id: id,
+                status: 1,
+                thisPageContentId: currentQuestionId,
+              } : {
+                postActionType:"delete",
+                thisPageKey: "comment",
+                user_id: this.props.user.id,
+                deleteColumnKey : "comment",
+                vote_id: id,
+                voteIdForPoint: myVoteId,
+                thisPageContentId: currentQuestionId,
+              };
 
+    const handleSubmit = this.getOnClickPostVote(voteParams, this.props.user.id).bind(this);
+    
     let translator;
-
     translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
 
     if (currentCommentList.length !== 0) {
       const thisAnswerCommentList = currentCommentList[answerId];
+      // console.log("answerId", answerId);
+      // console.log("thisAnswerCommentList", thisAnswerCommentList);
       const thisCommentData = thisAnswerCommentList.filter(v => v.id === id);
       const commentTranslated = thisCommentData[0].comment_translations;
       if (commentTranslated.length !== 0) {
         const { user } = commentTranslated[0];
         translator = <Translator user={user} />;
       }
-    }
+    } 
 
     return (
       <article className="uk-comment uk-comment-primary">
@@ -82,20 +81,15 @@ class Comment extends Component {
             <br/>
             <br/>
             <PostIcons 
-                //コンテンツのユーザー
-                user = { user } 
-                //ログインユーザー
+                user = { commentUserId } 
                 loginUser = { this.props.user } 
                 votes = { voteList }
-                sendData = { sendData }
-                deleteData = { deleteData }
+                voteState = { voteState }
                 editLink = {`/comments/edit/${id}`}
                 translateLink = {`/comment_translations/${id}`}
-                onClickSendVote = {this.sendVote.bind(this)}
-                onClickDeleteVote = {this.deleteVote.bind(this)}
+                onClickHandleVote = { handleSubmit }
                 translate = { true }
             />
-
           </p>
         </div>
         <div className="uk-grid uk-grid-small uk-flex-middle">
@@ -124,8 +118,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handlePostVote: (data, questionId) => dispatch(postVote(data, questionId)),
-    handleDeleteVote: (data) => dispatch(deleteVote(data)),
+    // handlePostVote: (data, questionId) => dispatch(postVote(data, questionId)),
+    // handleDeleteVote: (data) => dispatch(deleteVote(data)),
+    handleVote: (data) => dispatch(handleVote(data)),
   };
 };
 

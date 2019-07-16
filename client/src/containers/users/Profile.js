@@ -51,7 +51,7 @@ class Profile extends Component {
           contents.push(
           <td className="uk-text-center"></td>);
       }
-      tableContents.push(<table className="uk-table stamp-card uk-card uk-card-default uk-card-small uk-card-body uk-margin-top">
+      tableContents.push(<table className="uk-table stamp-card uk-card uk-card-default uk-card-small uk-card-body uk-margin-top" style={{"width": "90%"}}>
                         <tbody className="uk-table stamp-card uk-card uk-card-default uk-card-small uk-card-body uk-margin-top">
                           <tr>
                             {contents}

@@ -5,7 +5,7 @@ module.exports = {
     return queryInterface.addColumn('points', 'translated', 
     {
         type: Sequelize.INTEGER,
-        after: "user_id"
+        after: "target_id"
     }
     );
   },

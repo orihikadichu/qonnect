@@ -83,22 +83,15 @@ class AnswerList extends Component {
     }
   }
 
-  sendVote(data, user_id) {
-    if (user_id == null) {
+  getOnClickPostVote(voteParams, loginUserId) {
+    return () => {
+      if (loginUserId == null) {
         return;
-    }
-    const ACTION_TYPE_VOTE = 6;
-    data.sendVoteParams.action_type_id = ACTION_TYPE_VOTE;
-    return this.props.handlePostVote(data);
-  }
-
-  deleteVote(data, user_id) {
-      if (user_id == null) {
-          return;
       }
       const ACTION_TYPE_VOTE = 6;
-      data.deleteVoteParams.action_type_id = ACTION_TYPE_VOTE;
-      return this.props.handleDeleteVote(data);
+      voteParams.action_type_id = ACTION_TYPE_VOTE; 
+      return this.props.handleVote(voteParams);
+    };
   }
 
   getAnswerList(answerArray, translateLanguageId) {
@@ -116,27 +109,28 @@ class AnswerList extends Component {
       const myVoteList = votes.filter(v => v.user_id === loginUser.id);  
       const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
 
-      const key = "answer";
-      const sendVoteParams = {
-        user_id: this.props.state.auth.user.id,
-        question_id: null,
-        answer_id: answer.id,
-        comment_id: null,
-        status: 1,
-        questionId: this.props.qId,
-      };
-      const deleteVoteParams = {
-        user_id: this.props.state.auth.user.id,
-        key : "answer",
-        vote_id: answer.id,
-        deleteVoteId: myVoteId,
-        questionId: this.props.qId,
-      };
-      const sendData = { sendVoteParams,  key };
-      const deleteData = { deleteVoteParams,  key };
-
+      const voteState = (myVoteList.length === 0);
+      const voteParams = (voteState) 
+                ? {
+                  postActionType:"post",
+                  thisPageKey: "answer",
+                  user_id: this.props.state.auth.user.id,
+                  question_id: null,
+                  answer_id: answer.id,
+                  comment_id: null,
+                  status: 1,
+                  thisPageContentId: this.props.qId,
+                } : {
+                  postActionType:"delete",
+                  thisPageKey: "answer",
+                  user_id: this.props.state.auth.user.id,
+                  deleteColumnKey : "answer",
+                  vote_id: answer.id,
+                  voteIdForPoint: myVoteId,
+                  thisPageContentId: this.props.qId,
+                };
+      const handleSubmit = this.getOnClickPostVote(voteParams, loginUser.id).bind(this);
       const commentForm = this.getComment(answer.id);
-
       const { answer_translations } = answer;
 
       let translator;
@@ -155,17 +149,13 @@ class AnswerList extends Component {
                 <br/>
                 <br/>
                 <PostIcons 
-                    //コンテンツのユーザー
                     user = { user } 
-                    //ログインユーザー
                     loginUser = { this.props.state.auth.user } 
                     votes = { votes }
-                    sendData = { sendData }
-                    deleteData = { deleteData }
+                    voteState={voteState}
                     editLink = {`/answers/edit/${answer.id}`}
                     translateLink = {`/answer_translations/${answer.id}`}
-                    onClickSendVote = {this.sendVote.bind(this)}
-                    onClickDeleteVote = {this.deleteVote.bind(this)}
+                    onClickHandleVote = { handleSubmit }
                     translate = { true }
                 />
 

@@ -9,7 +9,7 @@ import Translator from './Translator';
 //componentの中でdispatchするための設定
 import { connect } from 'react-redux';
 //評価するための関数
-import { postVote, deleteVote } from '../actions/Vote';
+import { postVote, deleteVote, handleVote } from '../actions/Vote';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PostUser from './PostUser';
 import PostIcons from './PostIcons';
@@ -17,22 +17,15 @@ import PostAnswerCount from './PostAnswerCount';
 
 class QuestionListView extends Component {
 
-  sendVote(data, user_id) {
-    if (user_id == null) {
+  getOnClickPostVote(voteParams, loginUserId) {
+    return () => {
+      if (loginUserId == null) {
         return;
-    }
-    const ACTION_TYPE_QUESTION = 6;
-    data.sendVoteParams.action_type_id = ACTION_TYPE_QUESTION;
-    return this.props.handlePostVote(data);
-  }
-
-  deleteVote(data, user_id) {
-    if (user_id == null) {
-        return;
-    }
-    const ACTION_TYPE_VOTE = 6;
-    data.deleteVoteParams.action_type_id = ACTION_TYPE_VOTE;
-    return this.props.handleDeleteVote(data);
+      }
+      const ACTION_TYPE_VOTE = 6;
+      voteParams.action_type_id = ACTION_TYPE_VOTE; 
+      return this.props.handleVote(voteParams);
+    };
   }
 
   categoryFilteredContents(array, id) {
@@ -116,22 +109,25 @@ class QuestionListView extends Component {
       const myVoteList = votes.filter(v => v.user_id === userData.id); 
       const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
 
-      const key = "questionList";
-      const sendVoteParams = {
-          user_id: this.props.user.id,
-          question_id: question.id,
-          answer_id: null,
-          comment_id: null,
-          status: 1,
-      };
-      const deleteVoteParams = {
-          user_id: this.props.user.id,
-          key : "question",
-          vote_id: question.id,
-          deleteVoteId: myVoteId,
-      };
-      const sendData = { sendVoteParams,  key };
-      const deleteData = { deleteVoteParams,  key };
+      const voteState = (myVoteList.length === 0);
+      const voteParams = (voteState) 
+                ? {
+                  postActionType:"post",
+                  thisPageKey: "questionList",
+                  user_id: this.props.user.id,
+                  question_id: question.id,
+                  answer_id: null,
+                  comment_id: null,
+                  status: 1,
+                } : {
+                  postActionType:"delete",
+                  thisPageKey: "questionList",
+                  user_id: this.props.user.id,
+                  deleteColumnKey : "question",
+                  vote_id: question.id,
+                  voteIdForPoint: myVoteId,
+                };
+      const handleSubmit = this.getOnClickPostVote(voteParams, this.props.user.id).bind(this);
 
       const { question_translations } = question;
       let translator;
@@ -159,17 +155,12 @@ class QuestionListView extends Component {
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
           <div className="button-area uk-margin-bottom" >
           <PostIcons 
-              //コンテンツのユーザー
               user = { user } 
-              //ログインユーザー
               loginUser = { this.props.user  } 
               votes = { votes }
-              sendData = { sendData }
-              deleteData = { deleteData }
+              voteState = { voteState } 
+              onClickHandleVote = { handleSubmit }
               editLink = {`/questions/edit/${question.id}`}
-              translateLink = {`/question_translations/${question.id}`}
-              onClickSendVote = {this.sendVote.bind(this)}
-              onClickDeleteVote = {this.deleteVote.bind(this)}
               translate = { true }
           />
           </div>
@@ -229,9 +220,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    //評価機能
-    handlePostVote: (data) => dispatch(postVote(data)),
-    handleDeleteVote: (data) => dispatch(deleteVote(data)),
+    // handlePostVote: (data) => dispatch(postVote(data)),
+    // handleDeleteVote: (data) => dispatch(deleteVote(data)),
+    handleVote: (data) => dispatch(handleVote(data)),
   };
 };
 

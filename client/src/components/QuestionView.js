@@ -51,22 +51,15 @@ class QuestionView extends Component {
     return question;
   }
 
-  sendVote(data, user_id) {
-    if (user_id == null) {
+  getOnClickPostVote(voteParams, loginUserId) {
+    return () => {
+      if (loginUserId == null) {
         return;
-    }
-    const ACTION_TYPE_QUESTION= 1;
-    data.sendVoteParams.action_type_id = ACTION_TYPE_QUESTION;
-    return this.props.handlePostVote(data);
-  }
-
-  deleteVote(data, user_id) {
-      if (user_id == null) {
-          return;
       }
       const ACTION_TYPE_VOTE = 6;
-      data.deleteVoteParams.action_type_id = ACTION_TYPE_VOTE;
-      return this.props.handleDeleteVote(data);
+      voteParams.action_type_id = ACTION_TYPE_VOTE; 
+      return this.props.handleVote(voteParams);
+    };
   }
 
   getAnswerForm(currentQuestion, loginUser) {
@@ -118,23 +111,32 @@ class QuestionView extends Component {
     const loginUser = this.props.state.auth.user;
     const question = this.getTranslatedQuestion(currentQuestion, translateLanguageId);
     const { user, votes } = currentQuestion;
-    const answerForm = this.getAnswerForm(currentQuestion, loginUser);
 
-    const key = "questionView";
-    const sendVoteParams = {
-        user_id: this.props.state.auth.user.id,
-        question_id: currentQuestion.id,
-        answer_id: null,
-        comment_id: null,
-        status: 1,
-    };
-    const deleteVoteParams = {
-        user_id: this.props.state.auth.user.id,
-        key : "question",
-        vote_id: currentQuestion.id,
-    };
-    const sendData = { sendVoteParams,  key };
-    const deleteData = { deleteVoteParams,  key };
+    const answerForm = this.getAnswerForm(currentQuestion, loginUser);
+    const myVoteList = votes.filter(v => v.user_id === loginUser.id); 
+    const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
+
+    const voteState = (myVoteList.length === 0);
+    const voteParams = (voteState) 
+              ? {
+                postActionType:"post",
+                thisPageKey: "questionView",
+                user_id: this.props.state.auth.user.id,
+                question_id: currentQuestion.id,
+                answer_id: null,
+                comment_id: null,
+                thisPageContentId: currentQuestion.id,
+                status: 1,
+              } : {
+                postActionType:"delete",
+                thisPageKey: "questionView",
+                user_id: this.props.state.auth.user.id,
+                deleteColumnKey : "question",
+                vote_id: currentQuestion.id,
+                voteIdForPoint: myVoteId,
+                thisPageContentId: currentQuestion.id
+              };
+    const handleSubmit = this.getOnClickPostVote(voteParams, loginUser.id).bind(this);
 
     const { question_translations } = question;
     let translator;
@@ -156,12 +158,10 @@ class QuestionView extends Component {
               user = { user }
               loginUser = { loginUser }
               votes = { votes }
-              sendData = { sendData }
-              deleteData = { deleteData }
+              voteState = { voteState }
               editLink = {`/questions/edit/${this.qId}`}
               translateLink = {`/question_translations/${this.qId}`}
-              onClickSendVote = {this.sendVote.bind(this)}
-              onClickDeleteVote = {this.deleteVote.bind(this)}
+              onClickHandleVote = { handleSubmit }
               translate = { true }
             />
           </p>

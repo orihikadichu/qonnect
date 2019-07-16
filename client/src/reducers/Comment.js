@@ -9,7 +9,6 @@ import {
 import { initialState } from '../constants';
 
 export const list = (state = initialState.comments, action) => {
-  console.log('comment_action', action);
   switch (action.type) {
   case REQUEST_DATA:
     return {

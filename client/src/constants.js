@@ -64,23 +64,17 @@ export const initialState = {
     currentTranslationList: [],
     currentTranslation: {},
   },
-  //未翻訳コメントリスト一覧表示
   not_translate: {
-    //api接続中である場合（非同期処理をしている途中）はtrueになる
     isFetching: false,
     questions: [],
     answers: [],
     comments: [],
   },
-  //評価機能
   votes: {
-    //api接続中である場合（非同期処理をしている途中）はtrueになる
     isFetching: false,
     status: [],
   },
-  //評価機能
   voteTranslations: {
-    //api接続中である場合（非同期処理をしている途中）はtrueになる
     isFetching: false,
     status: [],
   },

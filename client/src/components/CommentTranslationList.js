@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { injectIntl } from 'react-intl';
 
 import { connect } from 'react-redux';
-import { postVote, deleteVote } from '../actions/VoteTranslation';
+import { postVote, deleteVote, handleVote } from '../actions/VoteTranslation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PostUser from './PostUser';
 import PostIcons from './PostIcons';
@@ -21,26 +21,18 @@ class CommentTranslationList extends Component {
     this.props.handleFetchData(this.commentId);
   }
 
-  sendVote(data, user_id) {
-    if (user_id == null) {
+  getOnClickPostVote(voteParams, loginUserId) {
+    return () => {
+      if (loginUserId == null) {
         return;
-    }
-    const ACTION_TYPE_VOTE = 6;
-    data.sendVoteParams.action_type_id = ACTION_TYPE_VOTE;
-    return this.props.handlePostVote(data);
-  }
-
-  deleteVote(data, user_id) {
-      if (user_id == null) {
-          return;
       }
       const ACTION_TYPE_VOTE = 6;
-      data.deleteVoteParams.action_type_id = ACTION_TYPE_VOTE;
-      return this.props.handleDeleteVote(data);
+      voteParams.action_type_id = ACTION_TYPE_VOTE; 
+      return this.props.handleVote(voteParams);
+    };
   }
 
   getTranslationList(translationList, loginUser) {
-    const { formatMessage } = this.props.intl;
 
     return (
       <ul className="uk-list uk-list-divider uk-list-large" >
@@ -50,25 +42,28 @@ class CommentTranslationList extends Component {
             const myVoteList = vote_translations.filter(v => v.user_id === loginUser.id);  
             const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
 
-            const key = "comment";
-            const sendVoteParams = {
-                user_id: this.props.user.id,
-                question_translation_id: null,
-                answer_translation_id: null,
-                comment_translation_id: translation.id,
-                vote_id: translation.id,
-                status: 1,
-                commentId: translation.comment_id
-            };
-            const deleteVoteParams = {
-                user_id: this.props.user.id,
-                key : "comment",
-                vote_id: translation.id,
-                deleteVoteId: myVoteId,
-                commentId: translation.comment_id,
-            };
-            const sendData = { sendVoteParams,  key };
-            const deleteData = { deleteVoteParams,  key };
+            const voteState = (myVoteList.length === 0);
+            const voteParams = (voteState) 
+                      ? {
+                        postActionType:"post",
+                        thisPageKey: "comment",
+                        user_id: this.props.user.id,
+                        question_translation_id: null,
+                        answer_translation_id: null,
+                        comment_translation_id: translation.id,
+                        vote_id: translation.id,
+                        status: 1,
+                        thisPageContentId: translation.comment_id
+                      } : {
+                        postActionType:"delete",
+                        thisPageKey: "comment",
+                        user_id: this.props.user.id,
+                        deleteColumnKey : "comment",
+                        vote_id: translation.id,
+                        voteIdForPoint: myVoteId,
+                        thisPageContentId: translation.comment_id,
+                      };
+           const handleSubmit = this.getOnClickPostVote(voteParams, this.props.user.id).bind(this);
 
            return (
              <li key={translation.id} >
@@ -79,17 +74,12 @@ class CommentTranslationList extends Component {
                      <br/>
                      <br/>
                      <PostIcons 
-                        //コンテンツのユーザー
                         user = { translation.user } 
-                        //ログインユーザー
                         loginUser = { loginUser  } 
                         votes = { translation.vote_translations }
-                        sendData = { sendData }
-                        deleteData = { deleteData }
+                        voteState = { voteState }
+                        onClickHandleVote = { handleSubmit }
                         editLink = {`/comment_translations/edit/${translation.id}`}
-                        // translateLink = {}
-                        onClickSendVote = {this.sendVote.bind(this)}
-                        onClickDeleteVote = {this.deleteVote.bind(this)}
                         translate = { false }
                      />
                    </p>
@@ -135,8 +125,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-      handlePostVote: (data) => dispatch(postVote(data)),
-      handleDeleteVote: (data) => dispatch(deleteVote(data)),
+      // handlePostVote: (data) => dispatch(postVote(data)),
+      // handleDeleteVote: (data) => dispatch(deleteVote(data)),
+      handleVote: (data) => dispatch(handleVote(data)),     
   };
 };
 

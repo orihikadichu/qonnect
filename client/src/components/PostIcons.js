@@ -3,17 +3,44 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class PostIcons extends Component {
+
+    getVoteButton(voteState) {
+        const {
+            user,
+            loginUser,
+            onClickHandleVote,
+        } = this.props;
+
+        if (user.id === loginUser.id) {
+            return (
+                <a>
+                    <FontAwesomeIcon icon={['far','heart']} color="gray"  size="lg" className="NoUser"/>
+                </a>
+            );
+        }
+        if (voteState) {
+            return (
+                //sends
+                <a onClick={onClickHandleVote}>
+                    <FontAwesomeIcon icon={['far','heart']} color="gray"  size="lg"/>
+                </a>
+            );
+        }
+        return (
+            //delete
+            <a onClick={onClickHandleVote}>
+            <FontAwesomeIcon icon="heart" color="red" size="lg"/>
+            </a>
+        );
+    }
     render() {
         const { 
             user, 
             loginUser, 
             votes, 
-            sendData, 
-            deleteData,
             editLink,
             translateLink,
-            onClickSendVote,
-            onClickDeleteVote,
+            voteState,
             translate
         } = this.props;
         
@@ -21,25 +48,23 @@ class PostIcons extends Component {
                         ? <Link className="uk-margin-small-right" to={editLink}><FontAwesomeIcon icon="edit" color="steelblue" size="lg"/></Link>
                         : '';
 
-        const myVotes = votes.filter(v => {return v.user_id === loginUser.id});
-        const voteState = myVotes.length !== 0;
+        const votebutton = this.getVoteButton(voteState);
 
-        // console.log("postIcons",deleteData);
+        // let votebutton
+        // if (voteState) {
+        // votebutton = (
+        //     <a onClick={onClickDeleteVote.bind(this, deleteData, loginUser.id)}>
+        //     <FontAwesomeIcon icon="heart" color="red" size="lg"/>
+        //     </a>
+        // );
+        // } else {
+        // votebutton = (
+        //     <a onClick={onClickSendVote.bind(this, sendData, loginUser.id)}>
+        //     <FontAwesomeIcon icon={['far','heart']} color="gray"  size="lg"/>
+        //     </a>
+        // );
+        // }
 
-        let votebutton
-        if (voteState) {
-        votebutton = (
-            <a onClick={onClickDeleteVote.bind(this, deleteData, loginUser.id)}>
-            <FontAwesomeIcon icon="heart" color="red" size="lg"/>
-            </a>
-        );
-        } else {
-        votebutton = (
-            <a onClick={onClickSendVote.bind(this, sendData, loginUser.id)}>
-            <FontAwesomeIcon icon={['far','heart']} color="gray"  size="lg"/>
-            </a>
-        );
-        }
         const voteNumbers = <span className="uk-margin-small-right uk-text-default">{ votes.length }</span>;
 
         const translateButton = translate === true
