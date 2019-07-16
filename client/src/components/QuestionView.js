@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Translator from './Translator';
 import PostUser from './PostUser';
 import PostIcons from './PostIcons';
+import { getTranslatedContent } from '../utils/Translations';
 
 class QuestionView extends Component {
   constructor(props) {
@@ -40,32 +41,18 @@ class QuestionView extends Component {
     }
   }
 
-  getTranslatedQuestion(question, translateLanguageId) {
-    if (question.translate_language_id === translateLanguageId) {
-      question.dispText = question.content;
-      return question;
-    }
-    const questionTranslation = question.question_translations.filter(question => {
-      //「DBに保存されている言語id」と「画面に表示されている言語」が一致している要素だけを取得する。[0]とすることで最初にフィルタリングされたものを取り出す。
-      return (question.translate_language_id === translateLanguageId);
-    })[0];
-
-    question.dispText = questionTranslation.content;
-    return question;
-  }
-
   sendVote(data, user_id) {
     if (user_id == null) {
-        return;
+      return;
     }
     return this.props.handlePostVote(data);
   }
 
   deleteVote(data, user_id) {
-      if (user_id == null) {
-          return;
-      }
-      return this.props.handleDeleteVote(data);
+    if (user_id == null) {
+      return;
+    }
+    return this.props.handleDeleteVote(data);
   }
 
   getAnswerForm(currentQuestion, loginUser) {
@@ -115,22 +102,23 @@ class QuestionView extends Component {
     }
 
     const loginUser = this.props.state.auth.user;
-    const question = this.getTranslatedQuestion(currentQuestion, translateLanguageId);
+    const contentType = 'question_translations';
+    const question = getTranslatedContent(currentQuestion, translateLanguageId, contentType);
     const { user, votes } = currentQuestion;
     const answerForm = this.getAnswerForm(currentQuestion, loginUser);
 
     const key = "questionView";
     const sendVoteParams = {
-        user_id: this.props.state.auth.user.id,
-        question_id: currentQuestion.id,
-        answer_id: null,
-        comment_id: null,
-        status: 1,
+      user_id: this.props.state.auth.user.id,
+      question_id: currentQuestion.id,
+      answer_id: null,
+      comment_id: null,
+      status: 1,
     };
     const deleteVoteParams = {
-        user_id: this.props.state.auth.user.id,
-        key : "question",
-        vote_id: currentQuestion.id,
+      user_id: this.props.state.auth.user.id,
+      key : "question",
+      vote_id: currentQuestion.id,
     };
     const sendData = { sendVoteParams,  key };
     const deleteData = { deleteVoteParams,  key };
@@ -170,7 +158,7 @@ class QuestionView extends Component {
               <PostUser user={user} />
             </div>
             <div className="uk-width-expand" >
-                { translator }
+              { translator }
             </div>
           </div>
         </div>
@@ -180,7 +168,7 @@ class QuestionView extends Component {
         <div className="uk-margin-bottom">
           { answerForm }
         </div>
-          <AnswerList qId={this.qId} translateLanguageId={translateLanguageId} />
+        <AnswerList qId={this.qId} translateLanguageId={translateLanguageId} />
         <hr className="uk-divider-icon" />
 
         <Link to="/">Top</Link>

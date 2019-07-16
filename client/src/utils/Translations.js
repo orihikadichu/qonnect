@@ -1,7 +1,8 @@
 'use strict';
+import { isEmptyObject } from './index';
 
 export const getFilteredContents = (contentList, translateLanguageId, contentType) => {
-  const filteredContents = contentList.filter((v) => {
+  return contentList.filter((v) => {
     if (v.translate_language_id === translateLanguageId) {
       return true ;
     }
@@ -11,24 +12,33 @@ export const getFilteredContents = (contentList, translateLanguageId, contentTyp
     }).length;
     return (targetTranslationsNum !== 0);
   });
-  return filteredContents;
 };
 
 export const getTranslatedContents = (contentList, translateLanguageId, contentType) => {
-  const translatedContents = contentList.map((v) => {
-    if (v.translate_language_id === translateLanguageId) {
-        v.dispText = v.content;
-        return v;
-    }
+  return contentList.map(v => getTranslatedContent(v, translateLanguageId, contentType));
+};
 
-    const translation = v[contentType].filter(v => {
-      return (v.translate_language_id === translateLanguageId);
-    })[0];
+export const getTranslatedContent = (content, translateLanguageId, contentType) => {
+  if (content.translate_language_id === translateLanguageId) {
+    return setDispText(content, content.content);
+  }
 
-    v.dispText = translation.content;
-    return v;
+  if (isEmptyObject(content[contentType])) {
+    return setDispText(content, content.content);
+  }
 
+  const translationList = content[contentType].filter(content => {
+    return (content.translate_language_id === translateLanguageId);
   });
 
-  return translatedContents;
+  if (translationList.length === 0) {
+    return setDispText(content, content.content);
+  }
+  const translation = translationList[0];
+  return setDispText(content, translation.content);
+};
+
+const setDispText = (content, text) => {
+  content.dispText = text;
+  return content;
 };

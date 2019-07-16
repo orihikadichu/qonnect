@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { getFilteredContents, getTranslatedContents } from '../utils/Translations';
+import { getTranslatedContents } from '../utils/Translations';
 import { injectIntl } from 'react-intl';
 import { sprintf } from 'sprintf-js';
 import Translator from './Translator';
@@ -64,7 +64,7 @@ class QuestionListView extends Component {
     let editArray = [];
 
     array.forEach(function(value) {
-      let a 
+      let a
       a = {
         "num" : value.answers.length,
         "array": value
@@ -97,8 +97,7 @@ class QuestionListView extends Component {
   getQuestionList(questionArray, translateLanguageId, categoryId, sortId) {
 
     const contentType = 'question_translations';
-    const filteredQuestions = getFilteredContents(questionArray, translateLanguageId, contentType);
-    const translatedQuestions = getTranslatedContents(filteredQuestions, translateLanguageId, contentType);
+    const translatedQuestions = getTranslatedContents(questionArray, translateLanguageId, contentType);
     const categoryQuestions = this.categoryFilteredContents(translatedQuestions, categoryId);
     const sortQuestions = this.sortFilteredContents(categoryQuestions, sortId);
 
@@ -149,11 +148,11 @@ class QuestionListView extends Component {
           </p>
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
           <div className="button-area uk-margin-bottom" >
-          <PostIcons 
+          <PostIcons
               //コンテンツのユーザー
-              user = { user } 
+              user = { user }
               //ログインユーザー
-              loginUser = { this.props.user  } 
+              loginUser = { this.props.user  }
               votes = { votes }
               sendData = { sendData }
               deleteData = { deleteData }
@@ -207,7 +206,7 @@ class QuestionListView extends Component {
 const mapStateToProps = state => {
   const { user } = state.auth;
   const { categoryId } = state.ctgr;
-  const { sortId } = state.sort;  
+  const { sortId } = state.sort;
   const { intl } = state;
 
   return {

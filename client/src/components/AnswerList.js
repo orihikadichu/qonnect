@@ -85,16 +85,16 @@ class AnswerList extends Component {
 
   sendVote(data, user_id) {
     if (user_id == null) {
-        return;
+      return;
     }
     return this.props.handlePostVote(data);
   }
 
   deleteVote(data, user_id) {
-      if (user_id == null) {
-          return;
-      }
-      return this.props.handleDeleteVote(data);
+    if (user_id == null) {
+      return;
+    }
+    return this.props.handleDeleteVote(data);
   }
 
   getAnswerList(answerArray, translateLanguageId) {
@@ -102,8 +102,7 @@ class AnswerList extends Component {
     const loginUser = this.props.state.auth.user;
 
     const contentType = 'answer_translations';
-    const filteredAnswers = getFilteredContents(answerArray, translateLanguageId, contentType);
-    const translatedAnswers = getTranslatedContents(filteredAnswers, translateLanguageId, contentType);
+    const translatedAnswers = getTranslatedContents(answerArray, translateLanguageId, contentType);
 
 
     return translatedAnswers.map(answer => {
@@ -152,18 +151,18 @@ class AnswerList extends Component {
                 <br/>
                 <br/>
                 <PostIcons 
-                    //コンテンツのユーザー
-                    user = { user } 
-                    //ログインユーザー
-                    loginUser = { this.props.state.auth.user } 
-                    votes = { votes }
-                    sendData = { sendData }
-                    deleteData = { deleteData }
-                    editLink = {`/answers/edit/${answer.id}`}
-                    translateLink = {`/answer_translations/${answer.id}`}
-                    onClickSendVote = {this.sendVote.bind(this)}
-                    onClickDeleteVote = {this.deleteVote.bind(this)}
-                    translate = { true }
+                //コンテンツのユーザー
+                  user = { user } 
+                //ログインユーザー
+                  loginUser = { this.props.state.auth.user } 
+                  votes = { votes }
+                  sendData = { sendData }
+                  deleteData = { deleteData }
+                  editLink = {`/answers/edit/${answer.id}`}
+                  translateLink = {`/answer_translations/${answer.id}`}
+                  onClickSendVote = {this.sendVote.bind(this)}
+                  onClickDeleteVote = {this.deleteVote.bind(this)}
+                  translate = { true }
                 />
 
               </p>

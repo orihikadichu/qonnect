@@ -48,12 +48,12 @@ class PostIcons extends Component {
                           : "";
 
     return (
-      <div>
+      <span>
         { votebutton }
         { voteNumbers }
         { editLinkButton }
         { translateButton }
-      </div>
+      </span>
     );
   }
 }
