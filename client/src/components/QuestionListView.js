@@ -161,6 +161,7 @@ class QuestionListView extends Component {
               voteState = { voteState } 
               onClickHandleVote = { handleSubmit }
               editLink = {`/questions/edit/${question.id}`}
+              translateLink = {`/question_translations/${question.id}`}
               translate = { true }
           />
           </div>

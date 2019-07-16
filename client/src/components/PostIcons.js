@@ -33,6 +33,7 @@ class PostIcons extends Component {
             </a>
         );
     }
+
     render() {
         const { 
             user, 
