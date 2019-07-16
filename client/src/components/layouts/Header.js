@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuIcon from '@material-ui/icons/Menu';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 
@@ -57,19 +58,21 @@ class Header extends React.Component {
         {
           text: formatMessage({id: "links.profile_edit"}),
           to: '/users/profile_edit',
-          icon: "pencil",
+          icon: "pen",
         },
         {
           text: formatMessage({id: "links.to_not_translated_list"}),
           to: `/not_translated`,
-          icon: "album"
+          icon: "file-alt"
         },
       ];
       return menuList.map((v, i) => (
         <MenuItem key={i} onClick={handleClose}>
           <Link to={v.to} >
-            <span uk-icon={v.icon} ></span>
-            <span>{v.text}</span>
+            <span><FontAwesomeIcon icon={v.icon} color="steelblue" size="lg"/></span>
+            <span className="uk-margin-small-left">
+              {v.text}
+            </span>
           </Link>
         </MenuItem>
       ));
@@ -80,16 +83,20 @@ class Header extends React.Component {
            ? (
              <MenuItem onClick={handleLogout.bind(this)}>
                <Link to="" >
-                 <span uk-icon="sign-out" ></span>
-                 <span>{formatMessage({id: "links.logout"})}</span>
+                 <span><FontAwesomeIcon icon="sign-out-alt" color="steelblue" size="lg"/></span>
+                 <span className="uk-margin-small-left">
+                   {formatMessage({id: "links.logout"})}
+                 </span>
                </Link>
              </MenuItem>
            )
            : (
              <MenuItem onClick={handleClose}>
                <Link to="/users/login" >
-                 <span uk-icon="sign-in" ></span>
-                 <span>{formatMessage({id: "links.login"})}</span>
+                 <span><FontAwesomeIcon icon="sign-in-alt" color="steelblue" size="lg"/></span>
+                 <span className="uk-margin-small-left">
+                   {formatMessage({id: "links.login"})}
+                 </span>
                </Link>
              </MenuItem>
            );
@@ -120,8 +127,18 @@ class Header extends React.Component {
           {loginElem}
           <MenuItem onClick={handleClose}>
             <Link to="/users/signup" >
-              <span uk-icon="check" ></span>
-              <span>{formatMessage({id: "links.sign_up"})}</span>
+              <span><FontAwesomeIcon icon="user-plus" color="steelblue" size="lg"/></span>
+              <span className="uk-margin-small-left">
+                {formatMessage({id: "links.sign_up"})}
+              </span>
+            </Link>
+          </MenuItem>
+          <MenuItem onClick={handleClose}>
+            <Link to="/contact" >
+              <span><FontAwesomeIcon icon="envelope" color="steelblue" size="lg"/></span>
+              <span className="uk-margin-small-left">
+                {formatMessage({id: "links.contact"})}
+              </span>
             </Link>
           </MenuItem>
         </Menu>

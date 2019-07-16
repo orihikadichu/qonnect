@@ -24,13 +24,13 @@ import NewPassword from './containers/users/NewPassword';
 import Activate from './containers/users/Activate';
 import Profile from './containers/users/Profile';
 import ProfileEdit from './containers/users/ProfileEdit';
+import Contact from './containers/Contact';
 import UserOnly from './containers/auth/UserOnly';
 import GuestOnly from './containers/auth/GuestOnly';
 import { Provider } from 'react-redux';
 import store from './store';
 import history from './store';
 import UIkit from 'uikit';
-// import Icons from 'uikit/dist/js/uikit-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
@@ -57,7 +57,7 @@ const render = () => {
   ReactDOM.render(
     <Provider store={store}>
       <IntlProvider locale={locale} messages={messages} >
-        <BrowserRouter> 
+        <BrowserRouter>
           <App>
             <ScrollToTop>
               <Switch>
@@ -72,6 +72,7 @@ const render = () => {
                 <Route exact path='/users/activate/:token' component={Activate} />
                 <Route exact path='/users/password_reset' component={PasswordReset} />
                 <Route exact path='/users/password_reset/:token' component={NewPassword} />
+                <Route exact path='/contact' component={Contact} />
                 <UserOnly>
                   <Switch>
                     <Route exact path='/questions/edit/:id' component={QuestionEdit} />

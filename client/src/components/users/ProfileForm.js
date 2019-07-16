@@ -38,11 +38,12 @@ class ProfileForm extends Component {
                        ? (<p><img src={this.state.image_url} alt="" width="200" /></p>)
                        : '';
 
+
     return (
       <Formik
       initialValues={{ id, name, profile, country_id, image: ''}}
         enableReinitialize={true}
-        validate={this.validate}
+        validate={this.validate.bind(this)}
         onSubmit={(values, { setSubmitting, setErrors }) => {
             this.props.onSubmit(values);
             setSubmitting(false);
@@ -61,14 +62,14 @@ class ProfileForm extends Component {
                      placeholder={formatMessage({id: "placeholder.profile_edit.nickname"})}
                      className={'uk-form-control uk-input'}
                 />
-                {touched.name && errors.name && <div>{errors.name}</div>}
+                {touched.name && errors.name && <div className="uk-text-warning">{errors.name}</div>}
               </div>
               <div className="uk-margin">
                 <label className="uk-form-label">{formatMessage({id: "titles.profile_edit.birthplace"})}</label>
 
-                <CountryFormSelect 
+                <CountryFormSelect
                   id={'counrty_id'}
-                  name="country_id" 
+                  name="country_id"
                   placeholder={formatMessage({id: "placeholders.sign_ups.country"})} />
                 {/* <LanguageFormSelect name="country_id" placeholder="出身地" /> */}
 

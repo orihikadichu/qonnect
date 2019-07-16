@@ -26,30 +26,31 @@ class Profile extends Component {
     });
   }
 
-  getVoteList(voteLists){
+  getVoteList(voteLists) {
 
     const repeatNum = Math.ceil(voteLists.length/5);
     const stampCardNum =  Math.ceil(voteLists.length/10);
     const addArrayNum = stampCardNum*10 - voteLists.length;
 
-    for(let i=0 ; i < addArrayNum ; i++){
+    for (let i = 0; i < addArrayNum; i++) {
       voteLists.push("");
     }
-    const tableContents =[];
-    for(let i =0; i < stampCardNum ;i++) {
-      const stampcard = <Stampcard 
-        voteArray = { voteLists.slice((i*5)*2, (i*5)*2+10)}
-        repeatNum = { repeatNum }
-      />
+    const tableContents = [];
+    for (let i = 0; i < stampCardNum; i++) {
+      const stampcard = (
+        <Stampcard
+          voteArray = { voteLists.slice((i*5)*2, (i*5)*2+10) }
+          repeatNum = { repeatNum }
+        />
+      );
       tableContents.unshift(stampcard);
     }
 
     // いいね数が０の場合
-    if(voteLists.length===0){
+    if (voteLists.length === 0) {
       let contents=[]
-      for (let i=0;i<5;i++){
-          contents.push(
-          <td className="uk-text-center"></td>);
+      for (let i = 0; i < 5; i++) {
+        contents.push(<td className="uk-text-center"></td>);
       }
       tableContents.push(<table className="uk-table stamp-card uk-card uk-card-default uk-card-small uk-card-body uk-margin-top" style={{"width": "90%"}}>
                         <tbody className="uk-table stamp-card uk-card uk-card-default uk-card-small uk-card-body uk-margin-top">
@@ -234,7 +235,7 @@ class Profile extends Component {
           <div className="uk-width-2-5@s">
             <p>{formatMessage({id: "titles.profile.votes"})}</p>
             {voteTables}
-          </div> 
+          </div>
         </div>
         <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.post_list"})}</span></h3>
         {tabList}
