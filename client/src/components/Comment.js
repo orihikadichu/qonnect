@@ -63,8 +63,9 @@ class Comment extends Component {
 
     if (currentCommentList.length !== 0) {
       const thisAnswerCommentList = currentCommentList[answerId];
-      // console.log("answerId", answerId);
-      // console.log("thisAnswerCommentList", thisAnswerCommentList);
+      console.log("currentCommentList", currentCommentList);
+      console.log("answerId", answerId);
+      console.log("thisAnswerCommentList", thisAnswerCommentList);
       const thisCommentData = thisAnswerCommentList.filter(v => v.id === id);
       const commentTranslated = thisCommentData[0].comment_translations;
       if (commentTranslated.length !== 0) {
@@ -76,11 +77,10 @@ class Comment extends Component {
     return (
       <article className="uk-comment uk-comment-primary">
         <div className="uk-comment-header uk-comment-body">
-          <p style={{"whiteSpace": "pre-wrap"}} >
+          <p className="uk-margin-small-bottom" style={{"whiteSpace": "pre-wrap"}} >
             {content}
-            <br/>
-            <br/>
-            <PostIcons 
+          </p>
+          <PostIcons 
                 user = { commentUserId } 
                 loginUser = { this.props.user } 
                 votes = { voteList }
@@ -89,8 +89,7 @@ class Comment extends Component {
                 translateLink = {`/comment_translations/${id}`}
                 onClickHandleVote = { handleSubmit }
                 translate = { true }
-            />
-          </p>
+          />
         </div>
         <div className="uk-grid uk-grid-small uk-flex-middle">
           <div>

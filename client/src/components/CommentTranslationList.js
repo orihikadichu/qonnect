@@ -69,11 +69,10 @@ class CommentTranslationList extends Component {
              <li key={translation.id} >
                <article className="uk-comment">
                  <div className="uk-comment-header uk-comment-body">
-                   <p style={{"whiteSpace": "pre-wrap"}} >
+                   <p className="uk-margin-small-bottom" style={{"whiteSpace": "pre-wrap"}} >
                      <Linkify properties={{ target: '_blank'}} >{translation.content}</Linkify>
-                     <br/>
-                     <br/>
-                     <PostIcons 
+                   </p>
+                   <PostIcons 
                         user = { translation.user } 
                         loginUser = { loginUser  } 
                         votes = { translation.vote_translations }
@@ -82,7 +81,6 @@ class CommentTranslationList extends Component {
                         editLink = {`/comment_translations/edit/${translation.id}`}
                         translate = { false }
                      />
-                   </p>
                    <p className="uk-text-meta">{dayjs(translation.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
                  </div>
                  <div className="uk-grid uk-grid-small uk-flex-middle" >

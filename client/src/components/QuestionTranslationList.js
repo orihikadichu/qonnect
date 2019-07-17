@@ -68,11 +68,10 @@ class QuestionTranslationList extends Component {
         <li key={translation.id} >
           <article className="uk-comment">
             <div className="uk-comment-header uk-comment-body">
-              <p style={{"whiteSpace": "pre-wrap"}} >
+              <p className="uk-margin-small-bottom" style={{"whiteSpace": "pre-wrap"}} >
                 <Linkify properties={{ target: '_blank'}} >{translation.content}</Linkify>
-                <br/>
-                <br/>
-                <PostIcons 
+              </p>
+              <PostIcons 
                     user = { translation.user } 
                     loginUser = { loginUser  } 
                     votes = { translation.vote_translations }
@@ -81,7 +80,6 @@ class QuestionTranslationList extends Component {
                     onClickHandleVote = { handleSubmit }
                     translate = { false }
                 />
-              </p>
               <p className="uk-text-meta">{dayjs(translation.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
 
             </div>

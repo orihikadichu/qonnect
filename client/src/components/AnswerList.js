@@ -144,11 +144,10 @@ class AnswerList extends Component {
         <li key={answer.id} >
           <article className="uk-comment">
             <div className="uk-comment-header uk-comment-body">
-              <p style={{"whiteSpace": "pre-wrap"}} >
+              <p className="uk-margin-small-bottom" style={{"whiteSpace": "pre-wrap"}} >
                 <Linkify properties={{ target: '_blank'}} >{answer.dispText}</Linkify>
-                <br/>
-                <br/>
-                <PostIcons 
+              </p>
+              <PostIcons 
                     user = { user } 
                     loginUser = { this.props.state.auth.user } 
                     votes = { votes }
@@ -158,8 +157,6 @@ class AnswerList extends Component {
                     onClickHandleVote = { handleSubmit }
                     translate = { true }
                 />
-
-              </p>
               <p className="uk-text-meta">{dayjs(answer.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
 
             </div>

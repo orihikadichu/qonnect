@@ -150,11 +150,10 @@ class QuestionView extends Component {
       <main className="uk-container uk-container-small">
         <div className="uk-card uk-card-default uk-card-body uk-box-shadow-small">
           <p className="uk-text-muted">{ question.category.category }</p>
-          <p>
+          <p className="uk-margin-small-bottom" >
             <Linkify properties={{ target: '_blank'}} >{question.dispText}</Linkify>
-            <br/>
-            <br/>
-            <PostIcons
+          </p>
+          <PostIcons
               user = { user }
               loginUser = { loginUser }
               votes = { votes }
@@ -164,7 +163,6 @@ class QuestionView extends Component {
               onClickHandleVote = { handleSubmit }
               translate = { true }
             />
-          </p>
           <p className="uk-text-meta">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
           <div className="uk-grid uk-grid-small uk-flex-middle" >
             <div>
