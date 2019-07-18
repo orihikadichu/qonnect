@@ -6,9 +6,8 @@ import { getTranslatedContents } from '../utils/Translations';
 import { injectIntl } from 'react-intl';
 import { sprintf } from 'sprintf-js';
 import Translator from './Translator';
-//componentの中でdispatchするための設定
 import { connect } from 'react-redux';
-//評価するための関数
+
 import { postVote, deleteVote, handleVote } from '../actions/Vote';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PostUser from './PostUser';
