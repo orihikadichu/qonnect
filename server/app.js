@@ -94,14 +94,12 @@ app.post('/api/votes', (req, res) => {
     answer_id,
     comment_id,
     action_type_id,
-    status
   } = req.body;
   db.votes.create({
     user_id,
     question_id,
     answer_id,
     comment_id,
-    status
   })
     .then((createdData) => {
       res.status(200).send(createdData);
