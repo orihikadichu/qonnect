@@ -77,7 +77,6 @@ class AnswerList extends Component {
     };
     return (
       <div className="uk-margin-bottom" style={{"paddingLeft": "30px"}} >
-        {/*commentFormはコメントを投稿する場所*/}
         <CommentForm form={`commentForm_${answerId}`} onSubmit={this.onClickCommentForm.bind(this)} initialValues={initialValues} />
       </div>
     );
@@ -85,16 +84,9 @@ class AnswerList extends Component {
 
   onClickReply(answerId) {
     let { buttonState } = this.state;
-
-    if (buttonState[answerId] && buttonState[answerId] === "open") {
-      buttonState[answerId] = "close";
-      this.setState({buttonState});
-      return
-    } else {
-      buttonState[answerId] = "open";
-      this.setState({buttonState});
-      return
-    }
+    const isOpened = ( buttonState[answerId] && buttonState[answerId] === "open" );
+    buttonState[answerId] = isOpened ? "close" : "open" ;
+    return this.setState({buttonState});
   }
 
   getOnClickPostVote(voteParams, loginUserId) {

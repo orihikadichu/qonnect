@@ -63,28 +63,20 @@ class QuestionListView extends Component {
         });
       default:
         return [];
-        break;
     }
   }
 
-  sortFilteredContents(array, id) {
+  sortFilteredContents(categoryQuestions, sortId) {
     const CREATED_ANSWER_MANY = 1;
     const CREATED_ANSWER_FEW = 2;
     const CREATED_CREATED_ASC = 3;
     const CREATED_CREATED_DES = 4;
 
-    let editArray = [];
-
-    array.forEach(function(value) {
-      let a
-      a = {
-        "num" : value.answers.length,
-        "array": value
-      };
-      editArray.push(a);
+    const editArray = categoryQuestions.map(v => {
+      return {"num": v.answers.length, "question": v};
     });
 
-    switch(id) {
+    switch(sortId) {
       case CREATED_ANSWER_MANY :
         return editArray.sort(function(a,b) {
             return (a.num < b.num ? 1 : -1);
@@ -94,11 +86,11 @@ class QuestionListView extends Component {
           return (a.num > b.num ? 1 : -1);
         }).map((e)=>{ return e.array})
       case CREATED_CREATED_ASC :
-        return array.sort(function(a,b) {
+        return categoryQuestions.sort(function(a,b) {
           return (a.created_at < b.created_at ? 1 : -1);
         });
       case CREATED_CREATED_DES :
-        return array.sort(function(a,b) {
+        return categoryQuestions.sort(function(a,b) {
           return (a.created_at > b.created_at ? 1 : -1);
         });
       default:

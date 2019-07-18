@@ -28,19 +28,20 @@ class Profile extends Component {
 
   getVoteList(voteLists) {
 
-    const repeatNum = Math.ceil(voteLists.length/5);
-    const stampCardNum =  Math.ceil(voteLists.length/10);
-    const addArrayNum = stampCardNum*10 - voteLists.length;
+    const stampCardRowNum = Math.ceil(voteLists.length / 5);
+    const stampCardNum =  Math.ceil(voteLists.length / 10);
+    const emptyTdNum = stampCardNum * 10 - voteLists.length;
 
-    for (let i = 0; i < addArrayNum; i++) {
+    for (let i = 0; i < emptyTdNum; i++) {
       voteLists.push("");
     }
     const tableContents = [];
     for (let i = 0; i < stampCardNum; i++) {
       const stampcard = (
         <Stampcard
-          voteArray = { voteLists.slice((i*5)*2, (i*5)*2+10) }
-          repeatNum = { repeatNum }
+          key={`stampcard_${i}`}
+          voteArray={ voteLists.slice((i*5)*2, (i*5)*2+10) }
+          stampCardRowNum ={ stampCardRowNum }
         />
       );
       tableContents.unshift(stampcard);
@@ -217,8 +218,7 @@ class Profile extends Component {
 
     return (
       <main className="uk-container uk-container-small">
-        {/* <div className="uk-grid uk-grid-small uk-flex-middle uk-margin-bottom"> */}
-        <div class="uk-grid uk-grid-small">
+        <div className="uk-grid uk-grid-small">
           <div className="uk-width-expand">
             <div className="uk-width-auto uk-flex-first">
               <img src={user.image_path} className="uk-border-circle" alt="" width="120" height="" />

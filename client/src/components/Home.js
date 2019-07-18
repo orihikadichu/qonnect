@@ -67,15 +67,13 @@ class Home extends React.Component {
 
   changeSortfunction(value){
     this.props.changeSort(value);
-    let params;
-    params = {};
+    const params = {};
     this.props.handleFetchData(params);
   }
 
   changeCateogryfunction(value) {
      this.props.changeCategory(value);
-     let params;
-     params = {};
+     const params = {};
      this.props.handleFetchData(params);
   }
 

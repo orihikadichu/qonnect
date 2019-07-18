@@ -45,25 +45,24 @@ export function* handleVote(action) {
       yield call(deleteVotes, voteParams);
     }
     
-    let data;
     switch (thisPageKey) {
       case "comment":
       case "answer":
-          data = { payload: {
+          const commentAnswerData = { payload: {
             question_id: voteParams.thisPageContentId,
             translate_language_id: 1,
           } };
-          yield call(answerSaga.handleFetchAnswerData, data);
+          yield call(answerSaga.handleFetchAnswerData, commentAnswerData);
           break;
       case "questionList":
-          data = { payload: {
+          const questionData = { payload: {
             country_id: voteParams.country_id,
           } };
-          yield call(questionSagas.handleFetchData, data);
+          yield call(questionSagas.handleFetchData, questionData);
           break;
       case "questionView":
-          data = { payload: voteParams.thisPageContentId };
-          yield call(questionSagas.handleFetchQuestionById, data);
+          const singleQuestionData = { payload: voteParams.thisPageContentId };
+          yield call(questionSagas.handleFetchQuestionById, singleQuestionData);
           break;
     }
     const message = postActionType === "post" 
