@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     question_id: DataTypes.INTEGER,
     answer_id: DataTypes.INTEGER,
     comment_id: DataTypes.INTEGER,
-    status: DataTypes.INTEGER
   }, {
     underscored: true,
     indexes: [ 
