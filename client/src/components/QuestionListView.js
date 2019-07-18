@@ -79,8 +79,8 @@ class QuestionListView extends Component {
     switch(sortId) {
       case CREATED_ANSWER_MANY :
         return editArray.sort(function(a,b) {
-            return (a.num < b.num ? 1 : -1);
-          }).map((e)=>{ return e.array});
+          return (a.num < b.num ? 1 : -1);
+        }).map((e)=>{ return e.array});
       case CREATED_ANSWER_FEW :
         return editArray.sort(function(a,b) {
           return (a.num > b.num ? 1 : -1);
@@ -117,30 +117,30 @@ class QuestionListView extends Component {
 
       const voteState = (myVoteList.length === 0);
       const voteParams = (voteState)
-                ? {
-                  postActionType:"post",
-                  thisPageKey: "questionList",
-                  user_id: this.props.user.id,
-                  question_id: question.id,
-                  answer_id: null,
-                  comment_id: null,
-                  status: 1,
-                } : {
-                  postActionType:"delete",
-                  thisPageKey: "questionList",
-                  user_id: this.props.user.id,
-                  deleteColumnKey : "question",
-                  vote_id: question.id,
-                  voteIdForPoint: myVoteId,
-                };
+                       ? {
+                         postActionType:"post",
+                         thisPageKey: "questionList",
+                         user_id: this.props.user.id,
+                         question_id: question.id,
+                         answer_id: null,
+                         comment_id: null,
+                         status: 1,
+                       } : {
+                         postActionType:"delete",
+                         thisPageKey: "questionList",
+                         user_id: this.props.user.id,
+                         deleteColumnKey : "question",
+                         vote_id: question.id,
+                         voteIdForPoint: myVoteId,
+                       };
       const handleSubmit = this.getOnClickPostVote(voteParams, this.props.user.id).bind(this);
 
       const { question_translations } = question;
       const translator = this.getTranslator(question_translations, formatMessage);
 
       const  contentCount = answers.length !==0
-      ? <PostAnswerCount reply={ answers } />
-      : "";
+                          ? <PostAnswerCount reply={ answers } />
+                          : "";
 
       return (
         <li key={question.id} >
@@ -150,7 +150,7 @@ class QuestionListView extends Component {
           </p>
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
           <div className="button-area uk-margin-bottom" >
-          <PostIcons
+            <PostIcons
               user = { user }
               loginUser = { this.props.user  }
               votes = { votes }
@@ -159,7 +159,7 @@ class QuestionListView extends Component {
               editLink = {`/questions/edit/${question.id}`}
               translateLink = {`/question_translations/${question.id}`}
               translate = { true }
-          />
+            />
           </div>
           <div className="uk-grid uk-grid-small uk-flex-middle" >
             <div>
@@ -177,7 +177,8 @@ class QuestionListView extends Component {
     });
   }
 
-  getQuestionListView(questionArray, translateLanguageId, categoryId, sortId) {
+  render() {
+    const { questionArray, translateLanguageId, categoryId, sortId } = this.props;
     const questionList = this.getQuestionList(questionArray, translateLanguageId, categoryId, sortId);
 
     return (
@@ -185,17 +186,6 @@ class QuestionListView extends Component {
         <ul className="uk-list uk-list-divider uk-list-large">
           {questionList}
         </ul>
-      </div>
-    );
-  }
-
-  render() {
-    const { questionArray, translateLanguageId, categoryId, sortId } = this.props;
-    const content = this.getQuestionListView(questionArray, translateLanguageId, categoryId, sortId);
-
-    return (
-      <div>
-        {content}
       </div>
     );
   }
