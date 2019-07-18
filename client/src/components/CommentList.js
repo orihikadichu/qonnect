@@ -10,8 +10,7 @@ class CommentList extends Component {
     const { loginUser, translateLanguageId } = this.props;
     const commentList = this.props.list ? this.props.list : [];
     const contentType = 'comment_translations';
-    const filteredCommentList = getFilteredContents(commentList, translateLanguageId, contentType);
-    const translatedCommentList = getTranslatedContents(filteredCommentList, translateLanguageId, contentType);
+    const translatedCommentList = getTranslatedContents(commentList, translateLanguageId, contentType);
 
     return (
       <ul className="uk-comment-list" >

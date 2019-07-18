@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { getFilteredContents, getTranslatedContents } from '../utils/Translations';
+import { getTranslatedContents } from '../utils/Translations';
 import { injectIntl } from 'react-intl';
 import { sprintf } from 'sprintf-js';
 import Translator from './Translator';
@@ -94,8 +94,7 @@ class QuestionListView extends Component {
   getQuestionList(questionArray, translateLanguageId, categoryId, sortId) {
 
     const contentType = 'question_translations';
-    const filteredQuestions = getFilteredContents(questionArray, translateLanguageId, contentType);
-    const translatedQuestions = getTranslatedContents(filteredQuestions, translateLanguageId, contentType);
+    const translatedQuestions = getTranslatedContents(questionArray, translateLanguageId, contentType);
     const categoryQuestions = this.categoryFilteredContents(translatedQuestions, categoryId);
     const sortQuestions = this.sortFilteredContents(categoryQuestions, sortId);
 

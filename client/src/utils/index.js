@@ -1,5 +1,8 @@
 'use strict';
 
-export function isEmptyObject(obj) {
+export const isEmptyObject = (obj) => {
+  if (typeof obj === 'undefined') {
+    return true;
+  }
   return !Object.keys(obj).length;
 }

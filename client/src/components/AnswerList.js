@@ -99,8 +99,7 @@ class AnswerList extends Component {
     const loginUser = this.props.state.auth.user;
 
     const contentType = 'answer_translations';
-    const filteredAnswers = getFilteredContents(answerArray, translateLanguageId, contentType);
-    const translatedAnswers = getTranslatedContents(filteredAnswers, translateLanguageId, contentType);
+    const translatedAnswers = getTranslatedContents(answerArray, translateLanguageId, contentType);
 
     return translatedAnswers.map(answer => {
 

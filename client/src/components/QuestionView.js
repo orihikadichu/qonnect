@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Translator from './Translator';
 import PostUser from './PostUser';
 import PostIcons from './PostIcons';
+import { getTranslatedContent } from '../utils/Translations';
 
 class QuestionView extends Component {
   constructor(props) {
@@ -38,26 +39,13 @@ class QuestionView extends Component {
     }
   }
 
-  getTranslatedQuestion(question, translateLanguageId) {
-    if (question.translate_language_id === translateLanguageId) {
-      question.dispText = question.content;
-      return question;
-    }
-    const questionTranslation = question.question_translations.filter(question => {
-      return (question.translate_language_id === translateLanguageId);
-    })[0];
-
-    question.dispText = questionTranslation.content;
-    return question;
-  }
-
   getOnClickPostVote(voteParams, loginUserId) {
     return () => {
       if (loginUserId == null) {
         return;
       }
       const ACTION_TYPE_VOTE = 6;
-      voteParams.action_type_id = ACTION_TYPE_VOTE; 
+      voteParams.action_type_id = ACTION_TYPE_VOTE;
       return this.props.handleVote(voteParams);
     };
   }
@@ -109,15 +97,16 @@ class QuestionView extends Component {
     }
 
     const loginUser = this.props.state.auth.user;
-    const question = this.getTranslatedQuestion(currentQuestion, translateLanguageId);
+    const contentType = 'question_translations';
+    const question = getTranslatedContent(currentQuestion, translateLanguageId, contentType);
     const { user, votes } = currentQuestion;
 
     const answerForm = this.getAnswerForm(currentQuestion, loginUser);
-    const myVoteList = votes.filter(v => v.user_id === loginUser.id); 
+    const myVoteList = votes.filter(v => v.user_id === loginUser.id);
     const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
 
     const voteState = (myVoteList.length === 0);
-    const voteParams = (voteState) 
+    const voteParams = (voteState)
               ? {
                 postActionType:"post",
                 thisPageKey: "questionView",
@@ -169,7 +158,7 @@ class QuestionView extends Component {
               <PostUser user={user} />
             </div>
             <div className="uk-width-expand" >
-                { translator }
+              { translator }
             </div>
           </div>
         </div>
@@ -179,7 +168,7 @@ class QuestionView extends Component {
         <div className="uk-margin-bottom">
           { answerForm }
         </div>
-          <AnswerList qId={this.qId} translateLanguageId={translateLanguageId} />
+        <AnswerList qId={this.qId} translateLanguageId={translateLanguageId} />
         <hr className="uk-divider-icon" />
 
         <Link to="/">Top</Link>
