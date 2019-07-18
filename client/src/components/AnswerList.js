@@ -41,10 +41,25 @@ class AnswerList extends Component {
       content,
       question_id: this.qId,
       current_translate_language_id: this.translateLanguageId,
-      //翻訳済みコメントのリストを取得するためのAnswer_idリスト
       answerIdList: answerIds,
     };
     return this.props.handlePostComment(postData);
+  }
+
+  getTranslator(answer_translations, formatMessage) {
+
+    const defaultElem = (
+      <h4 className="uk-comment-meta uk-text-right">
+        { formatMessage({id: "translated.state" })}
+      </h4>
+    );
+
+    if (answer_translations.length === 0) {
+      return defaultElem;
+    }
+
+    const { user } = answer_translations[0];
+    return <Translator user={user} />;
   }
 
   getComment(answerId) {
@@ -69,7 +84,6 @@ class AnswerList extends Component {
   }
 
   onClickReply(answerId) {
-    //値がtrueかfalseか値を取得
     let { buttonState } = this.state;
 
     if (buttonState[answerId] && buttonState[answerId] === "open") {
@@ -132,12 +146,7 @@ class AnswerList extends Component {
       const commentForm = this.getComment(answer.id);
       const { answer_translations } = answer;
 
-      let translator;
-      translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
-      if (answer_translations.length !== 0) {
-        const { user } = answer_translations[0];
-        translator = <Translator user={user} />;
-      }
+      const translator = this.getTranslator(answer_translations, formatMessage);
 
       return (
         <li key={answer.id} >

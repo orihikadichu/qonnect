@@ -28,6 +28,21 @@ class QuestionListView extends Component {
     };
   }
 
+  getTranslator(question_translations, formatMessage) {
+    const defaultElem = (
+      <h4 className="uk-comment-meta uk-text-right">
+        { formatMessage({id: "translated.state" })}
+      </h4>
+    );
+
+    if (question_translations.length === 0) {
+      return defaultElem;
+    }
+
+    const { user } = question_translations[0];
+    return <Translator user={user} />;
+  }
+
   categoryFilteredContents(array, id) {
 
     const CREATED_ALL = 0;
@@ -129,21 +144,11 @@ class QuestionListView extends Component {
       const handleSubmit = this.getOnClickPostVote(voteParams, this.props.user.id).bind(this);
 
       const { question_translations } = question;
-      let translator;
-      translator = (
-        <h4 className="uk-comment-meta uk-text-right">
-          { formatMessage({id: "translated.state" })}
-        </h4>
-      );
-      if (question_translations.length !== 0) {
-        const { user } = question_translations[0];
-        translator = <Translator user={user} />;
-      }
+      const translator = this.getTranslator(question_translations, formatMessage);
 
-      let contentCount ="";
-      if ( answers.length !==0 ) {
-        contentCount = <PostAnswerCount reply={ answers } />
-      };
+      const  contentCount = answers.length !==0
+      ? <PostAnswerCount reply={ answers } />
+      : "";
 
       return (
         <li key={question.id} >

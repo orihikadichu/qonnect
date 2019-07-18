@@ -50,6 +50,21 @@ class QuestionView extends Component {
     };
   }
 
+  getTranslator(question_translations, formatMessage) {
+    const defaultElem = (
+      <h4 className="uk-comment-meta uk-text-right">
+        { formatMessage({id: "translated.state" })}
+      </h4>
+    );
+
+    if (question_translations.length === 0) {
+      return defaultElem;
+    }
+
+    const { user } = question_translations[0];
+    return <Translator user={user} />;
+  }
+
   getAnswerForm(currentQuestion, loginUser) {
     const { formatMessage } = this.props.intl;
     const { intl_key } = currentQuestion.country;
@@ -128,12 +143,8 @@ class QuestionView extends Component {
     const handleSubmit = this.getOnClickPostVote(voteParams, loginUser.id).bind(this);
 
     const { question_translations } = question;
-    let translator;
-    translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
-    if (question_translations.length !== 0) {
-      const { user } = question_translations[0];
-      translator = <Translator user={user} />;
-    }
+
+    const translator = this.getTranslator(question_translations, formatMessage)
 
     return (
       <main className="uk-container uk-container-small">
