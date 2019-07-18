@@ -23,7 +23,7 @@ class QuestionListView extends Component {
         return;
       }
       const ACTION_TYPE_VOTE = 6;
-      voteParams.action_type_id = ACTION_TYPE_VOTE; 
+      voteParams.action_type_id = ACTION_TYPE_VOTE;
       return this.props.handleVote(voteParams);
     };
   }
@@ -61,7 +61,7 @@ class QuestionListView extends Component {
     let editArray = [];
 
     array.forEach(function(value) {
-      let a 
+      let a
       a = {
         "num" : value.answers.length,
         "array": value
@@ -106,11 +106,11 @@ class QuestionListView extends Component {
       const { votes } = question;
       const userData = this.props.user;
 
-      const myVoteList = votes.filter(v => v.user_id === userData.id); 
+      const myVoteList = votes.filter(v => v.user_id === userData.id);
       const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
 
       const voteState = (myVoteList.length === 0);
-      const voteParams = (voteState) 
+      const voteParams = (voteState)
                 ? {
                   postActionType:"post",
                   thisPageKey: "questionList",
@@ -154,11 +154,11 @@ class QuestionListView extends Component {
           </p>
           <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
           <div className="button-area uk-margin-bottom" >
-          <PostIcons 
-              user = { user } 
-              loginUser = { this.props.user  } 
+          <PostIcons
+              user = { user }
+              loginUser = { this.props.user  }
               votes = { votes }
-              voteState = { voteState } 
+              voteState = { voteState }
               onClickHandleVote = { handleSubmit }
               editLink = {`/questions/edit/${question.id}`}
               translateLink = {`/question_translations/${question.id}`}
@@ -208,7 +208,7 @@ class QuestionListView extends Component {
 const mapStateToProps = state => {
   const { user } = state.auth;
   const { categoryId } = state.ctgr;
-  const { sortId } = state.sort;  
+  const { sortId } = state.sort;
   const { intl } = state;
 
   return {
