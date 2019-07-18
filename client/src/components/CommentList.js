@@ -21,7 +21,7 @@ class CommentList extends Component {
 
             return (
               <li className="uk-margin-small-top" key={i} >
-                <Comment id={v.id} answerId={v.answer_id} commentUser={v.user} content={v.dispText} isOwner={isOwner} voteList={ voteState } />
+                <Comment commentId={v.id} answerId={v.answer_id} commentUser={v.user} content={v.dispText} isOwner={isOwner} voteList={ voteState } />
               </li>
             );
         })}

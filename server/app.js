@@ -1026,6 +1026,10 @@ app.get('/api/users/:id', (req, res) => {
         required: false
       },
       {
+        model: db.points,
+        required: false
+      },
+      {
         model: db.vote_translations,
         required: false,
         include: [

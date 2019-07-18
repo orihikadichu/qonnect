@@ -25,8 +25,31 @@ class Comment extends Component {
     };
   }
 
+  getTranslator(currentCommentList, answerId, commentId, formatMessage) {
+    const defaultElem = (
+      <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>
+    );
+    if (currentCommentList.length === 0) {
+      return defaultElem;
+    }
+
+    const thisAnswerCommentList = currentCommentList[answerId];
+    if (!thisAnswerCommentList) {
+      return defaultElem;
+    }
+    
+    const thisCommentData = thisAnswerCommentList.filter(v => v.id === commentId);
+    const commentTranslated = thisCommentData[0].comment_translations;
+    if (commentTranslated.length === 0) {
+      return defaultElem;
+    }
+    const { user } = commentTranslated[0];
+    return <Translator user={user} />;
+  }
+
   render() {
-    const { id, content, isOwner, voteList, commentUser, answerId, comments, user, questions, intl } = this.props;
+    const { commentId, content, isOwner, voteList, commentUser, answerId, comments, user, questions, intl } = this.props;
+
     const currentQuestionId = questions.currentQuestion.id;
     const { formatMessage } = intl;
     const { currentCommentList } = comments;
@@ -43,36 +66,21 @@ class Comment extends Component {
                 user_id: this.props.user.id,
                 question_id: null,
                 answer_id: null,
-                comment_id: id,
+                comment_id: commentId,
                 status: 1,
                 thisPageContentId: currentQuestionId,
               } : {
                 postActionType:"delete",
                 thisPageKey: "comment",
-                user_id: this.props.user.id,
+                user_id: this.props.user.commentId,
                 deleteColumnKey : "comment",
-                vote_id: id,
+                vote_id: commentId,
                 voteIdForPoint: myVoteId,
                 thisPageContentId: currentQuestionId,
               };
 
     const handleSubmit = this.getOnClickPostVote(voteParams, this.props.user.id).bind(this);
-    
-    let translator;
-    translator = <h4 className="uk-comment-meta uk-text-right">{formatMessage({id: 'translated.state'})}</h4>;
-
-    if (currentCommentList.length !== 0) {
-      const thisAnswerCommentList = currentCommentList[answerId];
-      console.log("currentCommentList", currentCommentList);
-      console.log("answerId", answerId);
-      console.log("thisAnswerCommentList", thisAnswerCommentList);
-      const thisCommentData = thisAnswerCommentList.filter(v => v.id === id);
-      const commentTranslated = thisCommentData[0].comment_translations;
-      if (commentTranslated.length !== 0) {
-        const { user } = commentTranslated[0];
-        translator = <Translator user={user} />;
-      }
-    } 
+    const translator = this.getTranslator(currentCommentList, answerId, commentId,  formatMessage);
 
     return (
       <article className="uk-comment uk-comment-primary">
@@ -85,8 +93,8 @@ class Comment extends Component {
                 loginUser = { this.props.user } 
                 votes = { voteList }
                 voteState = { voteState }
-                editLink = {`/comments/edit/${id}`}
-                translateLink = {`/comment_translations/${id}`}
+                editLink = {`/comments/edit/${commentId}`}
+                translateLink = {`/comment_translations/${commentId}`}
                 onClickHandleVote = { handleSubmit }
                 translate = { true }
           />
@@ -117,8 +125,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // handlePostVote: (data, questionId) => dispatch(postVote(data, questionId)),
-    // handleDeleteVote: (data) => dispatch(deleteVote(data)),
     handleVote: (data) => dispatch(handleVote(data)),
   };
 };

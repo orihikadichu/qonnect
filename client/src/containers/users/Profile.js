@@ -197,12 +197,11 @@ class Profile extends Component {
   }
 
   render() {
-    // とりあえずログインユーザーのプロフィールページを。
-    // propsで渡されたuserIdのプロフィールページを表示するようにする。
     const { profile } = this.props.state;
     const { user } = profile;
     const { formatMessage } = this.props.intl;
     const { vote_translations } = user;
+    console.log("thisprops",this.props.state);
 
     if (isEmptyObject(user)) {
       return (
@@ -230,6 +229,9 @@ class Profile extends Component {
             </div>
             <div>
               <p style={{"whiteSpace": "pre-wrap"}}>{user.profile}</p>
+            </div>
+            <div>
+              <p style={{"whiteSpace": "pre-wrap"}}>ポイント:{user.points.length}</p>
             </div>
           </div>
           <div className="uk-width-2-5@s">
