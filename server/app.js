@@ -90,6 +90,7 @@ const upload = multer({ storage: storage });
 app.post('/api/votes', (req, res) => {
   const {
     user_id,
+    voted_user_id,
     question_id,
     answer_id,
     comment_id,
@@ -97,6 +98,7 @@ app.post('/api/votes', (req, res) => {
   } = req.body;
   db.votes.create({
     user_id,
+    voted_user_id,
     question_id,
     answer_id,
     comment_id,
@@ -106,12 +108,18 @@ app.post('/api/votes', (req, res) => {
       if (!createdData) {
         return res.status(500).send("error");
       }
-      const params = {
+      const voteUserparams = {
         translated : 0,
         action_type_id : action_type_id,
         point : 1
       };
-      createPoint(params, createdData);
+      const votedUserparams = {
+        translated : 0,
+        action_type_id : action_type_id,
+        point : 1
+      };
+      createPoint(voteUserparams, createdData);
+      createVotedPoint(votedUserparams, createdData);
       res.status(200).send(createdData);
     })
     .catch(function(err) {
@@ -121,9 +129,9 @@ app.post('/api/votes', (req, res) => {
 });
 
 app.post('/api/vote_translations', (req, res) => {
-
   const {
     user_id,
+    voted_user_id,
     question_translation_id,
     answer_translation_id,
     comment_translation_id,
@@ -132,6 +140,7 @@ app.post('/api/vote_translations', (req, res) => {
   } = req.body;
   db.vote_translations.create({
     user_id,
+    voted_user_id,
     question_translation_id,
     answer_translation_id,
     comment_translation_id,
@@ -141,12 +150,18 @@ app.post('/api/vote_translations', (req, res) => {
       if (!createdData) {
         return res.status(500).send("error");
       }
-      const params = {
+      const voteUserparams = {
         translated : 1,
         action_type_id : action_type_id,
         point : 1
       };
-      createPoint(params, createdData);
+      const votedUserparams = {
+        translated : 1,
+        action_type_id : action_type_id,
+        point : 1
+      };
+      createPoint(voteUserparams, createdData);    
+      createVotedPoint(votedUserparams, createdData);
       res.status(200).send(createdData);
     })
     .catch(function(err) {
@@ -160,6 +175,7 @@ app.delete('/api/votes/:id', (req, res) => {
     vote_id, 
     deleteColumnKey,
     user_id,
+    voted_user_id,
     action_type_id,
     voteIdForPoint,
   } = req.query;
@@ -174,19 +190,26 @@ app.delete('/api/votes/:id', (req, res) => {
       if (result === 0) {
         return res.status(500).send('いいねの削除に失敗しました。');
       }
-      const params = {
+      const voteUserParams = {
         user_id: user_id,
         translated: 0,
         action_type_id: action_type_id,
         target_id: voteIdForPoint,
       }
-      deletePoint(params);
+      const votedUserParams = {
+        user_id: voted_user_id,
+        translated: 0,
+        action_type_id: action_type_id,
+        target_id: voteIdForPoint,
+      }
+      deletePoint(voteUserParams);
+      deletePoint(votedUserParams);
       return res.status(200).send('いいねの削除に成功しました。');
     });
 });
 
 app.delete('/api/vote_translations/:id', (req, res) => {
-  const { vote_id, deleteColumnKey, user_id, action_type_id, voteIdForPoint } = req.query;
+  const { vote_id, deleteColumnKey, user_id, voted_user_id, action_type_id, voteIdForPoint } = req.query;
   let whereContent = { user_id };
   const voteKey = deleteColumnKey + "_translation_id";
   whereContent[voteKey] = vote_id;
@@ -198,38 +221,34 @@ app.delete('/api/vote_translations/:id', (req, res) => {
       if (result === 0) {
         return res.status(500).send('いいねの削除に失敗しました。');
       }
-      const params = {
+      const voteUserParams = {
         user_id: user_id,
         translated: 1,
         action_type_id: action_type_id,
         target_id: voteIdForPoint,
       };
-      deletePoint(params);
+      const votedUserParams = {
+        user_id: voted_user_id,
+        translated: 1,
+        action_type_id: action_type_id,
+        target_id: voteIdForPoint,
+      };
+      deletePoint(voteUserParams);
+      deletePoint(votedUserParams);
       return res.status(200).send('いいねを削除しました。');
     });
 });
-
-/*
-  ポイント取得
-*/
-// app.get('/api/points', (req, res) => {
-//   const {type, target} = req.query;
-//   db.questions.findAll({
-//     include: [
-//         { 
-//           model: db.points, 
-//           // where: { "action_type_id":1}
-//         }
-//     ],
-//   }).then(function(values){
-//     res.status(200).send(values);
-//   });
-// });
 
 
 // ポイントをつけるときの関数
 function createPoint(params, createdData) {
   params.user_id = createdData.user_id;
+  params.target_id = createdData.id;
+  return db.points.create(params);
+};
+
+function createVotedPoint(params, createdData) {
+  params.user_id = createdData.voted_user_id;
   params.target_id = createdData.id;
   return db.points.create(params);
 };

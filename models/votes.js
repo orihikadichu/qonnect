@@ -2,6 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const votes = sequelize.define('votes', {
     user_id: DataTypes.INTEGER,
+    voted_user_id: DataTypes.INTEGER,
     question_id: DataTypes.INTEGER,
     answer_id: DataTypes.INTEGER,
     comment_id: DataTypes.INTEGER,

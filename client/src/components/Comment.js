@@ -57,13 +57,14 @@ class Comment extends Component {
     const myVoteList = voteList.filter(v => v.user_id === this.props.user.id); 
     const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
     const commentUserId = myVoteList.length !== 0 ? myVoteList[0].user_id : 0;
-
+    
     const voteState = (myVoteList.length === 0);
     const voteParams = (voteState) 
                      ?{
                       postActionType:"post",
                       thisPageKey: "comment",
                       user_id: this.props.user.id,
+                      voted_user_id: commentUser.id,
                       question_id: null,
                       answer_id: null,
                       comment_id: commentId,
@@ -72,13 +73,14 @@ class Comment extends Component {
                      }:{
                       postActionType:"delete",
                       thisPageKey: "comment",
-                      user_id: this.props.user.commentId,
+                      user_id: this.props.user.id,
+                      voted_user_id: commentUser.id,
                       deleteColumnKey : "comment",
                       vote_id: commentId,
                       voteIdForPoint: myVoteId,
                       thisPageContentId: currentQuestionId,
                      };
-
+    
     const handleSubmit = this.getOnClickPostVote(voteParams, this.props.user.id).bind(this);
     const translator = this.getTranslator(currentCommentList, answerId, commentId,  formatMessage);
 
@@ -89,7 +91,7 @@ class Comment extends Component {
             {content}
           </p>
           <PostIcons 
-                user = { commentUserId } 
+                user = { commentUser } 
                 loginUser = { this.props.user } 
                 votes = { voteList }
                 voteState = { voteState }

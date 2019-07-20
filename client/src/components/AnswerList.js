@@ -115,73 +115,75 @@ class AnswerList extends Component {
       const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
 
       const voteState = (myVoteList.length === 0);
-    const voteParams = (voteState) 
-                     ? {
-                      postActionType:"post",
-                      thisPageKey: "answer",
-                      user_id: this.props.state.auth.user.id,
-                      question_id: null,
-                      answer_id: answer.id,
-                      comment_id: null,
-                      status: 1,
-                      thisPageContentId: this.props.qId,
-                     }:{
-                      postActionType:"delete",
-                      thisPageKey: "answer",
-                      user_id: this.props.state.auth.user.id,
-                      deleteColumnKey : "answer",
-                      vote_id: answer.id,
-                      voteIdForPoint: myVoteId,
-                      thisPageContentId: this.props.qId,
-                     };
-      const handleSubmit = this.getOnClickPostVote(voteParams, loginUser.id).bind(this);
-      const commentForm = this.getComment(answer.id);
-      const { answer_translations } = answer;
+      const voteParams = (voteState) 
+                      ? {
+                        postActionType:"post",
+                        thisPageKey: "answer",
+                        user_id: this.props.state.auth.user.id,
+                        voted_user_id: user.id,
+                        question_id: null,
+                        answer_id: answer.id,
+                        comment_id: null,
+                        status: 1,
+                        thisPageContentId: this.props.qId,
+                      }:{
+                        postActionType:"delete",
+                        thisPageKey: "answer",
+                        user_id: this.props.state.auth.user.id,
+                        voted_user_id: user.id,
+                        deleteColumnKey : "answer",
+                        vote_id: answer.id,
+                        voteIdForPoint: myVoteId,
+                        thisPageContentId: this.props.qId,
+                      };
+        const handleSubmit = this.getOnClickPostVote(voteParams, loginUser.id).bind(this);
+        const commentForm = this.getComment(answer.id);
+        const { answer_translations } = answer;
 
-      const translator = this.getTranslator(answer_translations, formatMessage);
+        const translator = this.getTranslator(answer_translations, formatMessage);
 
-      return (
-        <li key={answer.id} >
-          <article className="uk-comment">
-            <div className="uk-comment-header uk-comment-body">
-              <p className="uk-margin-small-bottom" style={{"whiteSpace": "pre-wrap"}} >
-                <Linkify properties={{ target: '_blank'}} >{answer.dispText}</Linkify>
-              </p>
-              <PostIcons 
-                    user = { user } 
-                    loginUser = { this.props.state.auth.user } 
-                    votes = { votes }
-                    voteState={voteState}
-                    editLink = {`/answers/edit/${answer.id}`}
-                    translateLink = {`/answer_translations/${answer.id}`}
-                    onClickHandleVote = { handleSubmit }
-                    translate = { true }
-                />
-              <p className="uk-text-meta">{dayjs(answer.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
+        return (
+          <li key={answer.id} >
+            <article className="uk-comment">
+              <div className="uk-comment-header uk-comment-body">
+                <p className="uk-margin-small-bottom" style={{"whiteSpace": "pre-wrap"}} >
+                  <Linkify properties={{ target: '_blank'}} >{answer.dispText}</Linkify>
+                </p>
+                <PostIcons 
+                      user = { user } 
+                      loginUser = { this.props.state.auth.user } 
+                      votes = { votes }
+                      voteState={voteState}
+                      editLink = {`/answers/edit/${answer.id}`}
+                      translateLink = {`/answer_translations/${answer.id}`}
+                      onClickHandleVote = { handleSubmit }
+                      translate = { true }
+                  />
+                <p className="uk-text-meta">{dayjs(answer.created_at).format('YYYY/MM/DD HH:mm:ss')}</p>
 
-            </div>
-            <div className="uk-grid uk-grid-small uk-flex-middle" >
-              <div>
-                <PostUser user={ answer.user } />
               </div>
-              <div className="uk-width-expand" >
-                { translator }
+              <div className="uk-grid uk-grid-small uk-flex-middle" >
+                <div>
+                  <PostUser user={ answer.user } />
+                </div>
+                <div className="uk-width-expand" >
+                  { translator }
+                </div>
+              </div>
+            </article>
+            <hr className="uk-divider-small" />
+            <div className="uk-margin-bottom" >
+              {/*CommentListはすでに投稿されたコメントの一覧を表示する*/}
+              <CommentList list={answer.comments} loginUser={loginUser} translateLanguageId={translateLanguageId} />
+              <div className="uk-text-right uk-margin-top">
+                <p onClick={this.onClickReply.bind(this,answer.id)}><FontAwesomeIcon icon={['far','comment-dots']} color="black" size="2x"/></p>
               </div>
             </div>
-          </article>
-          <hr className="uk-divider-small" />
-          <div className="uk-margin-bottom" >
-            {/*CommentListはすでに投稿されたコメントの一覧を表示する*/}
-            <CommentList list={answer.comments} loginUser={loginUser} translateLanguageId={translateLanguageId} />
-            <div className="uk-text-right uk-margin-top">
-              <p onClick={this.onClickReply.bind(this,answer.id)}><FontAwesomeIcon icon={['far','comment-dots']} color="black" size="2x"/></p>
-            </div>
-          </div>
 
-          {commentForm}
+            {commentForm}
 
-        </li>
-      );
+          </li>
+        );
     });
   }
 
