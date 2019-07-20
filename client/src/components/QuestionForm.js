@@ -31,8 +31,8 @@ class QuestionForm extends Component {
     const { formatMessage } = this.props.intl;
 
     const persistTab = this.props.fromName === "questionForm"
-      ? <Persist name={this.props.fromName} />
-      : "";
+                     ? <Persist name={this.props.fromName} />
+                     : "";
 
     return (
       <Formik

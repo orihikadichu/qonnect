@@ -60,24 +60,24 @@ class Comment extends Component {
 
     const voteState = (myVoteList.length === 0);
     const voteParams = (voteState) 
-              ? {
-                postActionType:"post",
-                thisPageKey: "comment",
-                user_id: this.props.user.id,
-                question_id: null,
-                answer_id: null,
-                comment_id: commentId,
-                status: 1,
-                thisPageContentId: currentQuestionId,
-              } : {
-                postActionType:"delete",
-                thisPageKey: "comment",
-                user_id: this.props.user.commentId,
-                deleteColumnKey : "comment",
-                vote_id: commentId,
-                voteIdForPoint: myVoteId,
-                thisPageContentId: currentQuestionId,
-              };
+                     ?{
+                      postActionType:"post",
+                      thisPageKey: "comment",
+                      user_id: this.props.user.id,
+                      question_id: null,
+                      answer_id: null,
+                      comment_id: commentId,
+                      status: 1,
+                      thisPageContentId: currentQuestionId,
+                     }:{
+                      postActionType:"delete",
+                      thisPageKey: "comment",
+                      user_id: this.props.user.commentId,
+                      deleteColumnKey : "comment",
+                      vote_id: commentId,
+                      voteIdForPoint: myVoteId,
+                      thisPageContentId: currentQuestionId,
+                     };
 
     const handleSubmit = this.getOnClickPostVote(voteParams, this.props.user.id).bind(this);
     const translator = this.getTranslator(currentCommentList, answerId, commentId,  formatMessage);
