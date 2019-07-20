@@ -49,26 +49,26 @@ class QuestionContent extends Component {
 
     const voteState = (myVoteList.length === 0);
     const voteParams = (voteState)
-      ? {
-        postActionType: "post",
-        thisPageKey: "questionList",
-        user_id: userData.id,
-        question_id: question.id,
-        answer_id: null,
-        comment_id: null,
-        status: 1,
-      } : {
-        postActionType: "delete",
-        thisPageKey: "questionList",
-        user_id: userData.id,
-        deleteColumnKey: "question",
-        vote_id: question.id,
-        voteIdForPoint: myVoteId,
-      };
+                     ? {
+                        postActionType: "post",
+                        thisPageKey: "questionList",
+                        user_id: userData.id,
+                        question_id: question.id,
+                        answer_id: null,
+                        comment_id: null,
+                        status: 1,
+                     } : {
+                        postActionType: "delete",
+                        thisPageKey: "questionList",
+                        user_id: userData.id,
+                        deleteColumnKey: "question",
+                        vote_id: question.id,
+                        voteIdForPoint: myVoteId,
+                     };
   
     const  contentCount = answers.length !==0
-    ? <PostAnswerCount reply={ answers } />
-    : "";
+                        ? <PostAnswerCount reply={ answers } />
+                        : "";
 
     const handleSubmit = this.getOnClickPostVote(voteParams, userData.id).bind(this);
 

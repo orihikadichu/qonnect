@@ -43,25 +43,25 @@ class QuestionTranslationList extends Component {
 
       const voteState = (myVoteList.length === 0);
       const voteParams = (voteState) 
-                  ? {
-                    postActionType:"post",
-                    thisPageKey: "question",
-                    user_id: this.props.user.id,
-                    question_translation_id: translation.id,
-                    answer_translation_id:  null,
-                    comment_translation_id: null,
-                    vote_id: translation.id,
-                    status: 1,
-                    thisPageContentId: translation.question_id,
-                  } : {
-                    postActionType:"delete",
-                    thisPageKey: "question",
-                    user_id: this.props.user.id,
-                    deleteColumnKey : "question",
-                    vote_id: translation.id,
-                    voteIdForPoint: myVoteId,
-                    thisPageContentId: translation.question_id,
-                  };
+                       ? {
+                          postActionType:"post",
+                          thisPageKey: "question",
+                          user_id: this.props.user.id,
+                          question_translation_id: translation.id,
+                          answer_translation_id:  null,
+                          comment_translation_id: null,
+                          vote_id: translation.id,
+                          status: 1,
+                          thisPageContentId: translation.question_id,
+                       } : {
+                          postActionType:"delete",
+                          thisPageKey: "question",
+                          user_id: this.props.user.id,
+                          deleteColumnKey : "question",
+                          vote_id: translation.id,
+                          voteIdForPoint: myVoteId,
+                          thisPageContentId: translation.question_id,
+                       };
       const handleSubmit = this.getOnClickPostVote(voteParams, loginUser.id).bind(this);
 
       return (

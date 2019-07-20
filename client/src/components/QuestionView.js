@@ -122,24 +122,24 @@ class QuestionView extends Component {
 
     const voteState = (myVoteList.length === 0);
     const voteParams = (voteState)
-              ? {
-                postActionType:"post",
-                thisPageKey: "questionView",
-                user_id: this.props.state.auth.user.id,
-                question_id: currentQuestion.id,
-                answer_id: null,
-                comment_id: null,
-                thisPageContentId: currentQuestion.id,
-                status: 1,
-              } : {
-                postActionType:"delete",
-                thisPageKey: "questionView",
-                user_id: this.props.state.auth.user.id,
-                deleteColumnKey : "question",
-                vote_id: currentQuestion.id,
-                voteIdForPoint: myVoteId,
-                thisPageContentId: currentQuestion.id
-              };
+                     ? {
+                      postActionType:"post",
+                      thisPageKey: "questionView",
+                      user_id: this.props.state.auth.user.id,
+                      question_id: currentQuestion.id,
+                      answer_id: null,
+                      comment_id: null,
+                      thisPageContentId: currentQuestion.id,
+                      status: 1,
+                    } : {
+                      postActionType:"delete",
+                      thisPageKey: "questionView",
+                      user_id: this.props.state.auth.user.id,
+                      deleteColumnKey : "question",
+                      vote_id: currentQuestion.id,
+                      voteIdForPoint: myVoteId,
+                      thisPageContentId: currentQuestion.id
+                    };
     const handleSubmit = this.getOnClickPostVote(voteParams, loginUser.id).bind(this);
 
     const { question_translations } = question;

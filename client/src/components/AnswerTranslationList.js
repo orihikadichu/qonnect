@@ -45,25 +45,25 @@ class AnswerTranslationList extends Component {
 
           const voteState = (myVoteList.length === 0);
           const voteParams = (voteState) 
-                      ? {
-                        postActionType:"post",
-                        thisPageKey: "answer",
-                        user_id: this.props.user.id,
-                        question_translation_id: null,
-                        answer_translation_id:  translation.id,
-                        comment_translation_id: null,
-                        vote_id: translation.id,
-                        status: 1,
-                        thisPageContentId: translation.answer_id
-                      } : {
-                        postActionType:"delete",
-                        thisPageKey: "answer",
-                        user_id: this.props.user.id,
-                        deleteColumnKey : "answer",
-                        vote_id: translation.id,
-                        voteIdForPoint: myVoteId,
-                        thisPageContentId: translation.answer_id
-                      };
+                           ?{
+                              postActionType:"post",
+                              thisPageKey: "answer",
+                              user_id: this.props.user.id,
+                              question_translation_id: null,
+                              answer_translation_id:  translation.id,
+                              comment_translation_id: null,
+                              vote_id: translation.id,
+                              status: 1,
+                              thisPageContentId: translation.answer_id
+                           }:{
+                              postActionType:"delete",
+                              thisPageKey: "answer",
+                              user_id: this.props.user.id,
+                              deleteColumnKey : "answer",
+                              vote_id: translation.id,
+                              voteIdForPoint: myVoteId,
+                              thisPageContentId: translation.answer_id
+                           };
           const handleSubmit = this.getOnClickPostVote(voteParams, loginUser.id).bind(this);
                   
            return (
