@@ -78,6 +78,7 @@ class QuestionListView extends Component {
 
     return sortQuestions.map(question =>
       <QuestionContent
+        key={`question_id_${question.id}`}
         question={question}
         formatMessage={formatMessage}
         userData={userData}
