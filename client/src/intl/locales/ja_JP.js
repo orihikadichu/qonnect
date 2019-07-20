@@ -45,6 +45,8 @@ const ja_JP = {
   "countries.philippines": 'フィリピン',
   "countries.england": 'イギリス',
   "countries.newzealand": 'ニュージーランド',
+  "countries.korea": '韓国',
+  "countries.thailand": 'タイ',
   "categories.all": 'すべて',
   "categories.comic_anime": '漫画・アニメ',
   "categories.culture": '文化',
