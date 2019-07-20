@@ -44,25 +44,25 @@ class CommentTranslationList extends Component {
 
             const voteState = (myVoteList.length === 0);
             const voteParams = (voteState) 
-                      ? {
-                        postActionType:"post",
-                        thisPageKey: "comment",
-                        user_id: this.props.user.id,
-                        question_translation_id: null,
-                        answer_translation_id: null,
-                        comment_translation_id: translation.id,
-                        vote_id: translation.id,
-                        status: 1,
-                        thisPageContentId: translation.comment_id
-                      } : {
-                        postActionType:"delete",
-                        thisPageKey: "comment",
-                        user_id: this.props.user.id,
-                        deleteColumnKey : "comment",
-                        vote_id: translation.id,
-                        voteIdForPoint: myVoteId,
-                        thisPageContentId: translation.comment_id,
-                      };
+                             ?{
+                              postActionType:"post",
+                              thisPageKey: "comment",
+                              user_id: this.props.user.id,
+                              question_translation_id: null,
+                              answer_translation_id: null,
+                              comment_translation_id: translation.id,
+                              vote_id: translation.id,
+                              status: 1,
+                              thisPageContentId: translation.comment_id
+                             }:{
+                              postActionType:"delete",
+                              thisPageKey: "comment",
+                              user_id: this.props.user.id,
+                              deleteColumnKey : "comment",
+                              vote_id: translation.id,
+                              voteIdForPoint: myVoteId,
+                              thisPageContentId: translation.comment_id,
+                             };
            const handleSubmit = this.getOnClickPostVote(voteParams, this.props.user.id).bind(this);
 
            return (

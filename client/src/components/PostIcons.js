@@ -46,8 +46,8 @@ class PostIcons extends Component {
         } = this.props;
         
         const editLinkButton = user.id === loginUser.id
-                        ? <Link className="uk-margin-small-right" to={editLink}><FontAwesomeIcon icon="edit" color="steelblue" size="lg"/></Link>
-                        : '';
+                             ? <Link className="uk-margin-small-right" to={editLink}><FontAwesomeIcon icon="edit" color="steelblue" size="lg"/></Link>
+                             : '';
 
         const votebutton = this.getVoteButton(voteState);
 

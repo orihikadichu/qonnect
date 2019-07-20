@@ -115,25 +115,25 @@ class AnswerList extends Component {
       const myVoteId = myVoteList.length !== 0 ? myVoteList[0].id : 0;
 
       const voteState = (myVoteList.length === 0);
-      const voteParams = (voteState) 
-                ? {
-                  postActionType:"post",
-                  thisPageKey: "answer",
-                  user_id: this.props.state.auth.user.id,
-                  question_id: null,
-                  answer_id: answer.id,
-                  comment_id: null,
-                  status: 1,
-                  thisPageContentId: this.props.qId,
-                } : {
-                  postActionType:"delete",
-                  thisPageKey: "answer",
-                  user_id: this.props.state.auth.user.id,
-                  deleteColumnKey : "answer",
-                  vote_id: answer.id,
-                  voteIdForPoint: myVoteId,
-                  thisPageContentId: this.props.qId,
-                };
+    const voteParams = (voteState) 
+                     ? {
+                      postActionType:"post",
+                      thisPageKey: "answer",
+                      user_id: this.props.state.auth.user.id,
+                      question_id: null,
+                      answer_id: answer.id,
+                      comment_id: null,
+                      status: 1,
+                      thisPageContentId: this.props.qId,
+                     }:{
+                      postActionType:"delete",
+                      thisPageKey: "answer",
+                      user_id: this.props.state.auth.user.id,
+                      deleteColumnKey : "answer",
+                      vote_id: answer.id,
+                      voteIdForPoint: myVoteId,
+                      thisPageContentId: this.props.qId,
+                     };
       const handleSubmit = this.getOnClickPostVote(voteParams, loginUser.id).bind(this);
       const commentForm = this.getComment(answer.id);
       const { answer_translations } = answer;
