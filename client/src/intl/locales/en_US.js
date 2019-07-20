@@ -45,6 +45,8 @@ const en_US = {
   "countries.philippines": 'Philippines',
   "countries.england": 'England',
   "countries.newzealand": 'Newzealand',
+  "countries.korea": 'Korea',
+  "countries.thailand": 'Thailand',
   "categories.all": 'All',
   "categories.comic_anime": 'Comic・Anime',
   "categories.culture": 'Culture',

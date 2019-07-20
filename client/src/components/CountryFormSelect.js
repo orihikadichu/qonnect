@@ -15,6 +15,8 @@ class CountryFormSelect extends Component {
         <option value="3" >{ formatMessage({id: "countries.philippines" })}</option>
         <option value="4" >{ formatMessage({id: "countries.england" })}</option>
         <option value="5" >{ formatMessage({id: "countries.newzealand" })}</option>
+        <option value="6" >{ formatMessage({id: "countries.korea" })}</option>
+        <option value="7" >{ formatMessage({id: "countries.thailand" })}</option>
       </Field>
     );
   }
