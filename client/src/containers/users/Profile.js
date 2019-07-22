@@ -201,8 +201,7 @@ class Profile extends Component {
     const { profile } = this.props.state;
     const { user } = profile;
     const { formatMessage } = this.props.intl;
-    const { vote_translations } = user;
-    console.log("thisprops",this.props.state);
+    const { votedUserList } = user;   
 
     if (isEmptyObject(user)) {
       return (
@@ -214,7 +213,7 @@ class Profile extends Component {
 
     const tabList = this.getTabList();
     const userPostList = this.getCurrentTabContents(profile, this.state.currentTab);
-    const voteTables = this.getVoteList(vote_translations);
+    const voteTables = this.getVoteList(votedUserList);
 
     return (
       <main className="uk-container uk-container-small">
