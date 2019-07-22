@@ -1033,6 +1033,15 @@ app.delete('/api/answers/:id', (req, res) => {
 /**
  * Users
  */
+
+//いいねしてくれた人のリストを取得
+// function getVotedUserList(votedUserId,instance) {
+//   const filter = {
+//     where: { voted_user_id: votedUserId}
+//   };
+//   return db.vote_translations.findAll(filter);
+// };
+
 app.get('/api/users/:id', (req, res) => {
   const { id } = req.params;
   db.users.findOne({
@@ -1062,7 +1071,22 @@ app.get('/api/users/:id', (req, res) => {
       const user = instance.get();
       delete user.wallet_address;
       user.image_path = getProfileImageFilePath(user.id);
-      res.status(200).send(user);
+      user.message = "test";
+      const params = {
+        where: { voted_user_id: user.id },
+        include: [{
+          model: db.users,
+          required: false,
+        }]
+      };
+      return db.vote_translations.findAll(params)
+      .then((intances) => {
+        user.votedUserList = intances.map((v) => { return  v.user  });
+        console.log("----------------------");
+        console.log(intances);
+        console.log("----------------------");
+        return res.status(200).send(user);
+      });        
     });
 });
 

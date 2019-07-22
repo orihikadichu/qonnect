@@ -12,7 +12,6 @@ class Profile extends React.Component {
 
   componentDidMount() {
     const { id, name, country_id, profile } = this.props.state.auth.user;
-    console.log('user', this.props.state.auth.user);
 
     this.setState({
       user_id: id,
