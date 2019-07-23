@@ -29,7 +29,7 @@ class Profile extends Component {
   getVoteList(voteLists) {
 
     const stampCardRowNum = Math.ceil(voteLists.length / 5);
-    const stampCardNum =  Math.ceil(voteLists.length / 10);
+    const stampCardNum =  Math.ceil(voteLists.length / 10) < 2 ? 1 : 2 ;
     const emptyTdNum = stampCardNum * 10 - voteLists.length;
 
     for (let i = 0; i < emptyTdNum; i++) {
@@ -213,7 +213,9 @@ class Profile extends Component {
 
     const tabList = this.getTabList();
     const userPostList = this.getCurrentTabContents(profile, this.state.currentTab);
-    const voteTables = this.getVoteList(votedUserList);
+    const votedUserListSliceNum = votedUserList.length - 20
+    const voteTables = votedUserList.length >= 21 ? this.getVoteList(votedUserList.slice(0, votedUserListSliceNum)) : this.getVoteList(votedUserList);
+    const StanmpCardNum = votedUserList.length <= 20 ? 0 : (votedUserList.length - 11 ) / 10;
 
     return (
       <main className="uk-container uk-container-small">
@@ -236,7 +238,9 @@ class Profile extends Component {
           <div className="uk-width-2-5@s">
             <p>{formatMessage({id: "titles.profile.votes"})}</p>
             {voteTables}
+            <p>×{ StanmpCardNum }</p>
           </div>
+          
         </div>
         <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.post_list"})}</span></h3>
         {tabList}

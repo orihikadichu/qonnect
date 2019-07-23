@@ -17,7 +17,7 @@ class Stampcard extends Component {
             return (
                 <td key={`vote_translate_td${e.id}`}className="uk-text-center">
                     <Link to={e.profile_link}>
-                    <img className="uk-comment-avatar uk-border-circle uk-margin-rigth-small" src={e.image_path} width="35" height="35" alt=""/>
+                        <img className="uk-comment-avatar uk-border-circle uk-margin-rigth-small" src={e.image_path} width="35" height="35" alt=""/>
                     </Link>
                 </td>
             );
