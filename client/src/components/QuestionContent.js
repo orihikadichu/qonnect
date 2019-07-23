@@ -81,7 +81,7 @@ class QuestionContent extends Component {
       <li key={question.id} >
         <p>
           <span className="uk-text-muted">{ formatMessage({id: question.category.intl_key })}</span>
-          <span className="uk-text-meta uk-margin-small-left">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</span>
+          {/* <span className="uk-text-meta uk-margin-small-left">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</span> */}
         </p>
         <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
         <div className="button-area uk-margin-bottom" >
