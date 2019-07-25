@@ -173,7 +173,6 @@ class AnswerList extends Component {
             </article>
             <hr className="uk-divider-small" />
             <div className="uk-margin-bottom" >
-              {/*CommentListはすでに投稿されたコメントの一覧を表示する*/}
               <CommentList list={answer.comments} loginUser={loginUser} translateLanguageId={translateLanguageId} />
               <div className="uk-text-right uk-margin-top">
                 <p onClick={this.onClickReply.bind(this,answer.id)}><FontAwesomeIcon icon={['far','comment-dots']} color="black" size="2x"/></p>

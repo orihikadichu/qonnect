@@ -150,6 +150,7 @@ class QuestionView extends Component {
 
     return (
       <main className="uk-container uk-container-small">
+
         <div className="uk-card uk-card-default uk-card-body uk-box-shadow-small">
           <p className="uk-text-muted">{ question.category.category }</p>
           <p className="uk-margin-small-bottom" >
@@ -181,6 +182,7 @@ class QuestionView extends Component {
         <div className="uk-margin-bottom">
           { answerForm }
         </div>
+
         <AnswerList qId={this.qId} translateLanguageId={translateLanguageId} />
         <hr className="uk-divider-icon" />
 

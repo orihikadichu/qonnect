@@ -8,7 +8,15 @@ import CountryFormSelect from './CountryFormSelect';
 
 class QuestionForm extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      translateLanguageId: 1
+    };
+  }
+
   validate(values) {
+    console.log("validate_values", values);
     const { formatMessage } = this.props.intl;
     let errors = {};
     if (!values.content) {
@@ -26,13 +34,35 @@ class QuestionForm extends Component {
     return errors;
   }
 
+  changeLanguage(e, setFieldValue) {
+    const values = e.target.value;
+    console.log("values", values);
+
+    const checkResult = values.match(/[0-9]/)
+    const allStringNum = checkResult !== null ? checkResult.index : 0 ;
+    console.log("checkResult", checkResult);
+    const englishStringNUm = values.match(/[A-Za-z]/) !== null ? values.match(/[A-Za-z]/).index : 0 ;
+    console.log("englishStringNUm" , englishStringNUm);
+    const japanStringNum = allStringNum - englishStringNUm;
+
+    const LANGUAGE_ID_JAPAN = 1;
+    const LANGUAGE_ID_USA = 2;
+    const translateLanguageId = japanStringNum / allStringNum > 0.5 ? LANGUAGE_ID_JAPAN : LANGUAGE_ID_USA ;
+
+    console.log('translateLanguageId', translateLanguageId);
+    // this.setState({translateLanguageId});
+    setFieldValue("translate_language_id", translateLanguageId);
+    return values;
+  }
+
   render() {
     const { initialValues } = this.props;
     const { formatMessage } = this.props.intl;
-
+    const { translateLanguageId } = this.state;
     const persistTab = this.props.fromName === "questionForm"
                      ? <Persist name={this.props.fromName} />
                      : "";
+    console.log('state', this.state);
 
     return (
       <Formik
@@ -45,7 +75,7 @@ class QuestionForm extends Component {
           resetForm();
           return;
         }}
-        render={({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue }) => (
+        render={({ values, errors, touched, handleSubmit, handleChange, isSubmitting, setFieldValue }) => (
           <form onSubmit={handleSubmit} >
             <fieldset className="uk-fieldset">
               <div className="uk-margin">
@@ -57,6 +87,8 @@ class QuestionForm extends Component {
                   placeholder={formatMessage({ id: 'placeholders.questions.content' })}
                   rows="5"
                   className={'form-control uk-textarea'}
+                  // onChange={this.changeLanguage.bind(this)}
+                  onChange={ (e) => { handleChange(e); this.changeLanguage(e, setFieldValue);}}
                 />
                 {touched.content && errors.content && <div className="uk-text-warning">{formatMessage({ id: errors.content })}</div>}
                 {/* {touched.content && errors.content && <div className="uk-text-warning">{errors.content}</div>} */}
@@ -74,7 +106,7 @@ class QuestionForm extends Component {
                   {/* {touched.country_id && errors.country_id && <div className="uk-text-warning">{errors.country_id}</div>} */}
                 </div>
                 <div className="uk-grid-margin" >
-                  <LanguageFormSelect name="translate_language_id" placeholder={formatMessage({ id: "placeholders.questions.translate_language_id" })} />
+                  <LanguageFormSelect value={values.translate_language_id} name="translate_language_id" placeholder={formatMessage({ id: "placeholders.questions.translate_language_id" })} />
                   {touched.translate_language_id && errors.translate_language_id && <div className="uk-text-warning">{formatMessage({ id: errors.translate_language_id })}</div>}
                   {/* {touched.translate_language_id && errors.translate_language_id && <div className="uk-text-warning">{errors.translate_language_id}</div>} */}
                 </div>

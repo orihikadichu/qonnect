@@ -70,9 +70,9 @@ class QuestionTranslationView extends Component {
             </div>
           </div>
         </div>
-        <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.translation_list"})}</span></h3>
-        <QuestionTranslationForm qId={this.qId} onSubmit={this.handleSubmit.bind(this)} />
+        {/* <h3 className="uk-heading-line"><span>{formatMessage({id: "titles.translation_list"})}</span></h3> */}
         <QuestionTranslationList qId={this.qId} />
+        <QuestionTranslationForm qId={this.qId} onSubmit={this.handleSubmit.bind(this)} />
         <hr className="uk-divider-icon" />
         <Link to="/">Top</Link>
       </main>

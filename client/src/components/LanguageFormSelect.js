@@ -5,13 +5,13 @@ import { injectIntl } from 'react-intl';
 class LanguageFormSelect extends Component {
   render() {
     const { formatMessage } = this.props.intl;
-    const { name, placeholder } =  this.props;
+    const { name, placeholder, value } =  this.props;
 
     return (
-      <Field name={name} component="select" className={'form-control uk-select'}>
+      <Field name={name} value={value} component="select" className={'form-control uk-select'}>
         <option value="">{placeholder}</option>
-        <option value="1" >{ formatMessage({id: "languages.japanese" })}</option>
-        <option value="2" >{ formatMessage({id: "languages.english" })}</option>
+        <option value="1">{ formatMessage({id: "languages.japanese" })}</option>
+        <option value="2">{ formatMessage({id: "languages.english" })}</option>
       </Field>
     );
   }

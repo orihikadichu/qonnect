@@ -11,11 +11,30 @@ import { postVote, deleteVote, handleVote } from '../actions/VoteTranslation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PostUser from './PostUser';
 import PostIcons from './PostIcons';
+import CommentList from './CommentList';
 
 class QuestionTranslationList extends Component {
   constructor(props) {
     super(props);
     this.qId = this.props.qId;
+    this.state = {
+      buttonState: {},
+    };
+  }
+
+  displayOldTranslateList(translationListOld) {
+    const { buttonState } = this.state;
+    if (buttonState !== "open") {
+      return "";
+    }
+    return translationListOld;
+  }
+
+  onClickReply() {
+    let { buttonState } = this.state;
+    const isOpened = (  buttonState  === "open" );
+    buttonState = isOpened ? "close" : "open" ;
+    return this.setState({buttonState});
   }
 
   componentWillMount() {
@@ -67,7 +86,7 @@ class QuestionTranslationList extends Component {
       const handleSubmit = this.getOnClickPostVote(voteParams, loginUser.id).bind(this);
 
       return (
-        <li key={translation.id} >
+        <li key={translation.id} style={{"listStyle": "none"}} >
           <article className="uk-comment">
             <div className="uk-comment-header uk-comment-body">
               <p className="uk-margin-small-bottom" style={{"whiteSpace": "pre-wrap"}} >
@@ -93,24 +112,45 @@ class QuestionTranslationList extends Component {
           </article>
         </li>
       );})
-
   }
 
   render() {
     const { isFetching, currentTranslationList } = this.props.state.questionTranslations;
     const loginUser = this.props.state.auth.user;
+    const { formatMessage } = this.props.intl;
 
     if (isFetching) {
       return (<ClipLoader />);
     }
 
-    const translationList = this.getTranslationList(currentTranslationList, loginUser);
+    const currentTranslationContent = this.getTranslationList(currentTranslationList.slice(0, 1), loginUser);
+    const translationListContent = currentTranslationContent.length === 0 
+                                 ? <h4 className="uk-text-success uk-text-larg ">{formatMessage({id: "messages.empty_translate"})}</h4> 
+                                 : currentTranslationContent;
+    const translationListOld = this.getTranslationList(currentTranslationList.slice(1), loginUser);
+    const displayOldTranslateButton =  translationListOld.length === 0 
+                                    ? ""
+                                    : <p className="uk-button uk-button-default" onClick={this.onClickReply.bind(this)}>{formatMessage({id: "buttons.translate"})}</p> ;   
+    const displayTranslateList = this.displayOldTranslateList(translationListOld);
 
     return (
       <div>
-        <ul className="uk-list uk-list-divider uk-list-large" >
-          {translationList}
-        </ul>
+        <div className="uk-card uk-card-default uk-card-body uk-box-shadow-small uk-margin-top">
+          <h5> 
+            <span className="uk-text-white uk-background-primary uk-border-rounded" style={{"color":"white","padding":"5px"}}>
+              {formatMessage({id: "titles.translation_list"})}
+            </span>
+          </h5>
+          {translationListContent}
+        </div>
+        <div className="uk-margin-bottom" >
+            <div className="uk-margin-top">
+              {displayOldTranslateButton}
+              <ul className="uk-list uk-list-divider uk-list-large" >
+                {displayTranslateList}
+              </ul>
+            </div>
+        </div>
       </div>
     );
   }
@@ -120,7 +160,8 @@ class QuestionTranslationList extends Component {
 const mapStateToProps = state => {
   const { user } = state.auth;
   return {
-    user
+    user,
+    state
   };
 };
 
