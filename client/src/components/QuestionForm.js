@@ -36,21 +36,11 @@ class QuestionForm extends Component {
 
   changeLanguage(e, setFieldValue) {
     const values = e.target.value;
-    console.log("values", values);
 
-    const checkResult = values.match(/[0-9]/)
-    const allStringNum = checkResult !== null ? checkResult.index : 0 ;
-    console.log("checkResult", checkResult);
-    const englishStringNUm = values.match(/[A-Za-z]/) !== null ? values.match(/[A-Za-z]/).index : 0 ;
-    console.log("englishStringNUm" , englishStringNUm);
-    const japanStringNum = allStringNum - englishStringNUm;
-
+    const japanString = /[\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]/.test(values)
     const LANGUAGE_ID_JAPAN = 1;
     const LANGUAGE_ID_USA = 2;
-    const translateLanguageId = japanStringNum / allStringNum > 0.5 ? LANGUAGE_ID_JAPAN : LANGUAGE_ID_USA ;
-
-    console.log('translateLanguageId', translateLanguageId);
-    // this.setState({translateLanguageId});
+    const translateLanguageId = japanString ? LANGUAGE_ID_JAPAN : LANGUAGE_ID_USA ;
     setFieldValue("translate_language_id", translateLanguageId);
     return values;
   }
