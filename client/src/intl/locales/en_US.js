@@ -104,6 +104,8 @@ const en_US = {
   "buttons.profile_edit.select": 'Select',
   "buttons.profile_edit.save": 'Save',
   "buttons.translate": 'View past translations',
+  "buttons.question_form.open": 'Question',
+  "buttons.question_form.close": 'Close',
   "translated.name": 'Translator',
   "translated.state": 'Untranslated',
   "sort.answerMany":'Order of many answers',

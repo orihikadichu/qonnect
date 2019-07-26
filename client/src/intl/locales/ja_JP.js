@@ -104,6 +104,8 @@ const ja_JP = {
   "buttons.profile_edit.select": '選択',
   "buttons.profile_edit.save": '保存',
   "buttons.translate": '過去の翻訳一覧を見る',
+  "buttons.question_form.open": '質問する',
+  "buttons.question_form.close": '閉じる',
   "translated.name": '翻訳者',
   "translated.state": '未翻訳',
   "sort.answerMany":'回答の多い順',
