@@ -178,9 +178,7 @@ class AnswerList extends Component {
                 <p onClick={this.onClickReply.bind(this,answer.id)}><FontAwesomeIcon icon={['far','comment-dots']} color="black" size="2x"/></p>
               </div>
             </div>
-
             {commentForm}
-
           </li>
         );
     });

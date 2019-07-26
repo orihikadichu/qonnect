@@ -7,6 +7,7 @@ const en_US = {
   "titles.answer_list": 'Answers',
   "titles.post_list": 'Posts',
   "titles.translation_list": 'Current Translation',
+  "titles.original":'Original text',
   "titles.not_translated_list": 'Not Translated List',
   "titles.profile_edit.user_name": 'User Name',
   "titles.profile_edit.birthplace": 'Birthplace・Location',

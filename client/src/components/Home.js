@@ -3,6 +3,9 @@ import QuestionList from '../containers/QuestionList';
 import QuestionForm from './QuestionForm';
 import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
+// import ReactHover from 'react-hover';
+// import HoverComponent from './HoverComponent';
+// import TriggerComponent from './TriggerComponent';
 
 class Home extends React.Component {
 
@@ -175,8 +178,17 @@ class Home extends React.Component {
         </div>
 
         {questionFormTab}
-
         <h3 className="uk-heading-line"><span>{ formatMessage({id: "titles.question_list" })}</span></h3>
+        {/* <ReactHover
+          options={options}>
+          <ReactHover.Trigger type='trigger'>
+            <TriggerComponent />
+          </ReactHover.Trigger>
+          <ReactHover.Hover type='hover'>
+            <HoverComponent translate_language_id={translateLanguageId} />
+          </ReactHover.Hover>
+        </ReactHover> */}
+
         <QuestionList translate_language_id={translateLanguageId}/>
       </main>
     );

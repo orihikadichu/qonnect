@@ -7,6 +7,9 @@ import Translator from './Translator';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { connect } from 'react-redux';
+import ReactHover from 'react-hover';
+import HoverComponent from './HoverComponent';
+import TriggerComponent from './TriggerComponent';
 
 class QuestionContent extends Component {
 
@@ -38,6 +41,33 @@ class QuestionContent extends Component {
 
   ja2Bit( str ) {
     return ( str.match(/^[\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]+$/) )? true : false ;
+  }
+
+  getHoverComponent(question_translations){
+    const { formatMessage } = this.props;
+    
+    if(question_translations.length===0){
+      return "";
+    }
+    const translationText = question_translations.slice(0,1).pop().content;
+    const innerElement = (
+      <div>
+        <h5> 
+          <span className="uk-text-white uk-background-primary uk-border-rounded" style={{"color":"white","padding":"5px"}}>
+            {formatMessage({id: "titles.original"})}
+          </span>
+        </h5>
+        <p className="uk-margin-small-bottom">
+          {translationText}
+        </p>
+      </div>
+    );
+
+    return(
+      <ReactHover.Hover type='hover'>
+        <HoverComponent innerElement={innerElement} />
+      </ReactHover.Hover> 
+    );
   }
 
   render() {
@@ -81,13 +111,28 @@ class QuestionContent extends Component {
     const { question_translations } = question;
     const translator = this.getTranslator(question_translations, formatMessage);
 
+    const options = {
+      followCursor:true,
+      shiftX: 20,
+      shiftY: 0
+    }
+
+    const hoverComponent = this.getHoverComponent(question_translations);
+
     return (
       <li key={question.id} >
         <p>
           <span className="uk-text-muted">{ formatMessage({id: question.category.intl_key })}</span>
           {/* <span className="uk-text-meta uk-margin-small-left">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</span> */}
         </p>
-        <p className="uk-text-lead uk-text-truncate" ><Link to={`/questions/${question.id}`}>{`${question.dispText}`}</Link></p>
+
+        <ReactHover options={options}>
+          <ReactHover.Trigger type='trigger'>
+            <TriggerComponent questionId={question.id} questionDispText={question.dispText} />
+          </ReactHover.Trigger>
+          {hoverComponent}
+        </ReactHover>
+
         <div className="button-area uk-margin-bottom" >
         <PostIcons
             user = { user }

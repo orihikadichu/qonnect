@@ -7,6 +7,7 @@ const ja_JP = {
   "titles.answer_list": '回答一覧',
   "titles.post_list": '投稿一覧',
   "titles.translation_list": '現在の翻訳',
+  "titles.original": '原文', 
   "titles.not_translated_list": '未翻訳一覧',
   "titles.profile_edit.user_name": 'ユーザー名',
   "titles.profile_edit.birthplace": '出身地',

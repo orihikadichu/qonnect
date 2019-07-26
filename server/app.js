@@ -110,12 +110,12 @@ app.post('/api/votes', (req, res) => {
       }
       const voteUserparams = {
         translated : 0,
-        action_type_id : action_type_id,
+        action_type_id : 6,
         point : 1
       };
       const votedUserparams = {
         translated : 0,
-        action_type_id : action_type_id,
+        action_type_id : 7,
         point : 1
       };
       createPoint(voteUserparams, createdData);
@@ -152,12 +152,12 @@ app.post('/api/vote_translations', (req, res) => {
       }
       const voteUserparams = {
         translated : 1,
-        action_type_id : action_type_id,
+        action_type_id : 6,
         point : 1
       };
       const votedUserparams = {
         translated : 1,
-        action_type_id : action_type_id,
+        action_type_id : 7,
         point : 1
       };
       createPoint(voteUserparams, createdData);    
@@ -193,13 +193,13 @@ app.delete('/api/votes/:id', (req, res) => {
       const voteUserParams = {
         user_id: user_id,
         translated: 0,
-        action_type_id: action_type_id,
+        action_type_id: 6,
         target_id: voteIdForPoint,
       }
       const votedUserParams = {
         user_id: voted_user_id,
         translated: 0,
-        action_type_id: action_type_id,
+        action_type_id: 7,
         target_id: voteIdForPoint,
       }
       deletePoint(voteUserParams);
@@ -224,13 +224,13 @@ app.delete('/api/vote_translations/:id', (req, res) => {
       const voteUserParams = {
         user_id: user_id,
         translated: 1,
-        action_type_id: action_type_id,
+        action_type_id: 6,
         target_id: voteIdForPoint,
       };
       const votedUserParams = {
         user_id: voted_user_id,
         translated: 1,
-        action_type_id: action_type_id,
+        action_type_id: 7,
         target_id: voteIdForPoint,
       };
       deletePoint(voteUserParams);
