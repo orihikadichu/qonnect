@@ -43,13 +43,14 @@ class QuestionContent extends Component {
     return ( str.match(/^[\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]+$/) )? true : false ;
   }
 
-  getHoverComponent(question_translations){
+  getHoverComponent(question){
     const { formatMessage } = this.props;
     
-    if(question_translations.length===0){
+    if(question.question_translations.length===0){
       return "";
     }
-    const translationText = question_translations.slice(0,1).pop().content;
+    const originalText = question.content;
+    // const translationText = question_translations.slice(0,1).pop().content;
     const innerElement = (
       <div>
         <h5> 
@@ -58,7 +59,7 @@ class QuestionContent extends Component {
           </span>
         </h5>
         <p className="uk-margin-small-bottom">
-          {translationText}
+          {originalText}
         </p>
       </div>
     );
@@ -117,13 +118,12 @@ class QuestionContent extends Component {
       shiftY: 0
     }
 
-    const hoverComponent = this.getHoverComponent(question_translations);
+    const hoverComponent = this.getHoverComponent(question);
 
     return (
       <li key={question.id} >
         <p>
           <span className="uk-text-muted">{ formatMessage({id: question.category.intl_key })}</span>
-          {/* <span className="uk-text-meta uk-margin-small-left">{dayjs(question.created_at).format('YYYY/MM/DD HH:mm:ss')}</span> */}
         </p>
 
         <ReactHover options={options}>
